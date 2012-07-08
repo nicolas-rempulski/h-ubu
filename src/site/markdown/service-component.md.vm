@@ -26,7 +26,7 @@ Requiring Services
 ------------------
 
 To require a service and to receive the service object automatically, you need to describe a service dependency
-specifying the required contracts, the service filters, how the service object(s) is/are injected and so on.
+specifying the required contract, the service filter, how the service object(s) is/are injected and so on.
 
     hub.requireService({
         component: cmp,
@@ -53,10 +53,91 @@ A component can directly declare the same dependency in his `configure` method:
         });
     }
 
+Dependencies can be:
 
+* _scalar_ or _aggregate_ : Aggregate dependencies are bound to all matching services.
+* _mandatory_ or _optional_: Once unresolved, mandatory dependencies instructs H-UBU to unregisters all the published
+services provided by the same instance until the dependency is resolved again.
+
+Dependencies can be inject withing fields or using _bind/unbind_ methods. Field injection is the easiest,
+as H-UBU injects the service within the given field. For aggregate dependencies the array is populated with the
+matching services:
+
+
+    var component = {
+        services = [],
+        service = null,
+
+        configure : function(hub) {
+            this.hub = hub;
+            // Scalar dependency
+            this.hub.requireService({
+                component: this,
+                contract: contract,
+                field: "service"
+
+            });
+
+            // Aggregate dependency
+            this.hub.requireService({
+                component: this,
+                contract: contract,
+                aggregate : true,
+                field: "services"
+            });
+        },
+
+        //...
+
+        doSomething : function() {
+             var i = 0;
+             service.doSomethingWithTheService();
+             for (; i < services.length; i++) {
+                services[i].doSomethingWithTheService();
+             }
+        }
+    };
+
+Using bind and unbind methods let you be notified when a new service is arriving and when a service is leaving:
+
+    var component = {
+            services = [],
+            service = null,
+
+            configure : function(hub) {
+                this.hub = hub;
+                // Scalar dependency
+                this.hub.requireService({
+                    component: this,
+                    contract: contract,
+                    bind: component.bind,
+                    unbind: component.unbind
+                });
+            },
+
+            bind : function (svc) {
+                this.service = svc;
+            },
+
+            unbind : function (svc) {
+                if (this.service === svc) {
+                    this.service = null
+                }
+            },
+
+
+            //...
+
+            doSomething : function() {
+                 service.doSomethingWithTheService();
+            }
+        };
+
+Bind and Unbind method receives the service object and as second argument the service reference.
 
 Publishing Services
 -------------------
+
 
 
 
@@ -65,5 +146,5 @@ Dynamism
 
 
 Modifying published services
------------------------------
+----------------------------
 
