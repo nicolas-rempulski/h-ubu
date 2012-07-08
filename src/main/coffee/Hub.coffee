@@ -121,7 +121,7 @@ HUBU.Hub = class Hub
     HUBU.logger.debug("Registering component " + component.getComponentName())
     # Notify extensions
     for ext in @_extensions
-      HUBU.UTILS.invoke(ext, "registerComponent", [component])
+      HUBU.UTILS.invoke(ext, "registerComponent", [component, configuration])
 
     # Call configure on the component, we pass the current hub
     HUBU.logger.debug("Configuring component " + component.getComponentName())
@@ -189,6 +189,9 @@ HUBU.Hub = class Hub
     # Initialize the hub if not done already
     @_initialize() unless @_extensions isnt null
 
+    # Notify extensions
+    HUBU.UTILS.invoke(ext, "start", []) for ext in @_extensions
+
     @_started = true;
     for cmp in @_components
       # Only valid component can be plugged, so we can call start directly.
@@ -206,11 +209,20 @@ HUBU.Hub = class Hub
     if not @_started then return @
 
     @_started = false;
+
     for cmp in @_components
       # Only valid component can be plugged, so we can call stop directly.
       cmp.stop()
 
+    # Notify extensions
+    HUBU.UTILS.invoke(ext, "start", []) for ext in @_extensions
+
     return @
+
+  ###
+  # Checks whether the hub is started
+  ###
+  isStarted : -> return @_started
 
   ###
   # For testing purpose only !
