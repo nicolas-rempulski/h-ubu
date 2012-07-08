@@ -28,10 +28,10 @@ HUBU.ServiceComponent = class ServiceComponent
   addProvidedService : (ps) ->
     if HUBU.UTILS.indexOf(@_providedServices, ps) is -1
       @_providedServices.push(ps)
-      req.setServiceComponent(this)
-      ps.onStart if @_state > ServiceComponent.STOPPED
-      ps.onValidation if @_state is ServiceComponent.VALID
-      ps.onInvalidation if @_state is ServiceComponent.INVALID
+      ps.setServiceComponent(this)
+      ps.onStart() if @_state > ServiceComponent.STOPPED
+      ps.onValidation() if @_state is ServiceComponent.VALID
+      ps.onInvalidation() if @_state is ServiceComponent.INVALID
 
   removeProvidedService : (ps) ->
     if HUBU.UTILS.indexOf(@_providedServices, ps) isnt -1
@@ -242,6 +242,79 @@ HUBU.ServiceDependency = class ServiceDependency
     if @_unbind? then @_unbind.apply(@_component, [entry.service, entry.reference])
 
 
+HUBU.ProvidedService = class ProvidedService
+  @UNREGISTERED : 0
+  @REGISTERED : 1
+
+  _hub : null
+  _contract : null
+  _properties : null
+
+  _registration : null
+  _serviceComponent : null
+  _component : null
+
+  _preRegistration : null
+  _postRegistration : null
+  _preUnregistration : null
+  _postUnRegistration : null
+
+  constructor : (component, contract, properties, preRegistration, postRegistration, preUnregistration, postUnregistration, hub) ->
+    @_component = component
+    @_contract = contract
+    @_hub = hub
+    @_properties = properties
+
+    if preRegistration?
+      @_preRegistration = if HUBU.UTILS.isFunction(preRegistration) then preRegistration else @_component[preRegistration]
+      if not @_preRegistration? then throw new Exception("preRegistration method " + preRegistration + " not found on component")
+
+    if postRegistration?
+      @_postRegistration = if HUBU.UTILS.isFunction(postRegistration) then postRegistration else @_component[postRegistration]
+      if not @_postRegistration? then throw new Exception("postRegistration method " + postRegistration + " not found on component")
+
+    if preUnregistration?
+      @_preUnregistration = if HUBU.UTILS.isFunction(preUnregistration) then preUnregistration else @_component[preUnregistration]
+      if not @_preUnregistration? then throw new Exception("preUnregistration method " + preUnregistration + " not found on component")
+
+    if postUnregistration?
+      @_postUnregistration = if HUBU.UTILS.isFunction(postUnregistration) then postUnregistration else @_component[postUnregistration]
+      if not @_postUnregistration? then throw new Exception("postUnregistration method " + postUnregistration + " not found on component")
+
+
+  setServiceComponent : (sc) -> @_serviceComponent = sc
+
+  _register : ->
+    # Already registered
+    if @_registration? then return false
+
+    if (@_preRegistration?) then @_preRegistration.apply(@_component, [])
+    proxy = HUBU.UTILS.createProxyForContract(@_contract, @_component)
+    #TODO Set the service object.
+    @_registration = @_hub.registerService(@_component, @_contract, @_properties)
+    if (@_postRegistration?) then @_preRegistration.apply(@_component, [@_registration])
+
+    return true
+
+  _unregister : ->
+    if not @_registration? then return false
+
+    if (@_preUnRegistration) then @_preUnregistration.apply(@_component, [@_registration])
+    @_hub.unregisterService(@_registration)
+    @_registration = null
+    if (@_postUnRegistration) then @_postUnRegistration.apply(@_component, [])
+
+  onStart : ->
+    # Do nothing.
+
+  onStop : ->
+    @_unregister()
+
+  onValidation : -> @_register()
+
+  onInvalidation : -> @_unregister()
+
+
 HUBU.ServiceOrientation = class ServiceOrientation
   _hub : null
   _registry : null
@@ -276,6 +349,7 @@ HUBU.ServiceOrientation = class ServiceOrientation
 
     # Service-oriented component model methods
     @_hub.requireService = (description) -> return self.requireService(description)
+    @_hub.provideService = (description) -> return self.provideService(description)
 
 
   ### End of constructor  ###
@@ -284,13 +358,15 @@ HUBU.ServiceOrientation = class ServiceOrientation
   # The given component is unregistered from the hub. We needs to unregisters all services.
   ###
   unregisterComponent : (cmp) ->
-    # Basics management
-    @_registry.unregisterServices(cmp)
-
-    # Stops all service component
+    # We must start by the service components, as they may unregister the service themselves
+    # and do some cleanup.
+    # Stops all service components
     for entry in @_components when entry.component is cmp
       entry.serviceComponent.onStop()
       HUBU.UTILS.removeElementFromArray(@_components, entry)
+    # Basics management
+    @_registry.unregisterServices(cmp)
+
 
   requireService : (description) ->
     {component, contract, filter, aggregate, optional, field, bind, unbind} = description
@@ -306,15 +382,37 @@ HUBU.ServiceOrientation = class ServiceOrientation
     req = new HUBU.ServiceDependency(component, contract, filter, aggregate, optional, field, bind, unbind, @_hub)
     @_addServiceDependencyToComponent(component, req)
 
+  provideService : (description) ->
+    {component, contract, properties, preRegistration, postRegistration, preUnregistration, postUnregistration} = description
+    if not component? then throw new Exception("Cannot provided a service without a valid component")
+    if not contract? then throw new Exception("Cannot provided a service without a valid contract")
+    properties = {} unless properties?
+    ps = new HUBU.ProvidedService(component, contract, properties,
+      preRegistration, postRegistration, preUnregistration, postUnregistration, @_hub)
+    @_addProvidedServiceToComponent(component, ps)
+
 
 
   _addServiceDependencyToComponent : (comp, req) ->
+    newComponent = false
     cmpEntry = entry for entry in @_components when entry.component is comp
     if not cmpEntry?
       cmpEntry = {'component' : comp, 'serviceComponent' : new HUBU.ServiceComponent()}
       @_components.push(cmpEntry)
+      newComponent = true
     cmpEntry.serviceComponent.addRequiredService(req)
-    if @_hub.isStarted() then cmpEntry.serviceComponent.onStart()
+    if newComponent and @_hub.isStarted() then cmpEntry.serviceComponent.onStart()
+
+  _addProvidedServiceToComponent : (comp, ps) ->
+    newComponent = false
+    cmpEntry = entry for entry in @_components when entry.component is comp
+    if not cmpEntry?
+      cmpEntry = {'component' : comp, 'serviceComponent' : new HUBU.ServiceComponent()}
+      @_components.push(cmpEntry)
+      newComponent = true
+    cmpEntry.serviceComponent.addProvidedService(ps)
+    if @_hub.isStarted() and newComponent
+      cmpEntry.serviceComponent.onStart()
 
   start : ->
     # Starts all service component
