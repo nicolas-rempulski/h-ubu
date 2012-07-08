@@ -1,0 +1,69 @@
+Service-Oriented Components
+============================
+
+This page explains how to make h-ubu components `service component`, i.e. component requiring and providing services
+allowing loose-coupled dynamic bindings.
+
+Concepts
+--------
+Using service components has several benefits. With such orientation, components does interacts together only using
+_service specification_ (`contract`) making service provider subtituable. The binding is dynamic and so you can
+switch providers at runtime.
+
+However, manual development of service-oriented components is error-prone and complex. So H-UBU provides an extension
+ dealing with most of the concerns and so let you focus on the component logic only. As an example,
+ required services are injected automatically within methods or members of the component,
+ while service publication is also automated.
+
+Description
+-----------
+
+The component needs to describe itself to tell H-UBU what are the required services and provided service. This
+description is made using a API, either by an external tiers or by the component itself. In this latter case,
+we recommend implementing the description within the `configure` method.
+
+Requiring Services
+------------------
+
+To require a service and to receive the service object automatically, you need to describe a service dependency
+specifying the required contracts, the service filters, how the service object(s) is/are injected and so on.
+
+    hub.requireService({
+        component: cmp,
+        contract : contract
+        filter : function(ref) {
+            ref.getProperty("lg") === "fr";
+            }
+        field : "mysvc"
+    });
+
+This instructs h-ubu to inject the service `contract` with the property `lg` set to `fr` into the filed `mysvc` of
+the component (`cmp`). This dependency is (by default) mandatory and scalar (only one service injected).
+
+A component can directly declare the same dependency in his `configure` method:
+
+    configure : function(hub, conf) {
+        hub.requireService({
+            component: cmp,
+            contract : contract
+            filter : function(ref) {
+                ref.getProperty("lg") === "fr";
+                }
+            field : "mysvc"
+        });
+    }
+
+
+
+Publishing Services
+-------------------
+
+
+
+Dynamism
+--------
+
+
+Modifying published services
+-----------------------------
+
