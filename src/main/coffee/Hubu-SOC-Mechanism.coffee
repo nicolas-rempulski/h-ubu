@@ -194,8 +194,8 @@ SOC.ServiceRegistry = class ServiceRegistry
   _removeRegistration : (reg) ->
     cmpEntry = entry for entry in @_registrations when HUBU.UTILS.indexOf(entry.registrations, reg) isnt -1
     if not cmpEntry? then return null
-    HUBU.UTILS.removeElementFromArray(entry.registration, reg)
-    if cmpEntry.registrations.length > 0
+    HUBU.UTILS.removeElementFromArray(cmpEntry.registrations, reg)
+    if cmpEntry.registrations.length is 0
       HUBU.UTILS.removeElementFromArray(@_registrations, cmpEntry)
     return cmpEntry.component
 
@@ -344,7 +344,7 @@ SOC.ServiceRegistry = class ServiceRegistry
       else if (event.getType() is SOC.ServiceEvent.MODIFIED and oldRef?)
         # We need to send a MODIFIED_ENDMATCH event if the listener matched previously
         if @_testAgainstFilter(listener, oldRef)
-          newEvent = new SOC.ServiceEvent(SOC.ServiceEvent.MODIFIED_ENDMATCH, event.reference)
+          newEvent = new SOC.ServiceEvent(SOC.ServiceEvent.MODIFIED_ENDMATCH, event.getReference())
           @_invokeServiceListener(listener, newEvent)
   # End fireServiceEvent
 
