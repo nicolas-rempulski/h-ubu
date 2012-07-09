@@ -102,13 +102,13 @@ describe("H-UBU Service Extension Tests - Basics", function () {
         expect(refs.length).toBe(0);
 
         // Register the service
-        var reg = hub.registerService(component1, contract, {lg : "en"});
+        var reg = hub.registerService(component1, contract, {lg : "en"}, null);
         expect(reg.isRegistered()).toBe(true);
         expect(reg.getProperties()["service.contract"]).toBe(contract);
         expect(reg.getProperties()["service.publisher"]).toBe(component1);
         expect(reg.getProperties()["lg"]).toBe("en");
 
-        var reg2 = hub.registerService(component2, contract, {lg : "fr"});
+        var reg2 = hub.registerService(component2, contract, {lg : "fr"}, null);
         expect(reg2.isRegistered()).toBe(true);
         expect(reg2.getProperties()["service.contract"]).toBe(contract);
         expect(reg2.getProperties()["service.publisher"]).toBe(component2);
@@ -190,19 +190,19 @@ describe("H-UBU Service Extension Tests - Basics", function () {
         var refs = hub.getServiceReferences(null, null);
         expect(refs.length).toBe(0);
 
-        var reg = hub.registerService(component1, contract, {lg : "en"});
+        var reg = hub.registerService(component1, contract, {lg : "en"}, null);
         expect(reg.isRegistered()).toBe(true);
         expect(reg.getProperties()["service.contract"]).toBe(contract);
         expect(reg.getProperties()["service.publisher"]).toBe(component1);
         expect(reg.getProperties()["lg"]).toBe("en");
 
-        var reg2 = hub.registerService(component2, contract, {lg : "fr"});
+        var reg2 = hub.registerService(component2, contract, {lg : "fr"}, null);
         expect(reg2.isRegistered()).toBe(true);
         expect(reg2.getProperties()["service.contract"]).toBe(contract);
         expect(reg2.getProperties()["service.publisher"]).toBe(component2);
         expect(reg2.getProperties()["lg"]).toBe("fr");
 
-        var reg3 = hub.registerService(component3, contract2, {lg : "en"});
+        var reg3 = hub.registerService(component3, contract2, {lg : "en"}, null);
         expect(reg3.isRegistered()).toBe(true);
 
         // All services

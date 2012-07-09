@@ -135,7 +135,7 @@ HUBU.ServiceDependency = class ServiceDependency
           when SOC.ServiceEvent.REGISTERED then self._onServiceArrival(event.getReference())
           when SOC.ServiceEvent.MODIFIED then self._onServiceModified(event.getReference())
           when SOC.ServiceEvent.UNREGISTERING then self._onServiceDeparture(event.getReference())
-          when SOC.ServiceEvent.MODIFIED_ENDMATCH then console.log("End match"); self._onServiceDeparture(event.getReference())
+          when SOC.ServiceEvent.MODIFIED_ENDMATCH then self._onServiceDeparture(event.getReference())
     }
   ### End Constructor ###
 
@@ -278,9 +278,8 @@ HUBU.ProvidedService = class ProvidedService
       if not @_preUnregistration? then throw new Exception("preUnregistration method " + preUnregistration + " not found on component")
 
     if postUnregistration?
-      @_postUnregistration = if HUBU.UTILS.isFunction(postUnregistration) then postUnregistration else @_component[postUnregistration]
-      if not @_postUnregistration? then throw new Exception("postUnregistration method " + postUnregistration + " not found on component")
-
+      @_postUnRegistration = if HUBU.UTILS.isFunction(postUnregistration) then postUnregistration else @_component[postUnregistration]
+      if not @_postUnRegistration? then throw new Exception("postUnregistration method " + postUnregistration + " not found on component")
 
   setServiceComponent : (sc) -> @_serviceComponent = sc
 
@@ -290,19 +289,20 @@ HUBU.ProvidedService = class ProvidedService
 
     if (@_preRegistration?) then @_preRegistration.apply(@_component, [])
     proxy = HUBU.UTILS.createProxyForContract(@_contract, @_component)
-    #TODO Set the service object.
-    @_registration = @_hub.registerService(@_component, @_contract, @_properties)
-    if (@_postRegistration?) then @_preRegistration.apply(@_component, [@_registration])
+    @_registration = @_hub.registerService(@_component, @_contract, @_properties, proxy)
+    if (@_postRegistration?) then @_postRegistration.apply(@_component, [@_registration])
 
     return true
 
   _unregister : ->
     if not @_registration? then return false
 
-    if (@_preUnRegistration) then @_preUnregistration.apply(@_component, [@_registration])
+    if @_preUnregistration? then @_preUnregistration.apply(@_component, [@_registration])
+
     @_hub.unregisterService(@_registration)
     @_registration = null
-    if (@_postUnRegistration) then @_postUnRegistration.apply(@_component, [])
+
+    if @_postUnRegistration? then @_postUnRegistration.apply(@_component, [])
 
   onStart : ->
     # Do nothing.
@@ -334,7 +334,7 @@ HUBU.ServiceOrientation = class ServiceOrientation
 
     # Populate the hub object
     @_hub.getServiceRegistry = -> return registry
-    @_hub.registerService = (component, contract, properties) -> return registry.registerService(component, contract, properties)
+    @_hub.registerService = (component, contract, properties, svcObject) -> return registry.registerService(component, contract, properties, svcObject)
     @_hub.unregisterService = (registration) -> return registry.unregisterService(registration)
     @_hub.getServiceReferences = (contract, filter) -> return registry.getServiceReferences(contract, filter)
     @_hub.getServiceReference = (contract, filter) ->
@@ -386,9 +386,10 @@ HUBU.ServiceOrientation = class ServiceOrientation
     {component, contract, properties, preRegistration, postRegistration, preUnregistration, postUnregistration} = description
     if not component? then throw new Exception("Cannot provided a service without a valid component")
     if not contract? then throw new Exception("Cannot provided a service without a valid contract")
+
+
     properties = {} unless properties?
-    ps = new HUBU.ProvidedService(component, contract, properties,
-      preRegistration, postRegistration, preUnregistration, postUnregistration, @_hub)
+    ps = new HUBU.ProvidedService(component, contract, properties, preRegistration, postRegistration, preUnregistration, postUnregistration, @_hub)
     @_addProvidedServiceToComponent(component, ps)
 
 

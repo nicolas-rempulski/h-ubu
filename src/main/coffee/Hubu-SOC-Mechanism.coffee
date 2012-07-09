@@ -45,15 +45,19 @@ SOC.ServiceRegistration = class ServiceRegistration
   # The service registry in which the service mush be registered.
   _registry : null
 
+  # Service object or function to create the service object.
+  _svcObject : null
+
 
   @getAndIncId : ->
     id = SOC.ServiceRegistration._nextId
     SOC.ServiceRegistration._nextId = SOC.ServiceRegistration._nextId + 1
     return id
 
-  constructor : (contract, component, properties, hub, registry) ->
+  constructor : (contract, component, svcObject, properties, hub, registry) ->
     @_id = -1 # Be don't have an id yet
     if not component? then throw new Exception "Cannot create a service registration without a valid component"
+    if not svcObject? then throw new Exception "Cannot create a service registration without a valid service object"
     if not contract? then throw new Exception "Cannot create a service registration without a contract"
     if not hub? then throw new Exception "Cannot create a service registration without the hub"
     if not registry? then throw new Exception "Cannot create a service registration without the registry"
@@ -63,6 +67,7 @@ SOC.ServiceRegistration = class ServiceRegistration
     @_contract = contract
     @_properties = properties ? {}
     @_registry = registry
+    @_svcObject = svcObject
 
     # Extends properties
     @_properties["service.contract"] = @_contract
@@ -95,6 +100,10 @@ SOC.ServiceRegistration = class ServiceRegistration
 
   getProperties : -> return @_properties
 
+  getService : (component) ->
+    return @_svcObject unless HUBU.UTILS.isFunction(@_svcObject)
+    return @_svcObject.apply(@_component, [component])
+
   setProperties : (properties) ->
     old = null
     if @isRegistered()
@@ -102,7 +111,7 @@ SOC.ServiceRegistration = class ServiceRegistration
       # Clone the properties
       props = HUBU.UTILS.clone(@_properties, ["service.contract", "service.publisher"])
       # To recreate the service reference, we create a fake service registration copying the current one.
-      old = new SOC.ServiceRegistration(@_contract, @_component, props, @_hub, @_registry)
+      old = new SOC.ServiceRegistration(@_contract, @_component,  @_svcObject, props, @_hub, @_registry)
       old._id = @_id
       old._reference = new SOC.ServiceReference(old)
 
@@ -204,14 +213,18 @@ SOC.ServiceRegistry = class ServiceRegistry
   # Registers a service
   # @return the service registration
   ###
-  registerService: (component, contract, properties) ->
+  registerService: (component, contract, properties, svcObject) ->
     if not contract? then throw new Exception "Cannot register a service without a proper contract"
     if not component? then throw new Exception "Cannot register a service without a valid component"
-    if not HUBU.UTILS.isObjectConformToContract(component, contract)
-      throw new Exception("Cannot register service - the component does not implement the contract")
-        .add("contract", contract).add("component", component)
 
-    reg = new ServiceRegistration(contract, component, properties, @_hub, @)
+    svcObject = svcObject ? component
+    if not HUBU.UTILS.isFunction(svcObject) and not HUBU.UTILS.isObjectConformToContract(svcObject, contract)
+      throw new Exception("Cannot register service - the service object does not implement the contract")
+          .add("contract", contract).add("component", component)
+
+    svcObject = svcObject ? component
+
+    reg = new ServiceRegistration(contract, component, svcObject, properties, @_hub, @)
 
     # We add the registration to the map
     @_addRegistration(component, reg)
@@ -299,7 +312,7 @@ SOC.ServiceRegistry = class ServiceRegistry
       HUBU.logger.warn("Cannot retrieve service for " + ref + " - the reference is invalid")
       return null
 
-    return ref._registration._component
+    return ref._registration.getService(component)
 
   ungetService : (component, ref) ->
     # nothing to do yet.
