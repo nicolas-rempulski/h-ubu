@@ -32,7 +32,7 @@ HUBU.Eventing = class Eventing
     # * `registerListener(component, conf)` where `conf` is an object containing `match` and `callback` specifying
     # respectively the event matching method and the reception callback.
     #
-    # @param {DE_AKQUINET.AbstractComponent} component : the component registering the listener
+    # @param {HUBU.AbstractComponent} component : the component registering the listener
     # @param {Function} match : the method called to check if the event matches. This method must returns true or false.
     # @param {Function} callback : the callback method to invoke when a matching event is sent
     # @return the hub
@@ -57,7 +57,7 @@ HUBU.Eventing = class Eventing
     # If `callback` is defined, only the listener matching component and callback will be unregistered. Otherwise all
     # listeners of the component will be unregistered.
     # If `component` is `null`, this methods does nothing.
-    # @param {DE_AKQUINET.AbstractComponent} component the component
+    # @param {HUBU.AbstractComponent} component the component
     # @param {Function} callback the callback function (optional)
     # @return the current hub
     ###
@@ -67,22 +67,22 @@ HUBU.Eventing = class Eventing
     ###
     # Sends an event inside the hub. If component or event is null, the method does nothing. If not, the event processed
     # and sent to all matching listeners.
-    # @param {DE_AKQUINET.AbstractComponent} component the component sending the event
+    # @param {HUBU.AbstractComponent} component the component sending the event
     # @param {Object} event the event
     # @return true if the event was delivered to at least one component, false otherwise
-    # @methodOf DE_AKQUINET.hubu
+    # @methodOf HUBU.hubu
     ###
     @_hub.sendEvent = (component, event) ->
       return myExtension.sendEvent(component, event)
 
     ###
     # Subscribes to a specific topic.
-    # @param {DE_AKQUINET.AbstractComponent} component : the component registering the listener
+    # @param {HUBU.AbstractComponent} component : the component registering the listener
     # @param {String} topic : the topic (Regexp)
     # @param {Function} callback : the callback method to invoke when a matching event is sent
     # @param {Function} filter : optional method to filter received events.
     # @return the current hub
-    # @methodOf DE_AKQUINET.hubu
+    # @methodOf HUBU.hubu
     ###
     @_hub.subscribe = (component, topic, callback, filter) ->
       myExtension.subscribe(component, topic, callback, filter); return this
@@ -91,7 +91,7 @@ HUBU.Eventing = class Eventing
     # Unsubscribes the subscriber.
     # @param {Object} component the component
     # @param {Function} callback the registered callback
-    # @methodOf DE_AKQUINET.hubu
+    # @methodOf HUBU.hubu
     # @return the current hub
     ###
     @_hub.unsubscribe = (component, callback) ->
@@ -100,11 +100,11 @@ HUBU.Eventing = class Eventing
     ###
     # Publishes an event to a specific topic. If component, topic or event is null, the method does nothing. If not,
     # the event is processed and sent to all matching listeners.
-    # @param {DE_AKQUINET.AbstractComponent} component the component sending the event
+    # @param {HUBU.AbstractComponent} component the component sending the event
     # @param {String} topic the topic
     # @param {Object} event the event
     # @return true if the event was delivered to at least one component, false otherwise
-    # @methodOf DE_AKQUINET.hubu
+    # @methodOf HUBU.hubu
     ###
     @_hub.publish = (component, callback, event) ->
       myExtension.publish(component, callback, event); return this

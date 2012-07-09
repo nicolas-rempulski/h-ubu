@@ -5,8 +5,8 @@
          xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
     <bannerLeft>
         <name>H-Ubu - simplify JavaScript Architecture</name>
-        <src>http://html5-slides-template.googlecode.com/git/images/akquinet-logo-small.png</src>
-        <href>http://www.akquinet.de/en</href>
+        <src>http://www.arrow-group.eu/templates/default/medias/arrowgroup.gif</src>
+        <href>http://arrow-group.eu</href>
     </bannerLeft>
 
     <skin>
@@ -29,6 +29,11 @@
             <item name="Quickstart" href="quickstart.html"/>
             <item name="User Guide" href="userguide.html"/>
             <item name="Contract and Conformity" href="contract.html"/>
+        </menu>
+
+        <menu name="service-orientation">
+            <item name="Service-Orientation" href="service-orientation.html"/>
+            <item name="Service-Components" href="service-component.html"/>
         </menu>
 
         <menu ref="reports"/>

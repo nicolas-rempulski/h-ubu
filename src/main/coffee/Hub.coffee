@@ -74,7 +74,7 @@ HUBU.Hub = class Hub
   # This method allows to configure the component.Once successfully registered, the hub call the 'configure' method on
   # the component passing a reference on the hub and the configuration to the component.
   # If component is `null`, the method throws an exception.
-  # @param {DE_AKQUINET.AbstractComponent} component the component to register
+  # @param {HUBU.AbstractComponent} component the component to register
   # @param {Object} configuration the component configuration (optional).
   # If the configuration contain the 'component_name' key, the component takes this name.
   # @return the current hub
@@ -140,7 +140,7 @@ HUBU.Hub = class Hub
   ###
   # Unregisters the given component.
   # If the component is not plugged to the hub, this method does nothing.
-  # @param {Object} component either the component object ({DE_AKQUINET.AbstractComponent})
+  # @param {Object} component either the component object ({HUBU.AbstractComponent})
   # or the component name {String}
   # @return the current hub.
   ###

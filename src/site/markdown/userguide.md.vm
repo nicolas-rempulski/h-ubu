@@ -55,7 +55,7 @@ So, when an event is sent, the match methods from all listeners are called to ch
 
     function match2(event) {
         // Accept only event matching the contract
-        return DE_AKQUINET_GOMOBILE.utils.isObjectConformToContract(contract);
+        return HUBU.UTILS.isObjectConformToContract(contract);
     }
 
     function match3(event) {

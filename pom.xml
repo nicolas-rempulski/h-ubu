@@ -15,8 +15,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>de.akquinet.hubu</groupId>
-    <artifactId>hubu</artifactId>
+    <groupId>org.nano</groupId>
+    <artifactId>h-ubu</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>H-Ubu</name>
     <packaging>pom</packaging>
@@ -28,12 +28,12 @@
         <version>5</version>
     </parent>
 
-    <url>http://akquinet.github.com/hubu</url>
+    <url>https://github.com/nano-project/h-ubu</url>
     <inceptionYear>2010</inceptionYear>
 
     <organization>
-        <name>akquinet A.G.</name>
-        <url>http://www.akquinet.de/en</url>
+        <name>Arrow-Group</name>
+        <url>http://www.arrow-group.eu/</url>
     </organization>
 
     <properties>
@@ -348,9 +348,9 @@
     </build>
 
     <scm>
-        <connection>scm:git:git@github.com:akquinet/hubu.git</connection>
-        <url>git@github.com:akquinet/hubu.git</url>
-        <developerConnection>scm:git:git@github.com:akquinet/hubu.git</developerConnection>
+        <connection>scm:git:git@github.com:nano-project/h-ubu.git</connection>
+        <url>https://github.com/nano-project/h-ubu</url>
+        <developerConnection>scm:git:git@github.com:nano-project/h-ubu.git</developerConnection>
     </scm>
 
     <profiles>

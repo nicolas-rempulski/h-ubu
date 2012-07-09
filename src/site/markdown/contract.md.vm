@@ -66,7 +66,7 @@ Abstract Component Contract
      * Returned objects do not intend to be used, they are just mock / empty instances.
      * @constructor
      */
-    DE_AKQUINET.AbstractComponent = function() {
+    HUBU.AbstractComponent = function() {
 
         /**
          * Gets the component name.
