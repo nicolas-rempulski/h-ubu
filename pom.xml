@@ -228,7 +228,6 @@
                                         <include>${js.target}/Hubu-Binding-Extension.js</include>
                                         <include>${js.target}/Hubu-SOC-Mechanism.js</include>
                                         <include>${js.target}/Hubu-SOC-Extension.js</include>
-                                        <include>${js.target}/Hubu-SOC-ServiceDependencies.js</include>
 
                                         <include>${js.target}/Hub.js</include>
                                     </includes>

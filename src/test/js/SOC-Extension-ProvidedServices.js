@@ -172,7 +172,6 @@ describe("H-UBU Service Extension Tests - Provided Services", function () {
         expect(svc.postRegistration).toBeUndefined();
 
         // Check callbacks
-        console.dir(component);
         expect(component.preRegCount).toBe(1);
         expect(component.postRegCount).toBe(1);
         expect(component.postRegRef === null).toBe(false);

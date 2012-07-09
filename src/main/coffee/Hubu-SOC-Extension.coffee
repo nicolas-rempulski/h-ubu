@@ -351,11 +351,13 @@ HUBU.ServiceOrientation = class ServiceOrientation
     @_hub.registerServiceListener = (listenerConfiguration) -> return registry.registerServiceListener(listenerConfiguration)
     @_hub.unregisterServiceListener = (listenerConfiguration) -> return registry.unregisterServiceListener(listenerConfiguration)
 
-
     # Service-oriented component model methods
-    @_hub.requireService = (description) -> self.requireService(description); return this;
-    @_hub.provideService = (description) -> self.provideService(description); return this;
-
+    @_hub.requireService = (description) ->
+      self.requireService(description);
+      return this;
+    @_hub.provideService = (description) ->
+      self.provideService(description);
+      return this;
 
   ### End of constructor  ###
 
