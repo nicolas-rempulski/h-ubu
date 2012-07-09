@@ -57,17 +57,19 @@ HUBU.ServiceComponent = class ServiceComponent
       isValid = isValid  and req.isValid()
     oldState = @_state
     @_state = if isValid then ServiceComponent.VALID else ServiceComponent.INVALID
-    if (@_state > oldState)
+    if (@_state > oldState  && @_state is ServiceComponent.VALID)
       @_validate()
-    else if (@_state < oldState)
+    else if (@_state < oldState  && @_state is ServiceComponent.INVALID)
       @_invalidate()
     return @_state
 
   _validate : ->
+    HUBU.logger.debug("Validate instance " + @_component?.getComponentName())
     for prov in @_providedServices
       prov.onValidation()
 
   _invalidate : ->
+    HUBU.logger.debug("Invalidate instance")
     for prov in @_providedServices
       prov.onInvalidation()
 
@@ -80,7 +82,7 @@ HUBU.ServiceComponent = class ServiceComponent
   onStop : ->
     prov.onStop() for prov in @_providedServices
     req.onStop() for req in @_requiredServices
-    m_sate = ServiceComponent.STOPPED
+    @_state = ServiceComponent.STOPPED
 
 
 HUBU.ServiceDependency = class ServiceDependency
@@ -175,10 +177,11 @@ HUBU.ServiceDependency = class ServiceDependency
      if @_optional or @_refs.length > 0
         @_state = HUBU.ServiceDependency.RESOLVED
      else
-       HUBU.ServiceDependency.UNRESOLVED
-     @_serviceComponent.computeState if oldState isnt @_state
+       @_state = HUBU.ServiceDependency.UNRESOLVED
+     @_serviceComponent.computeState() if oldState isnt @_state
 
   _onServiceArrival : (ref) ->
+    HUBU.logger.debug("Service arrival detected for " + @_component.getComponentName());
     # Do we already have this reference
     refEntry = entry for entry in @_refs when entry.reference is ref
     if not refEntry?
@@ -195,6 +198,7 @@ HUBU.ServiceDependency = class ServiceDependency
         @_inject(refEntry) if @_refs.length is 1
 
   _onServiceDeparture : (ref) ->
+    HUBU.logger.debug("Service departure detected for " + @_component.getComponentName());
     # Do we already have this reference
     refEntry = entry for entry in @_refs when entry.reference is ref
     if refEntry?
@@ -290,6 +294,7 @@ HUBU.ProvidedService = class ProvidedService
     if (@_preRegistration?) then @_preRegistration.apply(@_component, [])
     proxy = HUBU.UTILS.createProxyForContract(@_contract, @_component)
     @_registration = @_hub.registerService(@_component, @_contract, @_properties, proxy)
+    HUBU.logger.debug("Service from " + @_component.getComponentName() + " registered");
     if (@_postRegistration?) then @_postRegistration.apply(@_component, [@_registration])
 
     return true
@@ -348,8 +353,8 @@ HUBU.ServiceOrientation = class ServiceOrientation
 
 
     # Service-oriented component model methods
-    @_hub.requireService = (description) -> return self.requireService(description)
-    @_hub.provideService = (description) -> return self.provideService(description)
+    @_hub.requireService = (description) -> self.requireService(description); return this;
+    @_hub.provideService = (description) -> self.provideService(description); return this;
 
 
   ### End of constructor  ###
@@ -398,7 +403,7 @@ HUBU.ServiceOrientation = class ServiceOrientation
     newComponent = false
     cmpEntry = entry for entry in @_components when entry.component is comp
     if not cmpEntry?
-      cmpEntry = {'component' : comp, 'serviceComponent' : new HUBU.ServiceComponent()}
+      cmpEntry = {'component' : comp, 'serviceComponent' : new HUBU.ServiceComponent(comp)}
       @_components.push(cmpEntry)
       newComponent = true
     cmpEntry.serviceComponent.addRequiredService(req)
@@ -408,7 +413,7 @@ HUBU.ServiceOrientation = class ServiceOrientation
     newComponent = false
     cmpEntry = entry for entry in @_components when entry.component is comp
     if not cmpEntry?
-      cmpEntry = {'component' : comp, 'serviceComponent' : new HUBU.ServiceComponent()}
+      cmpEntry = {'component' : comp, 'serviceComponent' : new HUBU.ServiceComponent(comp)}
       @_components.push(cmpEntry)
       newComponent = true
     cmpEntry.serviceComponent.addProvidedService(ps)
