@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Project Build Plugins</title>
+    <title></title>
     <link rel="stylesheet" href="./css/apache-maven-fluido.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -89,8 +89,8 @@
                           <a href="requiring-services.html" title="Requiring Services">Requiring Services</a>
             </li>
                   <li class="none">
-                          <a href="direct-injection.html" title="Direct Injection">Direct Injection</a>
-            </li>
+            <strong>Direct Injection</strong>
+          </li>
                   <li class="none">
                           <a href="receiving-and-sending-events.html" title="Receiving and Sending Events">Receiving and Sending Events</a>
             </li>
@@ -112,47 +112,9 @@
           </ul>
                         <h3>Project Documentation</h3>
                   <ul>
-                                                                                                                                                                                                                                                                                    <li class="expanded">
+                                                                                                                                                                                                                                                                          <li class="collapsed">
                           <a href="project-info.html" title="Project Information">Project Information</a>
-                    <ul>
-                      <li class="none">
-                          <a href="distribution-management.html" title="Distribution Management">Distribution Management</a>
-            </li>
-                      <li class="none">
-                          <a href="index.html" title="About">About</a>
-            </li>
-                      <li class="none">
-                          <a href="dependencies.html" title="Dependencies">Dependencies</a>
-            </li>
-                      <li class="none">
-                          <a href="issue-tracking.html" title="Issue Tracking">Issue Tracking</a>
-            </li>
-                      <li class="none">
-            <strong>Project Plugins</strong>
-          </li>
-                      <li class="none">
-                          <a href="integration.html" title="Continuous Integration">Continuous Integration</a>
-            </li>
-                      <li class="none">
-                          <a href="license.html" title="Project License">Project License</a>
-            </li>
-                      <li class="none">
-                          <a href="mail-lists.html" title="Mailing Lists">Mailing Lists</a>
-            </li>
-                      <li class="none">
-                          <a href="team-list.html" title="Project Team">Project Team</a>
-            </li>
-                      <li class="none">
-                          <a href="source-repository.html" title="Source Repository">Source Repository</a>
-            </li>
-                      <li class="none">
-                          <a href="plugin-management.html" title="Plugin Management">Plugin Management</a>
-            </li>
-                      <li class="none">
-                          <a href="project-summary.html" title="Project Summary">Project Summary</a>
-            </li>
-              </ul>
-        </li>
+                  </li>
                                                                                       <li class="collapsed">
                           <a href="project-reports.html" title="Project Reports">Project Reports</a>
                   </li>
@@ -187,7 +149,55 @@
         
         <div id="bodyColumn"  class="span9" >
                                   
-            <div class="section"><h2>Project Build Plugins<a name="Project_Build_Plugins"></a></h2><a name="Project_Build_Plugins"></a><table border="0" class="table table-striped"><tr class="a"><th>GroupId</th><th>ArtifactId</th><th>Version</th></tr><tr class="b"><td>com.github.github</td><td><a class="externalLink" href="https://github.com/github/maven-plugins">site-maven-plugin</a></td><td>0.5</td></tr><tr class="a"><td>com.github.searls</td><td><a class="externalLink" href="https://github.com/searls/jasmine-maven-plugin">jasmine-maven-plugin</a></td><td>1.1.0</td></tr><tr class="b"><td>com.voltvoodoo</td><td><a class="externalLink" href="http://github.com/jakewins/brew">brew</a></td><td>0.2.10</td></tr><tr class="a"><td>net.alchim31.maven</td><td><a class="externalLink" href="http://github.com/davidB/yuicompressor-maven-plugin">yuicompressor-maven-plugin</a></td><td>1.3.0</td></tr><tr class="b"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-clean-plugin/">maven-clean-plugin</a></td><td>2.4.1</td></tr><tr class="a"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-deploy-plugin/">maven-deploy-plugin</a></td><td>2.7</td></tr><tr class="b"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-enforcer-plugin/">maven-enforcer-plugin</a></td><td>1.0-beta-1</td></tr><tr class="a"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-install-plugin/">maven-install-plugin</a></td><td>2.3.1</td></tr><tr class="b"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-release-plugin/">maven-release-plugin</a></td><td>2.0-beta-9</td></tr><tr class="a"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-resources-plugin/">maven-resources-plugin</a></td><td>2.5</td></tr><tr class="b"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-site-plugin/">maven-site-plugin</a></td><td>3.0</td></tr><tr class="a"><td>org.codehaus.mojo</td><td><a class="externalLink" href="http://mojo.codehaus.org/build-helper-maven-plugin">build-helper-maven-plugin</a></td><td>1.7</td></tr></table></div><div class="section"><h2>Project Report Plugins<a name="Project_Report_Plugins"></a></h2><a name="Project_Report_Plugins"></a><p>There are no plugins reports defined in the Reporting part of this project.</p></div>
+            <h1>Direct injection</h1>
+
+<p>Even if we recommend using services, sometimes you just need a more static assembly. This is possible with direct injection. With this feature you describe which component is injected within another one. So a component receive references to other components. All components must already be plugged into the hub. If not, the binding is rejected. </p>
+
+<p>Bindings are declared using the <code>hub.bind(binding)</code> method. The binding parameter is an object describing the binding. This object must contain:</p>
+
+<ul>
+<li><code>component</code> : the name or the object reference of the component to be injected</li>
+<li><code>to</code> : the name or the object reference of the component receiving the component</li>
+<li><code>into</code> : the injection mechanism. it can be either a function pointer (called with the component as parameter),
+or a String. In this latter case, to.into is injected. If to.into is a function, this function is called; if it's an object, it is just injected (assigned).</li>
+</ul>
+
+<p>Moreover, it is strongly recommended to also set:</p>
+
+<ul>
+<li>contract : the contract followed by the binding. The component must conform to this contract. This allow to reduce the coupling and reduce the visibility issue.</li>
+</ul>
+
+<p>If the contract is specified, h-ubu injects a <strong>proxy</strong>. This ensures that it uses the contract only. This behavior can be disabled by adding : <code>proxy:false</code> to the binding parameter. Then all the public members of the component are accessible. This is also the case when the contract is not defined.</p>
+
+<p>The following snippet declares a binding between two components without contract:</p>
+
+<pre><code>hub
+            .registerComponent(source)
+            .registerComponent(dest)
+            .bind({
+                component: source,
+                to: dest,
+                into: dest.bind
+            })
+            .start();
+</code></pre>
+
+<p>While the next one, specifies the interaciton contract:</p>
+
+<pre><code>hub
+            .registerComponent(source)
+            .registerComponent(dest)
+            .bind({
+                component: 'source',
+                to: 'destination',
+                into: dest.bind,
+                contract: contract,
+                proxy : true // Not required here.
+            })
+            .start();
+</code></pre>
+
                   </div>
             </div>
       

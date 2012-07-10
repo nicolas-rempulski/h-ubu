@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Project Build Plugins</title>
+    <title></title>
     <link rel="stylesheet" href="./css/apache-maven-fluido.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -86,8 +86,8 @@
                           <a href="providing-services.html" title="Providing Services">Providing Services</a>
             </li>
                   <li class="none">
-                          <a href="requiring-services.html" title="Requiring Services">Requiring Services</a>
-            </li>
+            <strong>Requiring Services</strong>
+          </li>
                   <li class="none">
                           <a href="direct-injection.html" title="Direct Injection">Direct Injection</a>
             </li>
@@ -112,47 +112,9 @@
           </ul>
                         <h3>Project Documentation</h3>
                   <ul>
-                                                                                                                                                                                                                                                                                    <li class="expanded">
+                                                                                                                                                                                                                                                                          <li class="collapsed">
                           <a href="project-info.html" title="Project Information">Project Information</a>
-                    <ul>
-                      <li class="none">
-                          <a href="distribution-management.html" title="Distribution Management">Distribution Management</a>
-            </li>
-                      <li class="none">
-                          <a href="index.html" title="About">About</a>
-            </li>
-                      <li class="none">
-                          <a href="dependencies.html" title="Dependencies">Dependencies</a>
-            </li>
-                      <li class="none">
-                          <a href="issue-tracking.html" title="Issue Tracking">Issue Tracking</a>
-            </li>
-                      <li class="none">
-            <strong>Project Plugins</strong>
-          </li>
-                      <li class="none">
-                          <a href="integration.html" title="Continuous Integration">Continuous Integration</a>
-            </li>
-                      <li class="none">
-                          <a href="license.html" title="Project License">Project License</a>
-            </li>
-                      <li class="none">
-                          <a href="mail-lists.html" title="Mailing Lists">Mailing Lists</a>
-            </li>
-                      <li class="none">
-                          <a href="team-list.html" title="Project Team">Project Team</a>
-            </li>
-                      <li class="none">
-                          <a href="source-repository.html" title="Source Repository">Source Repository</a>
-            </li>
-                      <li class="none">
-                          <a href="plugin-management.html" title="Plugin Management">Plugin Management</a>
-            </li>
-                      <li class="none">
-                          <a href="project-summary.html" title="Project Summary">Project Summary</a>
-            </li>
-              </ul>
-        </li>
+                  </li>
                                                                                       <li class="collapsed">
                           <a href="project-reports.html" title="Project Reports">Project Reports</a>
                   </li>
@@ -187,7 +149,153 @@
         
         <div id="bodyColumn"  class="span9" >
                                   
-            <div class="section"><h2>Project Build Plugins<a name="Project_Build_Plugins"></a></h2><a name="Project_Build_Plugins"></a><table border="0" class="table table-striped"><tr class="a"><th>GroupId</th><th>ArtifactId</th><th>Version</th></tr><tr class="b"><td>com.github.github</td><td><a class="externalLink" href="https://github.com/github/maven-plugins">site-maven-plugin</a></td><td>0.5</td></tr><tr class="a"><td>com.github.searls</td><td><a class="externalLink" href="https://github.com/searls/jasmine-maven-plugin">jasmine-maven-plugin</a></td><td>1.1.0</td></tr><tr class="b"><td>com.voltvoodoo</td><td><a class="externalLink" href="http://github.com/jakewins/brew">brew</a></td><td>0.2.10</td></tr><tr class="a"><td>net.alchim31.maven</td><td><a class="externalLink" href="http://github.com/davidB/yuicompressor-maven-plugin">yuicompressor-maven-plugin</a></td><td>1.3.0</td></tr><tr class="b"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-clean-plugin/">maven-clean-plugin</a></td><td>2.4.1</td></tr><tr class="a"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-deploy-plugin/">maven-deploy-plugin</a></td><td>2.7</td></tr><tr class="b"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-enforcer-plugin/">maven-enforcer-plugin</a></td><td>1.0-beta-1</td></tr><tr class="a"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-install-plugin/">maven-install-plugin</a></td><td>2.3.1</td></tr><tr class="b"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-release-plugin/">maven-release-plugin</a></td><td>2.0-beta-9</td></tr><tr class="a"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-resources-plugin/">maven-resources-plugin</a></td><td>2.5</td></tr><tr class="b"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-site-plugin/">maven-site-plugin</a></td><td>3.0</td></tr><tr class="a"><td>org.codehaus.mojo</td><td><a class="externalLink" href="http://mojo.codehaus.org/build-helper-maven-plugin">build-helper-maven-plugin</a></td><td>1.7</td></tr></table></div><div class="section"><h2>Project Report Plugins<a name="Project_Report_Plugins"></a></h2><a name="Project_Report_Plugins"></a><p>There are no plugins reports defined in the Reporting part of this project.</p></div>
+            <h1>Service Dependencies</h1>
+
+<p>Required services are modelized as service dependencies. Each service dependencies target a specific <em>contract</em> and can be:</p>
+
+<ul>
+<li>mandatory / optional : mandatory dependencies impacts the published services</li>
+<li>scalar / aggregate : aggregate dependencies are bound to all matching providers. Scalar ones are bound to only one.</li>
+<li>filtered : filtered dependencies select the providers.</li>
+</ul>
+
+<p>Service Dependencies are injected either within fields or using <em>bind</em> / <em>unbind</em> methods. </p>
+
+<h1>Requiring Services</h1>
+
+<p>To require a service and to receive the service object automatically, you need to describe a service dependency
+specifying the required contract, the service filter, how the service object(s) is/are injected and so on.</p>
+
+<pre><code>hub.requireService({
+    component: cmp,
+    contract : contract,
+    filter : function(ref) {
+        ref.getProperty("lg") === "fr";
+    },
+    field : "mysvc"
+});
+</code></pre>
+
+<p>This instructs h-ubu to inject the service <code>contract</code> with the property <code>lg</code> set to <code>fr</code> into the field <code>mysvc</code> of
+the component (<code>cmp</code>). This dependency is (by default) mandatory and scalar (only one service injected).</p>
+
+<p>A component can directly declare the same dependency in its <code>configure</code> method:</p>
+
+<pre><code>configure : function(hub, conf) {
+    hub.requireService({
+        component: this,
+        contract : contract,
+        filter : function(ref) {
+            ref.getProperty("lg") === "fr";
+         },
+        field : "mysvc"
+    });
+}
+</code></pre>
+
+<p>Dependencies can be:</p>
+
+<ul>
+<li><em>scalar</em> or <em>aggregate</em> : Aggregate dependencies are bound to all matching services.</li>
+<li><em>mandatory</em> or <em>optional</em>: Once unresolved, mandatory dependencies instructs h-ubu to unregister all the published services provided by the same instance until the dependency is resolved again.</li>
+</ul>
+
+<h1>Field Injection</h1>
+
+<p>Services are automatically injected by h-ubu. It can be injected within field and bind/unbind method. Field injection is really easy to use. It just requires the service dependencies to tell in which field the service will be injection:</p>
+
+<pre><code>var component = {
+    svc : null,  // The injected service.
+    configure: function(hub) {
+        hub.requireService({
+            component: this,
+            contract : myContract,
+            field : "svc"
+        });
+    },
+    // ...
+};
+</code></pre>
+
+<p>The <code>svc</code> field receives the value automatically.</p>
+
+<p>For aggregate dependencies, an array is used:</p>
+
+<pre><code>var component = {
+    svc : [],  // The injected services.
+    configure: function(hub) {
+        hub.requireService({
+            component: this,
+            contract : myContract,
+            field : "svc",
+            aggregate : true
+        });
+    },
+    // ...
+};
+</code></pre>
+
+<p>The array is atumatically populated.    </p>
+
+<h1>Bind / Unbind Injection</h1>
+
+<p>The second injection mechanism use a couple of method : a method injecting the new service (<em>bind</em>), a method notifying the departure (<em>_unbind</em>). This injection mechanism is used when you want to deal with the dynamism yourself.</p>
+
+<p>var component = {
+        svc : null,
+        configure: function(hub) {
+            hub.requireService({
+                component: this,
+                contract : myContract,
+                bind : this.bindMyService,
+                unbind : this.unbindMyService
+            });
+        },</p>
+
+<pre><code>    bindMyService: function(svc) {
+        this.svc = svc;
+    },
+    unbindMyService: function(svc) {
+        this.svc = null;
+    },
+
+    // ...
+};
+</code></pre>
+
+<p>The callbacks receives the service object as first parameter, and the service reference as second parameters. The service reference let you check the service properties with the <code>getProperty</code> method.</p>
+
+<p>For aggregate dependencies, the bind method will be call once per provider. </p>
+
+<h1>Using filters</h1>
+
+<p>Service depednencies can be filtered. The filter let you select the service you reallt want besed on the service properties.</p>
+
+<p>To use filters, add a <code>filter</code> method to the service dependency. This method receives the service reference to check as parameter and should return <code>true</code> if the service matches, <code>false</code> otherwise:</p>
+
+<pre><code>configure : function(hub, conf) {
+    hub.requireService({
+        component: this,
+        contract : contract,
+        filter : function(ref) {
+            ref.getProperty("lg") === "fr";
+         },
+        field : "mysvc"
+    });
+}
+</code></pre>
+
+<h1>Mandatory vs. Optional</h1>
+
+<p>Mandatory dependencies impacts the published services from the component. So, as soon as a service dependency is unresolved, the published services are unregistered. They will be registered again once all dependencies become resolved.</p>
+
+<p>Optional dependencies does not impact the published services. However, you must be carefull when using an optional service as it may not contain a value:</p>
+
+<ul>
+<li><code>null</code> for scalar dependency</li>
+<li>an empty array for aggregate dependency</li>
+</ul>
+
                   </div>
             </div>
       

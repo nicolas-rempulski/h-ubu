@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Project Build Plugins</title>
+    <title></title>
     <link rel="stylesheet" href="./css/apache-maven-fluido.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -83,8 +83,8 @@
                           <a href="creating-and-registering-components.html" title="Creating and Registering Components">Creating and Registering Components</a>
             </li>
                   <li class="none">
-                          <a href="providing-services.html" title="Providing Services">Providing Services</a>
-            </li>
+            <strong>Providing Services</strong>
+          </li>
                   <li class="none">
                           <a href="requiring-services.html" title="Requiring Services">Requiring Services</a>
             </li>
@@ -112,47 +112,9 @@
           </ul>
                         <h3>Project Documentation</h3>
                   <ul>
-                                                                                                                                                                                                                                                                                    <li class="expanded">
+                                                                                                                                                                                                                                                                          <li class="collapsed">
                           <a href="project-info.html" title="Project Information">Project Information</a>
-                    <ul>
-                      <li class="none">
-                          <a href="distribution-management.html" title="Distribution Management">Distribution Management</a>
-            </li>
-                      <li class="none">
-                          <a href="index.html" title="About">About</a>
-            </li>
-                      <li class="none">
-                          <a href="dependencies.html" title="Dependencies">Dependencies</a>
-            </li>
-                      <li class="none">
-                          <a href="issue-tracking.html" title="Issue Tracking">Issue Tracking</a>
-            </li>
-                      <li class="none">
-            <strong>Project Plugins</strong>
-          </li>
-                      <li class="none">
-                          <a href="integration.html" title="Continuous Integration">Continuous Integration</a>
-            </li>
-                      <li class="none">
-                          <a href="license.html" title="Project License">Project License</a>
-            </li>
-                      <li class="none">
-                          <a href="mail-lists.html" title="Mailing Lists">Mailing Lists</a>
-            </li>
-                      <li class="none">
-                          <a href="team-list.html" title="Project Team">Project Team</a>
-            </li>
-                      <li class="none">
-                          <a href="source-repository.html" title="Source Repository">Source Repository</a>
-            </li>
-                      <li class="none">
-                          <a href="plugin-management.html" title="Plugin Management">Plugin Management</a>
-            </li>
-                      <li class="none">
-                          <a href="project-summary.html" title="Project Summary">Project Summary</a>
-            </li>
-              </ul>
-        </li>
+                  </li>
                                                                                       <li class="collapsed">
                           <a href="project-reports.html" title="Project Reports">Project Reports</a>
                   </li>
@@ -187,7 +149,126 @@
         
         <div id="bodyColumn"  class="span9" >
                                   
-            <div class="section"><h2>Project Build Plugins<a name="Project_Build_Plugins"></a></h2><a name="Project_Build_Plugins"></a><table border="0" class="table table-striped"><tr class="a"><th>GroupId</th><th>ArtifactId</th><th>Version</th></tr><tr class="b"><td>com.github.github</td><td><a class="externalLink" href="https://github.com/github/maven-plugins">site-maven-plugin</a></td><td>0.5</td></tr><tr class="a"><td>com.github.searls</td><td><a class="externalLink" href="https://github.com/searls/jasmine-maven-plugin">jasmine-maven-plugin</a></td><td>1.1.0</td></tr><tr class="b"><td>com.voltvoodoo</td><td><a class="externalLink" href="http://github.com/jakewins/brew">brew</a></td><td>0.2.10</td></tr><tr class="a"><td>net.alchim31.maven</td><td><a class="externalLink" href="http://github.com/davidB/yuicompressor-maven-plugin">yuicompressor-maven-plugin</a></td><td>1.3.0</td></tr><tr class="b"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-clean-plugin/">maven-clean-plugin</a></td><td>2.4.1</td></tr><tr class="a"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-deploy-plugin/">maven-deploy-plugin</a></td><td>2.7</td></tr><tr class="b"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-enforcer-plugin/">maven-enforcer-plugin</a></td><td>1.0-beta-1</td></tr><tr class="a"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-install-plugin/">maven-install-plugin</a></td><td>2.3.1</td></tr><tr class="b"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-release-plugin/">maven-release-plugin</a></td><td>2.0-beta-9</td></tr><tr class="a"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-resources-plugin/">maven-resources-plugin</a></td><td>2.5</td></tr><tr class="b"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-site-plugin/">maven-site-plugin</a></td><td>3.0</td></tr><tr class="a"><td>org.codehaus.mojo</td><td><a class="externalLink" href="http://mojo.codehaus.org/build-helper-maven-plugin">build-helper-maven-plugin</a></td><td>1.7</td></tr></table></div><div class="section"><h2>Project Report Plugins<a name="Project_Report_Plugins"></a></h2><a name="Project_Report_Plugins"></a><p>There are no plugins reports defined in the Reporting part of this project.</p></div>
+            <h1>Providing Services</h1>
+
+<p>Services are functionnalities provided by a component to other components. Services promotes loose-coupling as the component consuming the service does not need to know aything about the provider. Moreover, services are dynamic, so may be registered and unregistered at anytime. Even if this may look weird, it can be really useful to modelize disruptions (connectivity, context changes...).</p>
+
+<p>Before publishing a service, the component <strong>must</strong> implement the service's contract. So, let's imagine the following contract:</p>
+
+<pre><code>var myContract = {
+    doSomething: function() {}
+};
+</code></pre>
+
+<p>The component providing this service must contains the <code>doSomething()</code> method. </p>
+
+<p>To register the service, the component just have to call <code>provideService</code> within the <code>configure</code> method:</p>
+
+<pre><code>var component = {
+    configure: function(hub, configuration) {
+        this.hub = hub;
+        this.hub.provideService({
+            component: this,
+            contract : myContract
+        });
+    }
+    // ...
+}
+</code></pre>
+
+<p>Even if the registration can happen at anytime, we recommend to do it within the <code>configure</code> method. The service will be published as soon as the hub starts.</p>
+
+<p>The  <code>provideService</code> function takes an object as parameter. This object <strong>must</strong> contains the <code>component</code> key set to the component object providing the service, and the <code>contract</code> key indicating the published contract.</p>
+
+<p>Obviously, a component can publish several services.</p>
+
+<h1>Publishing Service Properties</h1>
+
+<p> Service properties can give some information to the service consumer about the service. The component can add properties to the default service properties (<code>service.id</code>, <code>service.provider</code> and <code>service.contract</code>) . To publish other service properties, you need to add the <code>properties</code> key to the object given to the <code>provideService</code> method:</p>
+
+<pre><code>var component = {
+    configure: function(hub, configuration) {
+        this.hub = hub;
+        this.hub.provideService({
+            component: this,
+            contract : myContract,
+            properties: {
+                myProperty : "myValue"
+            }
+        });
+    }
+    // ...
+}
+</code></pre>
+
+<p>Those properties can help the service consumer to service the <code>best</code> service.</p>
+
+<h1>Post/Pre Registration and Unregistration callback</h1>
+
+<p>Your component can be notified when the service registered and unregistered. The <code>provideService</code> supports 4 callbacks:</p>
+
+<ul>
+<li><code>preRegistration</code>: method called before the registration</li>
+<li><code>postRegistration</code>: method called after the registration. It receives the <code>ServiceRegistration</code> as argument</li>
+<li><code>preUnregistration</code>: method called before unregistration. It receives the <code>ServiceRegistration</code> as argument</li>
+<li><code>postUnregistration</code>: method call after unregistration</li>
+</ul>
+
+<p>Each value can be configured using a function pointer or the name of the function (called on the component object).</p>
+
+<pre><code> var component = {
+    configure: function(hub, configuration) {
+        this.hub = hub;
+        this.hub.provideService({
+            component: this,
+            contract : myContract,
+            preRegistration: this.preRegistrationCallback,
+            postRegistration: this.postRegistrationCallback,
+            preUnregistration: this.preUnregistrationCallback,
+            postUnregistration: "postUnregistrationCallback"
+        });
+    },
+
+    preRegistrationCallback: function() { },
+    postRegistrationCallback: function(reg) { },
+    preUnregistrationCallback: function() { },
+    postUnregistrationCallback: function(reg) { },
+
+    // ...
+}
+</code></pre>
+
+<h1>Modifying service properties</h1>
+
+<p>You can modify the service properties dynamically. However, you need to retrieve the <code>ServiceRegistraiton</code> object from the <code>postRegistrationCallback</code> first. Then, just call the <code>setProperties(newProps)</code> on the service registration.</p>
+
+<p>var component = {
+        configure: function(hub, configuration) {
+            this.hub = hub;
+            this.hub.provideService({
+                component: this,
+                contract : myContract,
+                postRegistration: this.postRegistrationCallback,
+            });
+        },</p>
+
+<pre><code>    postRegistrationCallback: function(reg) {
+        this.reg = reg;
+        this.reg.setProperties({
+            myProp : "my new value"
+        }) ;
+      },
+
+    // ...
+}
+</code></pre>
+
+<h1>Published Services and Service Dependencies</h1>
+
+<p> The service dependencies of a component can impact the service publication. Indeed, as soon as a service dependencies is not resolved, the service is unpublished, and won't be published until all service dependencies are resolved again.</p>
+
+<p> To avoid this behavior, set the service dependency as <em>optional</em>.</p>
+
                   </div>
             </div>
       
