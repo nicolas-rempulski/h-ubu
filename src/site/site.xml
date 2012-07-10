@@ -43,7 +43,6 @@
 			<item name="Requiring Services" href="requiring-services.html"/>
 			<item name="Direct Injection" href="direct-injection.html"/>
 			<item name="Receiving and Sending Events" href="receiving-and-sending-events.html"/>
-			<item name="Configuring Components" href="configuring-components.html"/>
 			<item name="Testing Components" href="testing-components.html"/>
 		</menu>		
 		
@@ -52,10 +51,6 @@
             <item name="Service-Orientation" href="service-orientation.html"/>
 			<item name="Developer Guide" href="developper-guide.html"/>
 		</menu>	
-
-        <menu name="service-orientation">
-            <item name="Service-Components" href="service-component.html"/>
-        </menu>
 
         <menu ref="reports"/>
     </body>
