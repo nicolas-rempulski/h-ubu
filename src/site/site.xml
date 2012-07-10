@@ -18,21 +18,42 @@
         <fluidoSkin>
             <sideBarEnabled>true</sideBarEnabled>
             <googlePlusOne />
+			<googleSearch>
+			        <sitesearch/>
+            </googleSearch>
+
+			<gitHub>
+		        <projectId>nano-project/h-ubu</projectId>
+		        <ribbonOrientation>right</ribbonOrientation>
+		        <ribbonColor>black</ribbonColor>
+            </gitHub>
         </fluidoSkin>
     </custom>
-
 
     <body>
         <menu name="h-ubu">
             <item name="Home" href="index.html"/>
-            <item name="Motivations" href="motivations.html"/>
+            <item name="Motivations and Concepts" href="motivations.html"/>
             <item name="Quickstart" href="quickstart.html"/>
-            <item name="User Guide" href="userguide.html"/>
-            <item name="Contract and Conformity" href="contract.html"/>
         </menu>
 
-        <menu name="service-orientation">
+		<menu name="User Guide">
+			<item name="Creating and Registering Components" href="creating-and-registering-components.html"/>
+            <item name="Providing Services" href="providing-services.html"/>
+			<item name="Requiring Services" href="requiring-services.html"/>
+			<item name="Direct Injection" href="direct-injection.html"/>
+			<item name="Receiving and Sending Events" href="receiving-and-sending-events.html"/>
+			<item name="Configuring Components" href="configuring-components.html"/>
+			<item name="Testing Components" href="testing-components.html"/>
+		</menu>		
+		
+		<menu name="advanced-topics">
+            <item name="Contract and Conformity" href="contract.html"/>
             <item name="Service-Orientation" href="service-orientation.html"/>
+			<item name="Developer Guide" href="developper-guide.html"/>
+		</menu>	
+
+        <menu name="service-orientation">
             <item name="Service-Components" href="service-component.html"/>
         </menu>
 

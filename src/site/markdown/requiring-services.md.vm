@@ -1,0 +1,141 @@
+Service Dependencies
+===============
+
+Required services are modelized as service dependencies. Each service dependencies target a specific _contract_ and can be:
+
+* mandatory / optional : mandatory dependencies impacts the published services
+* scalar / aggregate : aggregate dependencies are bound to all matching providers. Scalar ones are bound to only one.
+* filtered : filtered dependencies select the providers.
+
+Service Dependencies are injected either within fields or using _bind_ / _unbind_ methods. 
+
+Requiring Services
+==============
+
+To require a service and to receive the service object automatically, you need to describe a service dependency
+specifying the required contract, the service filter, how the service object(s) is/are injected and so on.
+
+    hub.requireService({
+        component: cmp,
+        contract : contract,
+        filter : function(ref) {
+            ref.getProperty("lg") === "fr";
+        },
+        field : "mysvc"
+    });
+
+This instructs h-ubu to inject the service `contract` with the property `lg` set to `fr` into the field `mysvc` of
+the component (`cmp`). This dependency is (by default) mandatory and scalar (only one service injected).
+
+A component can directly declare the same dependency in its `configure` method:
+
+    configure : function(hub, conf) {
+        hub.requireService({
+            component: this,
+            contract : contract,
+            filter : function(ref) {
+                ref.getProperty("lg") === "fr";
+             },
+            field : "mysvc"
+        });
+    }
+
+Dependencies can be:
+
+* _scalar_ or _aggregate_ : Aggregate dependencies are bound to all matching services.
+* _mandatory_ or _optional_: Once unresolved, mandatory dependencies instructs h-ubu to unregister all the published services provided by the same instance until the dependency is resolved again.
+
+Field Injection
+===========
+Services are automatically injected by h-ubu. It can be injected within field and bind/unbind method. Field injection is really easy to use. It just requires the service dependencies to tell in which field the service will be injection:
+
+    var component = {
+        svc : null,  // The injected service.
+    	configure: function(hub) {
+    	    hub.requireService({
+    	        component: this,
+    	        contract : myContract,
+    	        field : "svc"
+    	    });
+    	},
+    	// ...
+    };
+    
+The `svc` field receives the value automatically.
+
+For aggregate dependencies, an array is used:
+
+    var component = {
+        svc : [],  // The injected services.
+    	configure: function(hub) {
+    	    hub.requireService({
+    	        component: this,
+    	        contract : myContract,
+    	        field : "svc",
+    	        aggregate : true
+    	    });
+    	},
+    	// ...
+    };
+    
+The array is atumatically populated.    
+
+Bind / Unbind Injection
+=================
+
+The second injection mechanism use a couple of method : a method injecting the new service (_bind_), a method notifying the departure (__unbind_). This injection mechanism is used when you want to deal with the dynamism yourself.
+
+var component = {
+        svc : null,
+    	configure: function(hub) {
+    	    hub.requireService({
+    	        component: this,
+    	        contract : myContract,
+    	        bind : this.bindMyService,
+    	        unbind : this.unbindMyService
+    	    });
+    	},
+    	
+    	bindMyService: function(svc) {
+    		this.svc = svc;
+    	},
+    	unbindMyService: function(svc) {
+    		this.svc = null;
+    	},
+    	
+    	// ...
+    };
+
+The callbacks receives the service object as first parameter, and the service reference as second parameters. The service reference let you check the service properties with the `getProperty` method.
+
+For aggregate dependencies, the bind method will be call once per provider. 
+
+Using filters
+=========
+
+Service depednencies can be filtered. The filter let you select the service you reallt want besed on the service properties.
+
+To use filters, add a `filter` method to the service dependency. This method receives the service reference to check as parameter and should return `true` if the service matches, `false` otherwise:
+
+    configure : function(hub, conf) {
+        hub.requireService({
+            component: this,
+            contract : contract,
+            filter : function(ref) {
+                ref.getProperty("lg") === "fr";
+             },
+            field : "mysvc"
+        });
+    }
+        
+
+Mandatory vs. Optional
+=================
+
+Mandatory dependencies impacts the published services from the component. So, as soon as a service dependency is unresolved, the published services are unregistered. They will be registered again once all dependencies become resolved.
+
+Optional dependencies does not impact the published services. However, you must be carefull when using an optional service as it may not contain a value:
+
+* `null` for scalar dependency
+* an empty array for aggregate dependency
+

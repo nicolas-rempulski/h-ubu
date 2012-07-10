@@ -1,0 +1,117 @@
+Providing Services
+=============
+
+Services are functionnalities provided by a component to other components. Services promotes loose-coupling as the component consuming the service does not need to know aything about the provider. Moreover, services are dynamic, so may be registered and unregistered at anytime. Even if this may look weird, it can be really useful to modelize disruptions (connectivity, context changes...).
+
+Before publishing a service, the component **must** implement the service's contract. So, let's imagine the following contract:
+
+    var myContract = {
+        doSomething: function() {}
+    };
+    
+The component providing this service must contains the `doSomething()` method. 
+
+To register the service, the component just have to call `provideService` within the `configure` method:
+
+    var component = {
+        configure: function(hub, configuration) {
+            this.hub = hub;
+            this.hub.provideService({
+            	component: this,
+            	contract : myContract
+            });
+        }
+        // ...
+    }
+    
+Even if the registration can happen at anytime, we recommend to do it within the `configure` method. The service will be published as soon as the hub starts.
+
+The  `provideService` function takes an object as parameter. This object **must** contains the `component` key set to the component object providing the service, and the `contract` key indicating the published contract.
+ 
+Publishing Service Properties
+=====================
+
+ Service properties can give some information to the service consumer about the service. The component can add properties to the default service properties (`service.id`, `service.provider` and `service.contract`) . To publish other service properties, you need to add the `properties` key to the object given to the `provideService` method:
+ 
+    var component = {
+        configure: function(hub, configuration) {
+            this.hub = hub;
+            this.hub.provideService({
+            	component: this,
+            	contract : myContract,
+            	properties: {
+            		myProperty : "myValue"
+            	}
+            });
+        }
+        // ...
+    }
+
+Those properties can help the service consumer to service the `best` service.
+
+Post/Pre Registration and Unregistration callback
+====================================
+
+Your component can be notified when the service registered and unregistered. The `provideService` supports 4 callbacks:
+
+* `preRegistration`: method called before the registration
+* `postRegistration`: method called after the registration. It receives the `ServiceRegistration` as argument
+* `preUnregistration`: method called before unregistration. It receives the `ServiceRegistration` as argument
+* `postUnregistration`: method call after unregistration
+
+Each value can be configured using a function pointer or the name of the function (called on the component object).
+
+	 var component = {
+        configure: function(hub, configuration) {
+            this.hub = hub;
+            this.hub.provideService({
+            	component: this,
+            	contract : myContract,
+            	preRegistration: this.preRegistrationCallback,
+            	postRegistration: this.postRegistrationCallback,
+            	preUnregistration: this.preUnregistrationCallback,
+            	postUnregistration: "postUnregistrationCallback"
+            });
+        },
+        
+        preRegistrationCallback: function() { },
+        postRegistrationCallback: function(reg) { },
+        preUnregistrationCallback: function() { },
+        postUnregistrationCallback: function(reg) { },
+        
+        // ...
+    }
+
+Modifying service properties
+=====================
+
+You can modify the service properties dynamically. However, you need to retrieve the `ServiceRegistraiton` object from the `postRegistrationCallback` first. Then, just call the `setProperties(newProps)` on the service registration.
+
+var component = {
+        configure: function(hub, configuration) {
+            this.hub = hub;
+            this.hub.provideService({
+            	component: this,
+            	contract : myContract,
+            	postRegistration: this.postRegistrationCallback,
+            });
+        },
+        
+        postRegistrationCallback: function(reg) {
+	        this.reg = reg;
+    	    this.reg.setProperties({
+    	    	myProp : "my new value"
+    	    }) ;
+          },
+        
+        // ...
+    }
+
+Published Services and Service Dependencies
+================================
+ 
+ The service dependencies of a component can impact the service publication. Indeed, as soon as a service dependencies is not resolved, the service is unpublished, and won't be published until all service dependencies are resolved again.
+ 
+ To avoid this behavior, set the service dependency as _optional_.
+ 
+ 
