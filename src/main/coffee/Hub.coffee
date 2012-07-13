@@ -31,7 +31,7 @@ HUBU.Hub = class Hub
     @_started = false
     @_extensions = null
 
-  _initialize: ->
+  configure: ->
     @_extensions = []
     for name,ext of getHubuExtensions()
       #HUBU.logger.info("Initializing new hub with the " + name + " extension")
@@ -94,7 +94,7 @@ HUBU.Hub = class Hub
 
 
     # Initialize the hub if not done already
-    @_initialize() unless @_extensions isnt null
+    @configure() unless @_extensions isnt null
 
     # First check that we don't have already this component
     # We can call getComponentName as we have check the component
@@ -161,7 +161,7 @@ HUBU.Hub = class Hub
       else cmp = component
 
     # Initialize the hub if not done already
-    @_initialize() unless @_extensions isnt null
+    @configure() unless @_extensions isnt null
 
     # Iterate on the components array to find the component to unregister.
     idx = HUBU.UTILS.indexOf(@_components, cmp); # Find the index
@@ -187,7 +187,7 @@ HUBU.Hub = class Hub
     if @_started then return @
 
     # Initialize the hub if not done already
-    @_initialize() unless @_extensions isnt null
+    @configure() unless @_extensions isnt null
 
     # Notify extensions
     HUBU.UTILS.invoke(ext, "start", []) for ext in @_extensions
@@ -231,7 +231,7 @@ HUBU.Hub = class Hub
   reset: ->
     @.stop()
 
-    @_initialize() unless @_extensions isnt null
+    @configure() unless @_extensions isnt null
 
     for ext in @_extensions
       HUBU.UTILS.invoke(ext, "reset", []);
@@ -240,6 +240,8 @@ HUBU.Hub = class Hub
     @_extensions = null
 
     return @
+
+  getComponentName : -> return "Hub"
 
 ### End of th Hub Class ###
 
