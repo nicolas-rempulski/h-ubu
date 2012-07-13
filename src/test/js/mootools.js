@@ -146,6 +146,96 @@ describe("Mootools Support Test Suite", function () {
             jasmine.log(e);
             this.fail("Unexpected component reject");
         }
+    });
+
+    it("should let Mootools components be bound using services", function() {
+        var contract = {
+            getName : function() {}
+        };
+
+        var Ted = new Class({
+
+            call : 0,
+            friend : null, // Injected
+
+            initialize: function() {
+
+            },
+
+            getComponentName : function() {
+                return 'Ted';
+            },
+
+            start : function() {
+            },
+
+            stop : function() {
+            },
+
+            configure : function(hub) {
+                this.call = this.call + 1;
+                hub.requireService({
+                    contract: contract,
+                    component: this,
+                    field : "friend"
+                });
+            },
+
+            getFriend: function(){
+                return this.friend;
+            }
+
+        });
+
+        var Marshall = new Class({
+
+            call : 0,
+
+            initialize: function() {
+
+            },
+
+            getComponentName : function() {
+                return 'Marshall';
+            },
+
+            start : function() {
+            },
+
+            stop : function() {
+            },
+
+            configure : function(hub) {
+                this.call = this.call + 1;
+                hub.provideService({
+                   contract : contract,
+                   component: this
+                });
+            },
+            // Service implementation
+            getName: function(){
+                return "Marshall";
+            }
+
+        });
+
+        var ted = new Ted();
+        var marshall = new Marshall();
+
+        try {
+            hub.registerComponent(ted)
+                .registerComponent(marshall)
+                .start();
+
+            var cmps = hub.getComponents();
+            expect(cmps.length).toBe(2);
+            console.dir(hub.getComponent("Ted"));
+            expect(hub.getComponent("Ted").getFriend().getName()).toBe("Marshall");
+        } catch (e) {
+            jasmine.log(e);
+            console.dir(e);
+            this.fail("Unexpected component reject");
+        }
     })
 
 });

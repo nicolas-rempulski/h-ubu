@@ -231,7 +231,7 @@ HUBU.ServiceDependency = class ServiceDependency
 
     # Field injection first
     if @_field?  and @_aggregate
-      if not @_component[@_field]? then @_component[@_field] = [svc] else @_component[@_field].push(svc)
+        if not @_component[@_field]? then @_component[@_field] = [svc] else @_component[@_field].push(svc)
     if @_field? and not @_aggregate then @_component[@_field] = svc
 
     # Bind
