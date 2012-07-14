@@ -1,41 +1,43 @@
 Quickstart
 ========
 
-This page explains how to start with h-ubu in 10 minutes. Let's imagine a really simple [application](quickstart/demo.html):
+This page explains how to get started with H-Ubu in 10 minutes. Let's imagine a really simple [application](quickstart/demo.html):
 
 ![A simple demo](demo.png "A simple demo")
 
-**Note:** To see the demo, either use Chrome, Safari of Firefox with Firebug.
+**Note:** To see the demo, use either Chrome, Safari or Firefox with Firebug.
 
-So, nothing complex, two buttons, a message. The traditional Javascript way to do that would be to write all the javascript in the HTML file, which is exactly what h-ubu will **NOT** do. Why ? Because, it would mean:
+So, nothing complex: two buttons, a message. The traditional JavaScript way to do that would be to write all the
+JavaScript in the HTML file, which is exactly what H-Ubu will **NOT** do. Why not? Because that would mean:
 
  * dealing with HTML DOM modifications (and directly accessing the HTML DOM)
- * dealing with Ajax call and server communication
+ * dealing with Ajax calls and server communication
  * dealing with state control
 
-In one script ! This code is then untestable. It's probably the best *spaguetti* recipe. Imagine on bigger application with a fancy UI ? Will just become totally uncontrollable. 
+In one script! This code is then untestable. It's probably the best recipe for *spaghetti* there is. Imagine this in a
+bigger application with a fancy UI! It would become totally uncontrollable.
 
-Let's see the H-UBU way to achieve the same thing
+Let's see the H-Ubu way to achieve the same thing
 -------------------------------------------------------------
 
- * We define a backend component dealing with the server and publishing a service.
- * We define a front end component using the backend service, modifying the HTML page
- * We define our application by registering those two components, configure them, and let h-ubu binds them
+ * We define a backend component to deal with the server, which publishes a service.
+ * We define a frontend component that uses the backend service to modify the HTML page.
+ * We define our application by registering these two components, configuring them and letting H-Ubu bind them.
 
 The clear advantages are:
 
- * the code is modular, and without visibility issue. Only the public contract is accessbile from the frontend.
- * the configuration allows us to give #ids and .classes into components and avoid coupling the javascript code and the page DOM
- * components are testable
+ * The code is modular, and without visibility issues. Only the public contract is accessible from the frontend.
+ * The configuration allows us to give #ids and .classes into components and avoid coupling the JavaScript code to the page DOM.
+ * Components are testable.
 
 The Application Composition
 ------------------------------------
-The first things to do, is to compose the application:
+The first thing to do, is to compose the application:
 
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-        <title>h-ubu Demo</title>
+        <title>H-Ubu Demo</title>
 
             <script src="http://code.jquery.com/jquery-latest.js"> </script>
             <!-- (1) -->
@@ -68,57 +70,64 @@ The first things to do, is to compose the application:
             </script>
     </head>
 
-First we import H-UBU (1), JQuery is also imported (component dependency) (because we can use any javascript library), and finally our components (2) and the contract. This contract is implemented by the backendComponent, and required by the front end component.
+First we import H-Ubu (1). jQuery is also imported (being a component dependency) (we can use any JavaScript library),
+and finally so are our components (2) and the contract. This contract is implemented by the backend component, and
+required by the frontend component.
 
-When the page is loaded (3), we register our components (4) on a special h-ubu object : <tt>hub</tt>. This is the **nerve** of the application.
+When the page is loaded (3), we register our components (4) on a special H-Ubu object: <tt>hub</tt>. This is the
+**central nervous system** of the application.
 
-As you can see, components receive configurations. The `component_name` is a specific property to name your component. The front end component also receives the HTML ids to manipulate the page indirectly.
+As you can see, components are registered with configurations. The `component_name` is a specific property to name your
+component. The frontend component also receives the HTML ids to manipulate the page indirectly.
 
 Finally we start the hub (5), i.e. the application.
 
-How the binding between components is done ? Let's see how components are developped.
+How is the binding between components done? Let's see how components are developped.
 
 The User Service Contract
 -------------------------------
-The components are interacting using a _contract_. This contract is a simple JavaScript object, generally containing only _body-less_ functions. This specifies what can be used from the component and how it can be used. For our simple application, the contract is the following:
+The components interact using a _contract_. This contract is a simple JavaScript object, generally containing only
+_body-less_ functions. This specifies what can be used from the component and how it can be used. For our simple
+application, the contract is the following:
 
 	/**
 	 * User Service Contract definition.
-	 * The implementations are empty
-	 * like a Java interface
+	 * The implementations are empty,
+	 * like a Java interface.
 	 */
 	var UserServiceContract = {
 	    /**
 	     * Checks if the user is logged in.
 	     */
 	    isLoggedIn : function() { },
-    
+
 	    /**
-	     * Get the logged user.
+	     * Get the logged-in user.
 	     */
 	    getUser : function() { },
-    
+
 	    /**
 	     * Ask to log in.
-	     * This method simulates a async call.
-	     * And so returns immediately.
+	     * This method simulates an async call
+	     * and so returns immediately.
 	     * @param {String} name
 	     */
 	    login: function(name) { },
-    
+
 	    /**
-	     * Ask to logout in.
-	     * This method simulates a async call.
-	     * And so returns immediately.
+	     * Ask to log out.
+	     * This method simulates an async call.
+	     * and so returns immediately.
 	     */
 	    logout: function() { }
 	}
-	
+
 Backend component
 -------------------------
-The backend component simulates a user login. It publishes the _UserServiceContract_, and so implement it. 
+The backend component simulates a user login. It publishes the _UserServiceContract_, and so implements it.
 
-Even if we recommend using the JavaScript module pattern, for simplification, we use a simple JavaScript object. Don't forget that h-ubu will deal with the visibility issue, so others component can only access the contract part.
+Although we recommend using the JavaScript module pattern, we use a simple JavaScript object here for simplicity's sake.
+Don't forget that H-Ubu will deal with the visibility issue, so other components can only access the contract part.
 
     		var backendComponent = {
 
@@ -154,7 +163,7 @@ Even if we recommend using the JavaScript module pattern, for simplification, we
 			    /**
 			     * The Start function
 			     * This method is called when the hub starts or just
-			     * after configure is the hub is already started. 
+			     * after configure if the hub is already started.
 			     */
 			    start: function() {},
 
@@ -183,22 +192,22 @@ Even if we recommend using the JavaScript module pattern, for simplification, we
 
 			    /**
 			     * Ask to log in.
-			     * This method simulates a async call.
-			     * And so returns immediately.
+			     * This method simulates an async call
+			     * and so returns immediately.
 			     * @param {String} name
 			     */
 			    login: function(name) {
-					// Because setTimeout call the mehtod on the global object (window),
-					// We use a closure.
+					// Because setTimeout calls the method on the global object (window),
+					// we use a closure.
 					var self = this;
 			        setTimeout(function() { self.loggedIn(name); }, 2000);
 			        return;
 			    },
 
 			    /**
-			     * Ask to logout in.
-			     * This method simulates a async call.
-			     * And so returns immediately.
+			     * Ask to log out.
+			     * This method simulates an async call,
+			     * and so returns immediately.
 			     */
 			    logout: function() {
 					var self = this;
@@ -211,7 +220,7 @@ Even if we recommend using the JavaScript module pattern, for simplification, we
 
 			    /**
 			    * This method is called 2 seconds after the login request.
-			    * It's use the hub to inform that the login was successful.
+			    * It's used to inform the hub that the login was successful.
 			    */
 			    loggedIn: function(name) {
 			        this.isLoggedIn = true;
@@ -232,20 +241,23 @@ Even if we recommend using the JavaScript module pattern, for simplification, we
 			    },
 			}
 
-As it's a component, it must implements the 4 methods required to be a valid component:
+As it's a component, it must implement the 4 methods required to be a valid component:
 
-* configure : receive the external configuration, declares the required and provided services
-* start : the component is started, and so can start do stuff
-* stop : the component is stopped
-* getComponentName : returned the name of the component
+* configure: receives the external configuration, declares the required and provided services
+* start: the component is started, and so can start do stuff
+* stop: the component is stopped
+* getComponentName: returns the name of the component
 
 In the _configure_ method, we declare that we're providing the _UserServiceContract_ service.
 
-Then the component implements the _UserServiceContract_. To simulate an ajax call, the application uses 'setTimeout'. When the function is really invoked, it sends an event (`hub.sendEvent(component, {loggedIn : false});`. Components registering a listener matching this event will automatically be called.
+Then the component implements the _UserServiceContract_. To simulate an Ajax call, the application uses 'setTimeout'.
+When the function is really invoked, it sends an event (`hub.sendEvent(component, {loggedIn : false});`. Components
+registering a listener matching this event will automatically be called.
 
-Front end component
+Frontend component
 --------------------------
-The backend component simulates server calls. The front end component deals with the HTML page modification. To avoid being tied to one specific HTML page, the manipulated ids are passed inside the component configuration.
+The backend component simulates server calls. The frontend component deals with the HTML page modification. To avoid
+being tied to one specific HTML page, the manipulated ids are passed inside the component configuration.
 
 	var frontendComponent = {
 
@@ -275,7 +287,7 @@ The backend component simulates server calls. The front end component deals with
 	    // Component Interface //
 	    //*********************//
 	    /**
-	    * Method returning the component <b>unique</b>
+	    * Method returning the component's <b>unique</b>
 	    * name. Using a fully qualified name is encouraged.
 	    * @return the component unique name
 	    */
@@ -309,10 +321,10 @@ The backend component simulates server calls. The front end component deals with
 	    /**
 	    * The Start function
 	    * This method is called when the hub starts or just
-	    * after configure is the hub is already started. 
+	    * after configure if the hub is already started.
 	    */
 	    start: function() {
-	        // The first things to do is to get the user service and ask if we're
+	        // The first thing to do is to get the user service and ask if we're
 	        // logged in
 			console.dir(this.userService);
 	        var state = this.userService.isLoggedIn();
@@ -322,7 +334,7 @@ The backend component simulates server calls. The front end component deals with
 	        // Then, we register a listener
 	        this.hub.subscribe(this, "/user/login", this.callback);
 
-	        // Finally we register click event
+	        // Finally, we bind on the click event
 			svc = this.userService;
 	        $(this.loginId).click(function() {
 	            svc.login('bla');
@@ -336,7 +348,7 @@ The backend component simulates server calls. The front end component deals with
 	    /**
 	    * The Stop method is called when the hub stops or
 	    * just after the component removal if the hub is 
-	    * not stopped. No events can be send in this method.
+	    * not stopped. No events can be sent in this method.
 	    */
 	    stop: function() {
 
@@ -361,13 +373,19 @@ The backend component simulates server calls. The front end component deals with
 	}
 	
 
-The component code is structured as the backend component. However, the configure method receives the configuration and the HTML ids are retrieved from the configuration object. We also declare a required service injected within the `userServiceContract` field.
+The component code is structured like the backend component. However, the configure method receives the configuration
+and the HTML ids are retrieved from the configuration object. We also declare a required service injected within the
+`userServiceContract` field.
 
-In the start function, the component registers a listener by giving a 'match' method and a 'callback' method. The match method is called to check if the component is interested in the event. If this method returns `true`, the 'callback' method is invoked. It also directly uses the service to initiate the state. The method uses JQuery to set a handler on the button. To register the handler, it uses the ids given in the configuration.
+In the start function, the component registers a listener by giving a 'match' method and a 'callback' method. The match
+method is called to check if the component is interested in the event. If this method returns `true`, the 'callback'
+method is invoked. It also directly uses the service to initiate the state. The method uses jQuery to set a handler on
+the button. To register the handler, it uses the ids given in the configuration.
 
 When the login is completed, the 'callback' method is called (thanks to the listener), and the status message is updated.
 
 Results
 =====
 
-Ok, it's a simple application. But it has shown how your can modularize your application with components, bind them using services and use the event mechanism. 
+Ok, it's a simple application. But it has shown how you can modularize your application with components, bind them using
+services and use the event mechanism.

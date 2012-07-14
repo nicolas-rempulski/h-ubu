@@ -1,26 +1,32 @@
-An injection framework in JavaScript ?
-=======================================
-With h-ubu you composed your application whith components. Javascript componentization aims to modularize Javascript code in order to improve the testability, the maintainability and the scalability of Javascript applications. 
+An injection framework in JavaScript?
+=====================================
+With H-UBU, you compose your application with components. JavaScript componentization aims to modularize JavaScript code
+in order to improve the testability, maintainability and scalability of JavaScript applications.
 
-Indeed, Javascript is the poor-child of web app technologies. The toolset for Javascript is seriously lacking in comparison to the Java toolset. Unit testing, static analysis and managed execution are totally new for Javascript. However, the flexibility and the design of the language makes these tools a stringent requirement for code scalability: especially in recent years, since Javascript has become mainstream and is used by almost all web app stacks. 
+JavaScript could be considered the poor-child of web app technologies. The toolset for JavaScript is very limited
+compared to that of Java. Unit testing, static analysis and managed execution are new to JavaScript. However, the
+flexibility and the design of the language makes these tools a stringent requirement for code scalability -- especially
+in recent years, since JavaScript has become mainstream and is now used by many web app stacks.
 
-We faced big challenges when our JavaScript applications size grew up to 60 KLOC. So, we decided to reuse what we're used to do in Java and other language: loosly-coupled autonomous components. So we implemented h-ubu is a component framework for Javascript, created to address the above issues.
+We faced big challenges when our JavaScript application's size grew up to 60K lines of code. So, we decided to reuse
+what we're used to doing in Java and other languages: loosely-coupled autonomous components. We implemented H-UBU as a
+component framework for JavaScript, created to address the above issues.
 
 H-UBU's main features
-=================
+=====================
 
-* component definition : the application is built with components
-* service-orientation : h-ubu is based on services. Components provides and requires services.
-* contract-based interactions : components implement and use contracts (i.e. interfaces, service specifications)
-* synchronous and asynchronous component communication : components can interact using method calls and events
-* architecture description : the application is composed by registering components. The runtime binds them.
-* component configuration : components can be configured, no #id in your code anymore.
-* test : components are testable using jasmine or qunit
-* component separation: components are developed in separate files; the application code is much more scalable
-* jquery, coffeescript, mootools : use any technology you want
+* Component definition: the application is built with components.
+* Service-orientation: H-UBU is based on services. Components provide and require services.
+* Contract-based interactions: components implement and use contracts (i.e. interfaces, service specifications)
+* Synchronous and asynchronous component communication: components can interact using method calls and events.
+* Architecture description: the application is composed by registering components. The runtime binds them.
+* Component configuration: components can be configured -- no #id in your code anymore.
+* Test: components are testable using Jasmine or QUnit.
+* Component separation: components are developed in separate files; the application code is much more scalable.
+* jQuery, CoffeeScript, MooTools: use any technology you want!
 
 License
 =======
-H-Ubu is licensed under the Apache License 2.0. The project was initially founded by [akquinet A.G.](http://www
+H-UBU is licensed under the Apache License 2.0. The project was initially founded by [akquinet A.G.](http://www
 .akquinet.de/en), but is now founded by [Arrow-Group](http://arrow-group.eu).
 
