@@ -26,16 +26,31 @@ HUBU.Hub = class Hub
   ###
   _extensions : null
 
+  ###
+  # The parent hub, is set. The parent is given during the configure method.
+  ###
+  _parentHub : null
+
   constructor: ->
     @_components = []
     @_started = false
     @_extensions = null
 
-  configure: ->
-    @_extensions = []
-    for name,ext of getHubuExtensions()
-      #HUBU.logger.info("Initializing new hub with the " + name + " extension")
-      @_extensions.push(new ext(@))
+  configure: (parent) ->
+    if (parent?)
+      @_parentHub = parent
+
+    # Do not reinitialized if already initialized
+    if not @_extensions?
+      @_extensions = []
+      for name,ext of getHubuExtensions()
+        #HUBU.logger.info("Initializing new hub with the " + name + " extension")
+        @_extensions.push(new ext(@))
+    else
+      HUBU.logger.debug("Hub already initialized")
+    return this
+
+  getParentHub : -> @_parentHub
 
 
   ###
