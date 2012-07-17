@@ -229,7 +229,6 @@ describe("Mootools Support Test Suite", function () {
 
             var cmps = hub.getComponents();
             expect(cmps.length).toBe(2);
-            console.dir(hub.getComponent("Ted"));
             expect(hub.getComponent("Ted").getFriend().getName()).toBe("Marshall");
         } catch (e) {
             jasmine.log(e);
