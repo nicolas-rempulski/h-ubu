@@ -19,7 +19,7 @@ specifying the required contract, the service filter, how the service object(s) 
         component: cmp,
         contract : contract,
         filter : function(ref) {
-            ref.getProperty("lg") === "fr";
+            return ref.getProperty("lg") === "fr";
         },
         field : "mysvc"
     });
@@ -34,7 +34,7 @@ A component can directly declare the same dependency in its `configure` method:
             component: this,
             contract : contract,
             filter : function(ref) {
-                ref.getProperty("lg") === "fr";
+                return ref.getProperty("lg") === "fr";
              },
             field : "mysvc"
         });
@@ -122,7 +122,7 @@ To use filters, add a `filter` method to the service dependency. This method rec
             component: this,
             contract : contract,
             filter : function(ref) {
-                ref.getProperty("lg") === "fr";
+                return ref.getProperty("lg") === "fr";
              },
             field : "mysvc"
         });
