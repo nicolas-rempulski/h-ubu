@@ -185,6 +185,13 @@ describe("H-UBU Service Extension Tests - Complex Assembly Test", function () {
             .start();
 
         expect(mainManager.mainUI.paint()).toBe("I'm the ui main-ui");
+        expect(mainManager.mngts.length).toBe(2);
+
+        expect(mainUI.uis.length).toBe(2);
+
+        expect(AManager.AUI.paint()).toBe("I'm the ui A-ui");
+        expect(BManager.BUI.paint()).toBe("I'm the ui B-ui");
+
 
     });
 
