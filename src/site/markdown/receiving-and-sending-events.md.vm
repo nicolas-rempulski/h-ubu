@@ -1,16 +1,18 @@
 Sending and Receiving Events
 =====================
 
-H-ubu also let components interacting using events.  Events are simple key/value objects. They can follow a contract but this is not enforced by H-Ubu. 
+H-Ubu also allows components to interact using events.  Events are simple key/value objects. They can follow a contract but
+this is not enforced by H-Ubu. 
 
 Sending events using topics
 -----------------------------------
 
-H-ubu's eventing system is based on topics. Components can subscribe to topics and publish events on topics. 
+H-Ubu's eventing system is based on topics. Components can subscribe to topics and publish events on topics. 
 
- * components subscribe to topic name (regular expression) and specifies a callback method called when an event is sent on the listened topic.
+ * components subscribe to a topic name (regular expression) and specify a callback method to be called when an event 
+   is sent on that topic
  * components publish events to a topic
- * h-ubu dispatches the event to matching subscribers, and calls the callback methods
+ * H-Ubu dispatches the event to matching subscribers, and calls the callback methods
 
 To publish an event, a component must use:
 
@@ -24,8 +26,10 @@ To subscribe to a topic, a component uses:
     hub.subscribe(component, topic, callback, filter);
 
 
-where `component` is a reference to itself, `topic` is a regular expression (String) on the topic name (obviously can just be the topic name), and `callback` is the method called on the component (with the event as a parameter).
-The second method adds a `filter` parameter. This parameter is a function to select events. Only events sent to the correct topic and matching the filter function will be sent to the callback. The filter function must return either `true` or `false`.
+where `component` is a reference to itself, `topic` is a regular expression (String) on the topic name (this can just
+be the topic name), and `callback` is the method called on the component (with the event as a parameter). The second
+method adds a `filter` parameter. This parameter is a function to select events. Only events sent to the correct topic
+**and** matching the filter function will be sent to the callback. The filter function must return either `true` or `false`.
 
 
     // Subscription to the /foo/bar topic
@@ -46,24 +50,31 @@ The `event.topic` property is added to the event.
 
 Sending and receiving events without topics
 -----------------------------------------------------
-Components can interact using events without using topics. Even if this version looks a bit simpler, we recommend using topcis to benefits for a looser coupling:
+Components can interact using events without using topics. Even if this version looks a bit simpler, we recommend using
+topics in order to benefit from a looser coupling:
 
 To send an event, a component can just call:
 
     hub.sendEvent(theComponent, theEvent);
 
-`theComponent` is a reference to the component sending the event. `theEvent` is a javascript object.
+`theComponent` is a reference to the component sending the event. `theEvent` is a JavaScript object.
 
-Event reception is a multi-step process. First, the component must register a listener by using: `hub.registerListener(theComponent, theMatchMethod, theCallbackMethod)`. `theComponent` is a reference to the component willing to receive the event. `theMatchMethod` is a function (can be a pointer) defining the events to receive. `theCallbackMethod` is a function (can be a pointer) receiving the event.
+Event reception is a multi-step process. First, the component must register a listener by using:
 
-So, when an event is sent, the match methods from all listeners are called to check if the event needs to be delivered to the listener. The match method must return true or false:
+    hub.registerListener(theComponent, theMatchMethod, theCallbackMethod)
+
+`theComponent` is a reference to the component that wants to receive the event. `theMatchMethod` is a function (can be
+a pointer) defining the events to receive. `theCallbackMethod` is a function (can be a pointer) receiving the event.
+
+So, when an event is sent, the match methods from all listeners are called to check if the event needs to be delivered
+to the listener. The match method must return true or false:
 
     function match1(event) {
          return true; // Accept all events
     }
 
     function match2(event) {
-        // Accept only event matching the contract
+        // Accept only events matching the contract
         return HUBU.UTILS.isObjectConformToContract(contract);
     }
 
@@ -79,16 +90,16 @@ So, when an event is sent, the match methods from all listeners are called to ch
 
     function match5(event) {
         // Accept events containing 'logged = true'
-        return event.logged != null  && event.logged;
+        return event.logged != null && event.logged;
     }
 
 
-When a match method returns `true`, h-ubu calls the associated callback method. Notice that a component cannot receive events sent by itself.
+When a match method returns `true`, H-Ubu calls the associated callback method. Note that a component cannot receive
+events sent by itself.
 
 Event Source
 ----------------
-
-H-Ubu adds to all events a property called source referencing the component sending the event.
+H-Ubu adds to all events a property called `source` referencing the component sending the event.
 
 Event Cloning
 ----------------
@@ -100,5 +111,5 @@ Summary
  * components register a listener on the hub and pass the match and callback methods
  * components send events to the hub
  * H-Ubu calls the match methods
- * For all match methods accepting the event, h-ubu calls the associated callback method
+ * For all match methods accepting the event, H-Ubu calls the associated callback method
 

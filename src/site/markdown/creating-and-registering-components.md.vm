@@ -3,17 +3,20 @@ Creating Components
 
 _Components_ are JavaScript objects, implementing 4 methods:
 
-* `configure(hub, configuration)` : method called by the _hub_ when the component is registered. The component receive the reference on the hub and the configuration. Inside this method, the component should describe the required and provided services.
+* `configure(hub, configuration)` : method called by the _hub_ when the component is registered. The component receives
+   the reference on the hub and the configuration. Within this method, the component should describe the required and
+   provided services.
 * `start()` : method called by the hub when the component is started. The component can now use its dependencies, and be used.
 * `stop()` : method called by the hub when the component is stopped.
-* `getComponentName()` : method returning the component name. 
+* `getComponentName()` : method returning the component name.
 
-If a component does not implement one of this method, it cannot be registered on the hub.
+If a component does not implement each of these methods, it cannot be registered on the hub.
 
 Registering components and starting the hub
 ================================
 
-First of all, don't forget to include the `hubu-all` script in your page. Then in a `<script>` element of your HTML page, you can use the glbal `hub` object to register your components:
+First of all, don't forget to include the `hubu-all` script in your page. Then, in a `<script>` element of your HTML
+page, you can use the global `hub` object to register your components:
 
 	<script type="text/javascript">
 			hub
@@ -43,10 +46,14 @@ If you use jQuery, then do the registration in the `ready` callback:
 		});
 		</script>	
 		
-So registering a component can be simply made using the `hub.registerComponent(theComponent, theConfiguration)` method.  This method takes the component as the first parameter (mandatory) and the configuration as the second parameter.			
+So registering a component can be done simply, using the `hub.registerComponent(theComponent, theConfiguration)` method.
+This method takes the component as the first parameter (mandatory) and the configuration as the second parameter.
 
-Components can be registered only once for a given name. By default, the name is the value returned by the `getComponentName` method. However this is customizable by using the `component_name` property from the configuration.
+Components can only be registered once for a given name. By default, the name is the value returned by the
+`getComponentName` method. However, this can be customized via the `component_name` property in the configuration.
 
-The `configuration` parameter is optional. If specified, the configuration is injected as a parameter of the component's `configure` method. Configurations are just objects containing key/value pairs. As said previously, the `component_name` property is managed in a different way. When specified, the `getComponentName` method is replaced to return the given value.
+The `configuration` parameter is optional. If specified, the configuration is injected as a parameter of the component's
+`configure` method. Configurations are just objects containing key/value pairs. As said previously, the `component_name`
+property is managed in a different way. When specified, the `getComponentName` method is replaced to return the given value.
 
-It is recommended to use the configuration to pass any external data to the component, like HTML element selectors (ids, classes ...).
+It is recommended to use the configuration to pass any external data to the component, such as HTML element selectors (ids, classes ...).
