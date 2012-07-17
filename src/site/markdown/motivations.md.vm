@@ -1,32 +1,44 @@
 Motivations and Concepts
 ===================
 
-A bit of history
+A Bit of History
 ------------------
-During the development of a project relying on javascript, we realized that the growth of the javascript code decrease our efficiency. Not because javascript is verbose, but because the application UI starts to be huge and complex.
+During the development of a project relying on JavaScript, we realized that the growth of the JavaScript code decreased
+our efficiency. Not because JavaScript is verbose, but because the application's UI had begun to grow large and complex.
 
-However, without good practice, this javascript code starts to be really messy, and close to be un-manageable.
+Without good practices, this JavaScript code started to become really messy, and close to unmanageable.
 
-Those issues comes from several points:
+These issues arose for several reasons:
 
- * We were not javascript experts
- * Javascript is great, gives a lot of flexibility ... but too much flexibility is evil !
- * Playing with function pointer is great ... but may break layeredd architecture
- * Javascript heavily relies on asynchronous callbacks, as async implies spaghettis (look at ESBs, you will quickly understand)
- * Javascript is not modular, and in fact, it generally ends with one big javascript file. Obviously, concurrent development on one file is bad
- * Javascript does not have an interface concept, making hard to understand public API and implementation details
- * No scoping : in Javascript by default everything is public ... Great for naming conflicts
- * No tests... well... what and how to test
+ * We were not JavaScript experts.
+ * JavaScript is great and gives developers a lot of flexibility... but too much flexibility is evil!
+ * Playing with function pointers is great... but may break a layered architecture.
+ * JavaScript relies heavily on asynchronous callbacks, as async implies spaghetti (if you're not convinced, take a look
+   at ESBs).
+ * JavaScript is not modular, and in fact, generally winds up as one big JavaScript file. Obviously, concurrent 
+   development on one file is bad.
+ * JavaScript does not have an interface concept, making it hard to understand public API and implementation details.
+ * No scoping: in JavaScript, everything is public by default... great for naming conflicts.
+ * No tests: well... what to test and how to test it?
 
-So after reflection, we try to look how to improve that. Using Javascript library like JQuery and Dojo automates a
- lot of things and simplify code writing, manage browser heterogeneity, but **DO NOT HELP ARCHITECTURING THE CODE**.
+So after reflection, we looked at how to try and improve that. Using JavaScript libraries like jQuery and Dojo automates
+a lot of common tasks, simplifies code writing, and manages browser heterogeneity, but **DOES NOT HELP TO ARCHITECT THE CODE**.
 
-Like in Java, having a framework enforcing design rules was definitely required. And so, we create h-ubu...
+As for Java, having a framework enforcing design rules was definitely required. And so, we created H-Ubu...
 
-h-ubu's concepts
+H-Ubu's Concepts
 --------------------
-h-ubu could be seen as a _service-oriented component model_, such as Apache Felix iPOJO for OSGi. Actually, it reuses a lot of concepts from OSGi and iPOJO. 
+H-Ubu could be seen as a _service-oriented component model_, such as Apache Felix iPOJO for OSGi. Actually, it reuses a 
+lot of concepts from OSGi and iPOJO. 
 
-With hubu, your application is composed by *components*. Components are plugged on a *hub*, coordinating and managing the plugged components. Components use _services_ and _events_ to interact.  _Services_ are functionnalities published by a component and so usable by others. _Services_ are describe using a _contract_ so a kind of Java interface. _Events_ are sent on topics listened by other components. We try to avoid a much as we can direct binding, to be able to subsitute components later, however it is also possible to do _direct bindings_.
+With H-Ubu, your application is composed of *components*. Components are plugged into a *hub*, coordinating and managing
+the plugged-in components. Components use _services_ and _events_ to interact.  _Services_ are functionalities published
+by a component and so usable by others. _Services_ are described using a _contract_; so a kind of Java interface.
+_Events_ are sent on topics listened to by other components. Although we try to avoid direct binding, to be able to
+subsitute components later, it is also possible to do _direct bindings_.
 
-Components follow a simple lifecycle: configure -> start -> stop. In the _configuration_ phase the component descire itself (provided services and dependencies). It also receives an external configuration, containing for example the element ids (from the DOM). It improves the reuse of components accross pages. In the _started_ phase the component initialize itself to be ready to be used. Service dependencies are available, and the component can be used. Finally in the _stopped_ phase, the component does some cleanup. It cannot be used anymore.
+Components follow a simple lifecycle: configure -> start -> stop. In the _configuration_ phase the component describes
+itself (in terms of provided services and dependencies). It also receives an external configuration, containing for
+example the element IDs (from the DOM). It improves the reuse of components across pages. In the _started_ phase the
+component initializes itself to be ready to be used. Service dependencies are available, and the component can be used.
+Finally, in the _stopped_ phase, the component does some cleanup. It cannot be used anymore.
