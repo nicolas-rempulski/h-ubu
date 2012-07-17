@@ -76,8 +76,7 @@ SOC.ServiceRegistration = class ServiceRegistration
     # We don't have a service reference until we're published.
 
   register : ->
-    if not HUBU.UTILS.isComponentPlugged(@_component, @_hub) then throw new Exception("Invalid registration, the
-     component is not plugged on the hub")
+    throw new Exception("Invalid registration, the component is not plugged on the hub") unless HUBU.UTILS.isComponentPlugged(@_component, @_hub) or @_component is @_hub
 
     @_id = SOC.ServiceRegistration.getAndIncId()
     @_reference = new SOC.ServiceReference(@)
@@ -87,15 +86,13 @@ SOC.ServiceRegistration = class ServiceRegistration
     return @_id
 
   unregister : ->
-    if not HUBU.UTILS.isComponentPlugged(@_component, @_hub) then throw new Exception("Invalid registration, the
-         component is not plugged on the hub")
     @_registered = false
 
   isRegistered : -> return @_registered
 
   getReference : ->
-    if not HUBU.UTILS.isComponentPlugged(@_component, @_hub) then throw new Exception("Invalid registration, the
-         component is not plugged on the hub")
+    throw new Exception("Invalid lookup, the component is not plugged on the hub") unless HUBU.UTILS.isComponentPlugged(@_component, @_hub) or @_component is @_hub
+
     return @_reference
 
   getProperties : -> return @_properties
