@@ -131,7 +131,7 @@ HUBU.ServiceDependency = class ServiceDependency
     self = this
     @_listener = {
       contract: @_contract,
-      filter : @_filter,
+      filter : (ref) -> ref.getProperty("service.publisher") isnt self._component and (not self._filter? or self._filter(ref)),
       listener : (event) ->
         switch event.getType()
           when SOC.ServiceEvent.REGISTERED then self._onServiceArrival(event.getReference())
