@@ -71,7 +71,6 @@ var frontendComponent = {
     start: function() {
         // The first things to do is to get the user service and ask if we're
         // logged in
-		console.dir(this.userService);
         var state = this.userService.isLoggedIn();
 
         this.updateStatus(state);
