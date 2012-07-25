@@ -17,7 +17,7 @@ getGlobal().namespace = (target, name, block) ->
 ###
 # Logger.
 # If set will happend the logger name in from of all logged messages.
-# The logger uses `window.console` to log messages. So if this object is not defined, the message are not logged.
+# The logger uses `window.console` or `global.console` to log messages. So if this object is not defined, the message are not logged.
 # The logger defines the common logging methods: `debug`, `info`, `warn` and `error`.
 # By default the log level is set to INFO, but can be adjusted using the `setLevel` method.
 ###
@@ -34,9 +34,14 @@ getGlobal().Logger = class Logger
     if (name.length > 0)
       m_header = "[#{name}] "
 
+  _getConsole : ->
+    if (window?.console?) then return window.console
+    if (global?.console?) then return global.console
+    return null
+
   log : (message) ->
-    if (window.console?)
-      window.console.log("#{@_header}" + message)
+    if (@_getConsole()?)
+      @_getConsole().log("#{@_header}" + message)
       return true
     return false
 
