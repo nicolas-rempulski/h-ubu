@@ -85,7 +85,7 @@ Bind / Unbind Injection
 
 The second injection mechanism use a couple of method : a method injecting the new service (_bind_), a method notifying the departure (__unbind_). This injection mechanism is used when you want to deal with the dynamism yourself.
 
-var component = {
+    var component = {
         svc : null,
     	configure: function(hub) {
     	    hub.requireService({
