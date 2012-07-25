@@ -1,0 +1,115 @@
+Using h-ubu and require.js
+==========================
+
+h-ubu and [Require.js](http://requirejs.org/) can be combined. With such combination,
+each h-ubu's component is encapsulated inside a require.js's module.
+
+This page shows how the [quickstart demo](quickstart.html) can be re-implemented using require.js. The new
+application is available [here](requirejs/requirejs-demo.html)
+
+The main html page
+------------------
+
+The main HTML page just laods jquery, hubu and require.js. The require.js script element also defines the main script
+. Notice that this main script is specified as the path to the script **without** the .js extension.
+
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>
+            H-Ubu Demo using require.js
+        </title>
+        <script src="scripts/jquery-1.4.2.js" type="text/javascript"></script>
+        <script type="text/javascript" src="scripts/hubu-all.js"></script>
+        <script data-main="scripts/main" src="scripts/require.js"></script>
+
+    </head>
+    ...
+    </html>
+
+The main script
+---------------
+
+The main script is the require.js module loaded first.
+
+    require([
+    "components/backendComponent",
+    "components/frontendComponent"], function(backend, frontend) {
+
+        $(document).ready(function(){
+            // Component registration
+            hub
+                .registerComponent(backend)
+                .registerComponent(frontend, {
+                    loginId : '#login',
+                    logoutId : '#logout',
+                    statusId : '#status'
+                })
+                .start();
+        });
+    });
+
+First, it's a require.js module defined using the 'require' function. It requires 2 modules / components : the
+backend and frontend components. Notice that the dependencies are specified as path relative to the current script
+without the _.js_ extension.
+
+The contract used for the interation between the backend / frontend is not declared as a depednency here but as a
+dependency of each component.
+
+The components
+--------------
+
+Components are wrapped within require.js modules. For the backend component is would be done like in:
+
+    define(["./UserServiceContract"], function (contract) {
+        return {
+            hub:null,
+            isUserLoggedIn:false,
+            user:null,
+
+            // The component code....
+        }
+    });
+
+We declare a dependency on the _UserServiceContract_ which will also be loaded by the frontend components. So the
+contract is also a require.js module:
+
+    /**
+     * User Service Contract definition.
+     * The implementations are empty
+     * like a Java interface
+     */
+
+    define(function () {
+        return {
+            /**
+             * Checks if the user is logged in.
+             */
+            isLoggedIn : function () {},
+
+            /**
+             * Get the logged user.
+             */
+            getUser : function () {},
+
+            /**
+             * Ask to log in.
+             * This method simulates a async call.
+             * And so returns immediately.
+             * @param {String} name
+             */
+            login: function (name) {},
+
+            /**
+             * Ask to logout in.
+             * This method simulates a async call.
+             * And so returns immediately.
+             */
+            logout: function () {}
+        };
+        }
+    );
+
+
+
+

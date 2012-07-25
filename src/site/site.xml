@@ -47,6 +47,7 @@
 		</menu>		
 		
 		<menu name="advanced-topics">
+            <item name="Using require.js" href="using-requirejs.html"/>
             <item name="Contract and Conformity" href="contract.html"/>
             <item name="Service-Orientation" href="service-orientation.html"/>
 			<item name="Developer Guide" href="developper-guide.html"/>
