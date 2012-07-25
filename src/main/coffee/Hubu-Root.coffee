@@ -1,20 +1,21 @@
 ###
-# Detects whether we exports on the Commons.js `exports` object or on `this` (so the Browser `window` object).
+# Detect the 'global' scope.
+# If 'global' exists use it, else use 'this' (Window object in browser)
 ###
-global = exports ? this
+scope = if global? then global else this
 
-global.HUBU = global.HUBU ? {}
+scope.HUBU = scope.HUBU ? {}
 
 ###
 # Extension factory placeholder.
 # Contains tuple `extension name -> contructor function`
 ###
-global.HUBU.extensions = global.HUBU.extensions ? {}
+scope.HUBU.extensions = scope.HUBU.extensions ? {}
 
-global.getHubu = -> return global.HUBU
-global.getHubuExtensions = -> return HUBU.extensions
+scope.hubu = -> return scope.HUBU
+scope.getHubuExtensions = -> return HUBU.extensions
 
-global.getGlobal = -> return global
+scope.getGlobal = -> return scope
 
 ###
 
