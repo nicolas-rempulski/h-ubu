@@ -22,7 +22,7 @@ components:
 The server just starts the HTTP Server. The router handle the request by delegating to the pages or to the error
 handler. Pages are components serving a content for a specific URL.
 
-![Architecture](node.js/node-hubu-demo.png "Architecture")
+![Architecture](nodejs/node-hubu-demo.png "Architecture")
 
 The application is available from [Github](https://github
 .com/nano-project/h-ubu/tree/master/src/site/resources/nodejs).
