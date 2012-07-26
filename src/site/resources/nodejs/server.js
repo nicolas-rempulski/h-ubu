@@ -15,14 +15,10 @@ exports.component = {
             field:"router"
         });
     },
-
     start : function() {
         http.createServer(this.router.onRequest).listen(this._port);
         console.log("Server started on port " + this._port);
     },
-
     stop : function() {},
-
     getComponentName : function() { return "server"; }
-
 };
