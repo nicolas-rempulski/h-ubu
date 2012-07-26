@@ -68,8 +68,8 @@
                                     <h3>h-ubu</h3>
                   <ul>
                   <li class="none">
-            <strong>Home</strong>
-          </li>
+                          <a href="index.html" title="Home">Home</a>
+            </li>
                   <li class="none">
                           <a href="motivations.html" title="Motivations and Concepts">Motivations and Concepts</a>
             </li>
@@ -104,8 +104,8 @@
                           <a href="using-requirejs.html" title="Using require.js">Using require.js</a>
             </li>
                   <li class="none">
-                          <a href="using-nodejs.html" title="Using h-ubu in node.js">Using h-ubu in node.js</a>
-            </li>
+            <strong>Using h-ubu in node.js</strong>
+          </li>
                   <li class="none">
                           <a href="contract.html" title="Contract and Conformity">Contract and Conformity</a>
             </li>
@@ -118,47 +118,9 @@
           </ul>
                         <h3>Project Documentation</h3>
                   <ul>
-                                                                                                                                                                                                                                                                                    <li class="expanded">
+                                                                                                                                                                                                                                                                          <li class="collapsed">
                           <a href="project-info.html" title="Project Information">Project Information</a>
-                    <ul>
-                      <li class="none">
-                          <a href="distribution-management.html" title="Distribution Management">Distribution Management</a>
-            </li>
-                      <li class="none">
-            <strong>About</strong>
-          </li>
-                      <li class="none">
-                          <a href="dependencies.html" title="Dependencies">Dependencies</a>
-            </li>
-                      <li class="none">
-                          <a href="issue-tracking.html" title="Issue Tracking">Issue Tracking</a>
-            </li>
-                      <li class="none">
-                          <a href="plugins.html" title="Project Plugins">Project Plugins</a>
-            </li>
-                      <li class="none">
-                          <a href="integration.html" title="Continuous Integration">Continuous Integration</a>
-            </li>
-                      <li class="none">
-                          <a href="license.html" title="Project License">Project License</a>
-            </li>
-                      <li class="none">
-                          <a href="mail-lists.html" title="Mailing Lists">Mailing Lists</a>
-            </li>
-                      <li class="none">
-                          <a href="team-list.html" title="Project Team">Project Team</a>
-            </li>
-                      <li class="none">
-                          <a href="source-repository.html" title="Source Repository">Source Repository</a>
-            </li>
-                      <li class="none">
-                          <a href="plugin-management.html" title="Plugin Management">Plugin Management</a>
-            </li>
-                      <li class="none">
-                          <a href="project-summary.html" title="Project Summary">Project Summary</a>
-            </li>
-              </ul>
-        </li>
+                  </li>
                                                                                       <li class="collapsed">
                           <a href="project-reports.html" title="Project Reports">Project Reports</a>
                   </li>
@@ -193,38 +155,198 @@
         
         <div id="bodyColumn"  class="span9" >
                                   
-            <h1>An injection framework in JavaScript?</h1>
+            <h1>Using h-ubu in node.js applications</h1>
 
-<p>With H-UBU, you compose your application with components. JavaScript componentization aims to modularize JavaScript code
-in order to improve the testability, maintainability and scalability of JavaScript applications.</p>
+<p>h-ubu can be used in node.js application. Node.js is a platform built on Chrome's JavaScript runtime for easily
+building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it
+lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.</p>
 
-<p>JavaScript could be considered the poor-child of web app technologies. The toolset for JavaScript is very limited
-compared to that of Java. Unit testing, static analysis and managed execution are new to JavaScript. However, the
-flexibility and the design of the language makes these tools a stringent requirement for code scalability -- especially
-in recent years, since JavaScript has become mainstream and is now used by many web app stacks.</p>
+<p>With h-ubu you gain modularity and loose-coupling. Your node's modules interact using h-ubu services,
+so does not known each others (just the service contract).</p>
 
-<p>We faced big challenges when our JavaScript application's size grew up to 60K lines of code. So, we decided to reuse
-what we're used to doing in Java and other languages: loosely-coupled autonomous components. We implemented H-UBU as a
-component framework for JavaScript, created to address the above issues.</p>
+<h1>Example</h1>
 
-<h1>H-UBU's main features</h1>
+<p>Let's build a pretty simple web application using node and h-ubu. This application is modularized into several
+components:</p>
 
 <ul>
-<li>Component definition: the application is built with components.</li>
-<li>Service-orientation: H-UBU is based on services. Components provide and require services.</li>
-<li>Contract-based interactions: components implement and use contracts (i.e. interfaces, service specifications)</li>
-<li>Synchronous and asynchronous component communication: components can interact using method calls and events.</li>
-<li>Architecture description: the application is composed by registering components. The runtime binds them.</li>
-<li>Component configuration: components can be configured -- no #id in your code anymore.</li>
-<li>Test: components are testable using Jasmine or QUnit.</li>
-<li>Component separation: components are developed in separate files; the application code is much more scalable.</li>
-<li>jQuery, CoffeeScript, MooTools: use any technology you want!</li>
+<li>the server : starting the service</li>
+<li>the router : handling the request and delegating the request to the right 'handler'</li>
+<li>the pages : able to handle a request on a specific url</li>
+<li>the error handler : customize the error management</li>
 </ul>
 
-<h1>License</h1>
+<p>The server just starts the HTTP Server. The router handle the request by delegating to the pages or to the error
+handler. Pages are components serving a content for a specific URL.</p>
 
-<p>H-UBU is licensed under the Apache License 2.0. The project was initially founded by <a href="http://www
-.akquinet.de/en">akquinet A.G.</a>, but is now founded by <a href="http://arrow-group.eu">Arrow-Group</a>.</p>
+<p><img src="node.js/mode-hubu-demo.png" alt="Architecture" title="Architecture" /></p>
+
+<p>The application is available from <a href="https://github
+.com/nano-project/h-ubu/tree/master/src/site/resources/nodejs">Github</a>.</p>
+
+<h1>Prerequisites</h1>
+
+<p>First you need to have node.js. You can download it from the <a href="http://nodejs.org/#download">node web site</a>. Moreover,
+you need h-ubu of course.</p>
+
+<h1>The main script</h1>
+
+<p>The main script (<em>main.js</em>) loads h-ubu and plugs components on the hub:</p>
+
+<pre><code>require('./hubu-all.js');
+
+var index = require('./index');
+var contact = require('./contact');
+var contract = require('./contracts');
+var server = require('./server');
+var router = require('./router-impl');
+var error = require('./error');
+
+hub
+    .registerComponent(router.component)
+    .registerComponent(index.component)
+    .registerComponent(server.component)
+    .registerComponent(contact.component)
+    .registerComponent(error.component)
+    .start();
+</code></pre>
+
+<h1>The pages</h1>
+
+<p>The pages are simple components providing the <em>page</em> service, so bascially a <em>render</em> function and a <em>path</em> function
+specifying the handled url.</p>
+
+<pre><code>var contracts = require("./contracts");
+
+exports.component = {
+    getComponentName: function() {
+        return "index page"
+    },
+    start : function() {},
+    stop : function() {},
+    configure : function(hub) {
+        hub.provideService({
+            contract: contracts.page,
+            component : this
+        });
+    },
+    render: function() {
+        return "Hello, I'm powered by h-ubu and node.js";
+    },
+    path : function() {
+        return "/";
+    }
+};
+</code></pre>
+
+<p>The component object is added to the node's <em>exports</em> object determining the public part of the module. Notice the
+requirement on the 'contract' module, specifying all contracts.</p>
+
+<h1>The router</h1>
+
+<p>the router is a bit more complex component as on each request is looks for the right handler. However,
+using services the set of pages is injected automatically:</p>
+
+<pre><code>var url = require("url");
+var contracts = require("./contracts");
+
+var component = {
+    errorHandler : null,
+    pages : [],
+    configure:function (hub) {
+        hub
+            .provideService({
+                contract:contracts.router,
+                component:this
+            })
+            .requireService({
+                contract:contracts.error,
+                component:this,
+                optional:true,
+                field:"errorHandler"
+            })
+            .requireService({
+                contract : contracts.page,
+                component: this,
+                optional : false,
+                aggregate: true,
+                field : "pages"
+            });
+    },
+    start : function() { console.log("Router started"); },
+    stop : function() { console.log("Router stopped"); },
+    getComponentName : function() { return "router"; },
+
+    // Contract implementation
+    onRequest : function(request, response) {
+        var pathname = url.parse(request.url).pathname;
+        console.log("Request for " + pathname + " received.");
+
+        // Check if we have a page
+        for ( var i = 0; i &lt; this.pages.length; i++) {
+            if (this.pages[i].path() === pathname) {
+                console.log("Matching page service found");
+                // Render the page and return
+                response.writeHead(200, {"Content-Type":"text/plain"});
+                response.write(this.pages[i].render());
+                response.end();
+                return;
+            }
+        }
+
+        // Not Found
+        console.log("Page not found...");
+        var message = "Page not found";
+        if (this.errorHandler != null) {
+            message = this.errorHandler.render();
+        }
+        response.writeHead(404, {"Content-Type":"text/plain"});
+        response.write(message);
+        response.end();
+    }
+};
+
+exports.component = component;
+</code></pre>
+
+<h1>The server component</h1>
+
+<p>The server component just starts the HTTP Server:</p>
+
+<pre><code>var http = require("http");
+var contracts = require("./contracts");
+
+exports.component = {
+    _port:8888,
+    router : null,
+    configure:function (hub, configuration) {
+        if (configuration != undefined &amp;&amp; configuration.port != undefined) {
+            this._port = configuration.port;
+        }
+
+        hub.requireService({
+            contract:contracts.router,
+            component:this,
+            field:"router"
+        });
+    },
+    start : function() {
+        http.createServer(this.router.onRequest).listen(this._port);
+        console.log("Server started on port " + this._port);
+    },
+    stop : function() {},
+    getComponentName : function() { return "server"; }
+};
+</code></pre>
+
+<h1>Running the application</h1>
+
+<p>Just run</p>
+
+<pre><code>node main.js
+</code></pre>
+
+<p>Then open your browser to(http://localhost:8888/)[http://localhost:8888/].</p>
 
                   </div>
             </div>
