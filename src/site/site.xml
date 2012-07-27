@@ -46,7 +46,7 @@
 			<item name="Testing Components" href="testing-components.html"/>
 		</menu>		
 		
-		<menu name="advanced-topics">
+		<menu name="Advanced Topics">
             <item name="Using require.js" href="using-requirejs.html"/>
             <item name="Using h-ubu in node.js" href="using-nodejs.html"/>
             <item name="Contract and Conformity" href="contract.html"/>
