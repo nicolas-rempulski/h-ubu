@@ -1,20 +1,27 @@
-Direct injection
+Direct Injection
 ===========
 
-Even if we recommend using services, sometimes you just need a more static assembly. This is possible with direct injection. With this feature you describe which component is injected within another one. So a component receive references to other components. All components must already be plugged into the hub. If not, the binding is rejected. 
+Although we recommend the use of services, sometimes you just need a more static assembly. This is possible with direct
+injection. With this feature you describe which component is injected within another one. So, a component receives
+references to other components. All components must already be plugged into the hub. If not, the binding is rejected.
 
-Bindings are declared using the `hub.bind(binding)` method. The binding parameter is an object describing the binding. This object must contain:
+Bindings are declared using the `hub.bind(binding)` method. The binding parameter is an object describing the binding.
+This object must contain:
 
  * `component` : the name or the object reference of the component to be injected
  * `to` : the name or the object reference of the component receiving the component
  * `into` : the injection mechanism. it can be either a function pointer (called with the component as parameter),
-or a String. In this latter case, to.into is injected. If to.into is a function, this function is called; if it's an object, it is just injected (assigned).
+    or a String. In this latter case, to.into is injected. If to.into is a function, this function is called; if it's
+    an object, it is just injected (assigned).
 
 Moreover, it is strongly recommended to also set:
 
-* contract : the contract followed by the binding. The component must conform to this contract. This allow to reduce the coupling and reduce the visibility issue.
+ * `contract` : the contract followed by the binding. The component must conform to this contract. This allows
+    the coupling to be reduced, and mitigates the visibility issue.
 
-If the contract is specified, h-ubu injects a **proxy**. This ensures that it uses the contract only. This behavior can be disabled by adding : `proxy:false` to the binding parameter. Then all the public members of the component are accessible. This is also the case when the contract is not defined.
+If the contract is specified, H-Ubu injects a **proxy**. This ensures that it uses the contract only. This behavior can
+be disabled by adding `proxy:false` to the binding parameter. Then, all the public members of the component are
+accessible. This is also the case when no contract is defined.
 
 The following snippet declares a binding between two components without contract:
 
@@ -28,7 +35,7 @@ The following snippet declares a binding between two components without contract
                 })
                 .start();
 
-While the next one, specifies the interaciton contract:
+While the next one specifies the interaction contract:
 
     hub
                 .registerComponent(source)

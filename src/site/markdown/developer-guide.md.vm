@@ -1,0 +1,29 @@
+Developer Guide: How to Become H-Ubu-esque
+=================================
+
+Compilation and Tests
+---------------------------
+
+H-Ubu's build system is based on Apache Maven. So to get the final artifacts just issue:
+
+    mvn clean install
+    
+To run the tests in a more convienient way, run:
+
+    mvn jasmine:bdd
+    
+Then edit your code, and refresh or open (localhost:8234). 
+
+H-Ubu's code
+--------------
+
+H-Ubu's core core is written in [CoffeeScript](http://coffeescript.org). This choice was made to reduce the
+complexity of the implementation. CoffeeScript offers a really nice trade-off: a better syntax and a good OOP design :-).
+The code is compiled into JavaScript by Maven.
+
+H-Ubu's tests are based on Jasmine but are mostly written in JavaScript.
+
+Extending H-Ubu
+--------------------
+
+Coming "soon" ;-)

@@ -1,60 +1,69 @@
 Contracts
 =======
 
-Each _hub_ has it's own service registry, containing the set of services publised by components plugged on the hub.  The services are described using _contracts_. Contracts are simple JavaScript object containing _body-less_ functions:
+Each _hub_ has its own service registry, containing the set of services published by components plugged into the hub. 
+The services are described using _contracts_. A contract is a simple JavaScript object containing _body-less_ functions:
 
 	var myContract = {
 		doSomething : function() {},
 		sayHello : function() {}
 	};
 
-Contracts are used as service specifications by h-ubu. So, components publish and require contracts. This reduces the coupling between components. It also offers visibility control. Components using services have access to the method from the contract only, and so all 'implementation details' are kept private.
+Contracts are used as service specifications by H-Ubu. So, components publish and require contracts. This reduces the
+coupling between components. It also offers visibility control. Components using services have access to the methods
+from the contract only, and so all 'implementation details' are kept private.
 
 Conformity
 ========
 
-Components providing services has to be conform to the published contract.  As stated above, a contract is a kind of interface. So the conformity rules is the following:
+Components providing services have to conform to the published contract. As stated above, a contract is a kind of
+interface. So the conformity rule is as follows:
 
 `O conforms to a contract C if and only if:for all i in C where C[i] != null => O[i] != null && typeof(C[i]) = typeOf(O[i])`
 
-It simply means that all properties from the contract must exist in the component implementing the contract, and the type must be the very same (functions are functions, objects are objects...).
+It simply means that all properties from the contract must exist in the component implementing the contract, and the
+type must be the very same (functions are functions, objects are objects...).
 
 Note about system, model and metamodel
 ===============================
 
-This conformity definition is an implementation of 'Chi' in `Metamodel <- chi <- Model -> mu -> System` where chi is `isObjectConformToContract` and mu is `representationOf`.
+This conformity definition is an implementation of 'Chi' in `Metamodel <- chi <- Model -> mu -> System` where chi is
+`isObjectConformToContract` and mu is `representationOf`.
 
-Components can implement contracts. When correctly implemented, the component conforms to the contract. Components can use other components through contracts. The component can access only methods and fields defined in the contract.
+Components can implement contracts. When correctly implemented, the component conforms to the contract. Components can
+use other components through contracts. The component can access only methods and fields defined in the contract.
 
 Note about Contract scoping
 ====================
 
-In order to ensure that a component has access only to the contract-part of the component, a proxy containing only the contract is injected by default. 
+In order to ensure that a component has access only to the contract-part of the component, a proxy containing only the
+contract is injected by default.
 
 Abstract Component Contract
 ======================
 
-Each components must be conform to the `AbstractComponent` contract:
+Each component must conform to the `AbstractComponent` contract:
 
     /**
      * Creates an abstract component. This method is not intended to be used,
-     * and is just here for documentation purpose. Indeed, the returned object
-     * contains the four required methods that <bold>all</bold> component must
-     * have. Any Javascript object with those 4 methods can be cosidered as a
+     * and is just here for documentation purposes. Indeed, the returned object
+     * contains the four required methods that <bold>all</bold> components must
+     * have. Any JavaScript object with those 4 methods can be considered as a
      * valid component.
      * The four required methods are:
      *<ul>
      * <li><code>getComponentName()<code> : return the default component name</li>
-     * <li><code>configurate(hub, [configuration])</code> : configures the component</li>
-     * <li><code>start()</code> / <code>stop()</code> : called when the component is started / stopped</li>
+     * <li><code>configure(hub, [configuration])</code> : configures the component</li>
+     * <li><code>start()</code> : called when the component is started</li>
+     * <li><code>stop()</code> : called when the component is stopped</li>
      * </ul>
-     * Returned objects do not intend to be used, they are just mock / empty instances.
+     * Returned objects are not intended to be used, they are just mock/empty instances.
      * @constructor
      */
     HUBU.AbstractComponent = function() {
 
         /**
-         * Gets the component name.
+         * Gets the component's name.
          * If an 'id' is given in the hub configuration, this method is replaced.
          * @return the component name
          */
@@ -63,7 +72,7 @@ Each components must be conform to the `AbstractComponent` contract:
         /**
          * Configures the component.
          * This method is called by the hub when the component starts or
-         * when the component is plugged when the hub is already started.
+         * when the component is plugged in, if the hub is already started.
          * @param hub the hub
          * @param configuration optional parameter used to pass the compoment
          * configuration. The configuration object is a simple map <code>
@@ -74,9 +83,9 @@ Each components must be conform to the `AbstractComponent` contract:
         /**
          * Starts the component.
          * This method is called by the hub when the hub starts or
-         * when the component is plugged when the hub is already started.
-         * This methods is always called after the configure method.
-         * Once called the component can send events and used bound
+         * when the component is plugged in, if the hub is already started.
+         * This method is always called after the configure method.
+         * Once called, the component can send events and use bound
          * components.
          */
         this.start = function() {        throw "AbstractComponent is an abstract class";    }
@@ -85,11 +94,11 @@ Each components must be conform to the `AbstractComponent` contract:
          * Stop the component.
          * This method is called by the hub when the hub is stopped or
          * when the component is unplugged.
-         * This methods is always called after the start method.
+         * This method is always called after the start method.
          * Once called, the component must not send events or
          * access bound components.
          */
         this.stop = function() {        throw "AbstractComponent is an abstract class";    }
     };
 
-So, all components must contain those methods.
+So, all components must contain these methods.
