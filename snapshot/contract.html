@@ -156,7 +156,8 @@
                                   
             <h1>Contracts</h1>
 
-<p>Each <em>hub</em> has it's own service registry, containing the set of services publised by components plugged on the hub.  The services are described using <em>contracts</em>. Contracts are simple JavaScript object containing <em>body-less</em> functions:</p>
+<p>Each <em>hub</em> has its own service registry, containing the set of services published by components plugged into the hub. 
+The services are described using <em>contracts</em>. A contract is a simple JavaScript object containing <em>body-less</em> functions:</p>
 
 <pre><code>var myContract = {
     doSomething : function() {},
@@ -164,49 +165,57 @@
 };
 </code></pre>
 
-<p>Contracts are used as service specifications by h-ubu. So, components publish and require contracts. This reduces the coupling between components. It also offers visibility control. Components using services have access to the method from the contract only, and so all 'implementation details' are kept private.</p>
+<p>Contracts are used as service specifications by H-Ubu. So, components publish and require contracts. This reduces the
+coupling between components. It also offers visibility control. Components using services have access to the methods
+from the contract only, and so all 'implementation details' are kept private.</p>
 
 <h1>Conformity</h1>
 
-<p>Components providing services has to be conform to the published contract.  As stated above, a contract is a kind of interface. So the conformity rules is the following:</p>
+<p>Components providing services have to conform to the published contract. As stated above, a contract is a kind of
+interface. So the conformity rule is as follows:</p>
 
 <p><code>O conforms to a contract C if and only if:for all i in C where C[i] != null =&gt; O[i] != null &amp;&amp; typeof(C[i]) = typeOf(O[i])</code></p>
 
-<p>It simply means that all properties from the contract must exist in the component implementing the contract, and the type must be the very same (functions are functions, objects are objects...).</p>
+<p>It simply means that all properties from the contract must exist in the component implementing the contract, and the
+type must be the very same (functions are functions, objects are objects...).</p>
 
 <h1>Note about system, model and metamodel</h1>
 
-<p>This conformity definition is an implementation of 'Chi' in <code>Metamodel &lt;- chi &lt;- Model -&gt; mu -&gt; System</code> where chi is <code>isObjectConformToContract</code> and mu is <code>representationOf</code>.</p>
+<p>This conformity definition is an implementation of 'Chi' in <code>Metamodel &lt;- chi &lt;- Model -&gt; mu -&gt; System</code> where chi is
+<code>isObjectConformToContract</code> and mu is <code>representationOf</code>.</p>
 
-<p>Components can implement contracts. When correctly implemented, the component conforms to the contract. Components can use other components through contracts. The component can access only methods and fields defined in the contract.</p>
+<p>Components can implement contracts. When correctly implemented, the component conforms to the contract. Components can
+use other components through contracts. The component can access only methods and fields defined in the contract.</p>
 
 <h1>Note about Contract scoping</h1>
 
-<p>In order to ensure that a component has access only to the contract-part of the component, a proxy containing only the contract is injected by default. </p>
+<p>In order to ensure that a component has access only to the contract-part of the component, a proxy containing only the
+contract is injected by default.</p>
 
 <h1>Abstract Component Contract</h1>
 
-<p>Each components must be conform to the <code>AbstractComponent</code> contract:</p>
+<p>Each component must conform to the <code>AbstractComponent</code> contract:</p>
 
 <pre><code>/**
  * Creates an abstract component. This method is not intended to be used,
- * and is just here for documentation purpose. Indeed, the returned object
- * contains the four required methods that &lt;bold&gt;all&lt;/bold&gt; component must
- * have. Any Javascript object with those 4 methods can be cosidered as a
+ * and is just here for documentation purposes. Indeed, the returned object
+ * contains the four required methods that &lt;bold&gt;all&lt;/bold&gt; components must
+ * have. Any JavaScript object with those 4 methods can be considered as a
  * valid component.
  * The four required methods are:
  *&lt;ul&gt;
  * &lt;li&gt;&lt;code&gt;getComponentName()&lt;code&gt; : return the default component name&lt;/li&gt;
- * &lt;li&gt;&lt;code&gt;configurate(hub, [configuration])&lt;/code&gt; : configures the component&lt;/li&gt;
- * &lt;li&gt;&lt;code&gt;start()&lt;/code&gt; / &lt;code&gt;stop()&lt;/code&gt; : called when the component is started / stopped&lt;/li&gt;
+ * &lt;li&gt;&lt;code&gt;configure(hub, [configuration])&lt;/code&gt; : configures the component&lt;/li&gt;
+ * &lt;li&gt;&lt;code&gt;start()&lt;/code&gt; : called when the component is started&lt;/li&gt;
+ * &lt;li&gt;&lt;code&gt;stop()&lt;/code&gt; : called when the component is stopped&lt;/li&gt;
  * &lt;/ul&gt;
- * Returned objects do not intend to be used, they are just mock / empty instances.
+ * Returned objects are not intended to be used, they are just mock/empty instances.
  * @constructor
  */
 HUBU.AbstractComponent = function() {
 
     /**
-     * Gets the component name.
+     * Gets the component's name.
      * If an 'id' is given in the hub configuration, this method is replaced.
      * @return the component name
      */
@@ -215,7 +224,7 @@ HUBU.AbstractComponent = function() {
     /**
      * Configures the component.
      * This method is called by the hub when the component starts or
-     * when the component is plugged when the hub is already started.
+     * when the component is plugged in, if the hub is already started.
      * @param hub the hub
      * @param configuration optional parameter used to pass the compoment
      * configuration. The configuration object is a simple map &lt;code&gt;
@@ -226,9 +235,9 @@ HUBU.AbstractComponent = function() {
     /**
      * Starts the component.
      * This method is called by the hub when the hub starts or
-     * when the component is plugged when the hub is already started.
-     * This methods is always called after the configure method.
-     * Once called the component can send events and used bound
+     * when the component is plugged in, if the hub is already started.
+     * This method is always called after the configure method.
+     * Once called, the component can send events and use bound
      * components.
      */
     this.start = function() {        throw "AbstractComponent is an abstract class";    }
@@ -237,7 +246,7 @@ HUBU.AbstractComponent = function() {
      * Stop the component.
      * This method is called by the hub when the hub is stopped or
      * when the component is unplugged.
-     * This methods is always called after the start method.
+     * This method is always called after the start method.
      * Once called, the component must not send events or
      * access bound components.
      */
@@ -245,7 +254,7 @@ HUBU.AbstractComponent = function() {
 };
 </code></pre>
 
-<p>So, all components must contain those methods.</p>
+<p>So, all components must contain these methods.</p>
 
                   </div>
             </div>

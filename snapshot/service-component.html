@@ -156,29 +156,28 @@
                                   
             <h1>Service-Oriented Components</h1>
 
-<p>This page explains how to make h-ubu components <code>service component</code>, i.e. component requiring and providing services
-allowing loose-coupled dynamic bindings.</p>
+<p>This page explains how to make a H-Ubu component a <code>service component</code>, i.e. a component requiring and providing
+services, allowing loosely-coupled dynamic bindings.</p>
 
 <h2>Concepts</h2>
 
-<p>Using service components has several benefits. With such orientation, components does interacts together only using
-<em>service specification</em> (<code>contract</code>) making service provider subtituable. The binding is dynamic and so you can
+<p>Using service components has several benefits. So orientated, components interact using only
+<em>service specifications</em> (<code>contracts</code>), making service providers substitutable. The binding is dynamic and so you can
 switch providers at runtime.</p>
 
-<p>However, manual development of service-oriented components is error-prone and complex. So H-UBU provides an extension
- dealing with most of the concerns and so let you focus on the component logic only. As an example,
- required services are injected automatically within methods or members of the component,
- while service publication is also automated.</p>
+<p>However, manual development of service-oriented components is error-prone and complex. So H-Ubu provides an extension
+dealing with most of the concerns and so letting you focus on the component logic only. As an example, required services
+are injected automatically within methods or members of the component, while service publication is also automated.</p>
 
 <h2>Description</h2>
 
-<p>The component needs to describe itself to tell H-UBU what are the required services and provided service. This
-description is made using a API, either by an external tiers or by the component itself. In this latter case,
+<p>The component needs to describe itself to tell H-Ubu what its required and provided services are. This
+description is done using an API, either by an external tier or by the component itself. In this latter case,
 we recommend implementing the description within the <code>configure</code> method.</p>
 
 <h2>Requiring Services</h2>
 
-<p>To require a service and to receive the service object automatically, you need to describe a service dependency
+<p>To require a service and receive the service object automatically, you need to describe a service dependency
 specifying the required contract, the service filter, how the service object(s) is/are injected and so on.</p>
 
 <pre><code>hub.requireService({
@@ -191,10 +190,10 @@ specifying the required contract, the service filter, how the service object(s) 
 });
 </code></pre>
 
-<p>This instructs h-ubu to inject the service <code>contract</code> with the property <code>lg</code> set to <code>fr</code> into the filed <code>mysvc</code> of
+<p>This instructs H-Ubu to inject the service <code>contract</code> with the property <code>lg</code> set to <code>fr</code> into the field <code>mysvc</code> of
 the component (<code>cmp</code>). This dependency is (by default) mandatory and scalar (only one service injected).</p>
 
-<p>A component can directly declare the same dependency in his <code>configure</code> method:</p>
+<p>A component can directly declare the same dependency in its <code>configure</code> method:</p>
 
 <pre><code>configure : function(hub, conf) {
     hub.requireService({
@@ -211,13 +210,13 @@ the component (<code>cmp</code>). This dependency is (by default) mandatory and 
 <p>Dependencies can be:</p>
 
 <ul>
-<li><em>scalar</em> or <em>aggregate</em> : Aggregate dependencies are bound to all matching services.</li>
-<li><em>mandatory</em> or <em>optional</em>: Once unresolved, mandatory dependencies instructs H-UBU to unregisters all the published
-services provided by the same instance until the dependency is resolved again.</li>
+<li><em>scalar</em> or <em>aggregate</em>: Aggregate dependencies are bound to all matching services.</li>
+<li><em>mandatory</em> or <em>optional</em>: Once unresolved, a mandatory dependency instructs H-Ubu to unregister all services
+provided by the same instance until the dependency is resolved again.</li>
 </ul>
 
-<p>Dependencies can be inject withing fields or using <em>bind/unbind</em> methods. Field injection is the easiest,
-as H-UBU injects the service within the given field. For aggregate dependencies the array is populated with the
+<p>Dependencies can be injected within fields or using <em>bind/unbind</em> methods. Field injection is the easiest,
+as H-Ubu injects the service within the given field. For aggregate dependencies, the array is populated with the
 matching services:</p>
 
 <pre><code>var component = {
@@ -255,7 +254,7 @@ matching services:</p>
 };
 </code></pre>
 
-<p>Using bind and unbind methods let you be notified when a new service is arriving and when a service is leaving:</p>
+<p>Using bind and unbind methods allows you to be notified when a new service appears and when a service disappears:</p>
 
 <pre><code>var component = {
         services = [],
@@ -291,7 +290,7 @@ matching services:</p>
     };
 </code></pre>
 
-<p>Bind and Unbind method receives the service object and as second argument the service reference.</p>
+<p>The bind and unbind methods receive the service object and, as a second argument, the service reference.</p>
 
 <h2>Publishing Services</h2>
 

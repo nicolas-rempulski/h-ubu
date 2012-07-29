@@ -94,8 +94,8 @@
                           <a href="receiving-and-sending-events.html" title="Receiving and Sending Events">Receiving and Sending Events</a>
             </li>
                   <li class="none">
-            <strong>Testing Components</strong>
-          </li>
+                          <a href="testing-components.html" title="Testing Components">Testing Components</a>
+            </li>
           </ul>
                         <h3>Advanced Topics</h3>
                   <ul>
@@ -154,38 +154,33 @@
         
         <div id="bodyColumn"  class="span10" >
                                   
-            <h1>Testing Components</h1>
+            <h1>Developer Guide: How to Become H-Ubu-esque</h1>
 
-<h2>Principles</h2>
+<h2>Compilation and Tests</h2>
 
-<p>Testing components is really simple. You can either test the component directly and mock the required services (as the
-interactions are contract-based, mocking is really simple), or else plug in your component - or set of components - and
-test the published services.</p>
+<p>H-Ubu's build system is based on Apache Maven. So to get the final artifacts just issue:</p>
 
-<h2>Testing with Jasmine</h2>
-
-<p><a href="http://pivotal.github.com/jasmine/">Jasmine</a> is a behavior-driven development framework for testing JavaScript code.
-It does not depend on any other JavaScript frameworks. It does not require a DOM. And it has a clean, obvious syntax
-so that you can write tests easily.</p>
-
-<p>Testing H-Ubu components with Jasmine is very straightforward:</p>
-
-<pre><code>describe("Check my component", function() {
-      it("test the published service", function() {
-            var component = // ... retrieve the component
-            var hub = new HUBU.hub();   // We create a new hub for the test
-            hub.registerComponent(component).start();
-
-            // Here you can test your component. It's already managed by the hub.   
-
-            hub.stop();
-     });
-});
+<pre><code>mvn clean install
 </code></pre>
 
-<h2>Testing with QUnit</h2>
+<p>To run the tests in a more convienient way, run:</p>
 
-<p>Coming <em>soon</em> ;-)</p>
+<pre><code>mvn jasmine:bdd
+</code></pre>
+
+<p>Then edit your code, and refresh or open (localhost:8234). </p>
+
+<h2>H-Ubu's code</h2>
+
+<p>H-Ubu's core core is written in <a href="http://coffeescript.org">CoffeeScript</a>. This choice was made to reduce the
+complexity of the implementation. CoffeeScript offers a really nice trade-off: a better syntax and a good OOP design :-).
+The code is compiled into JavaScript by Maven.</p>
+
+<p>H-Ubu's tests are based on Jasmine but are mostly written in JavaScript.</p>
+
+<h2>Extending H-Ubu</h2>
+
+<p>Coming "soon" ;-)</p>
 
                   </div>
             </div>

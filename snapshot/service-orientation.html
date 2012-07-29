@@ -154,112 +154,126 @@
         
         <div id="bodyColumn"  class="span10" >
                                   
-            <h1>Service-Orientation</h1>
+            <h1>Service Orientation</h1>
 
-<p>This page explains how is built the service-orientation.</p>
+<p>This page explains how the service orientation is built.</p>
 
 <h2>Concepts and OSGi</h2>
 
-<p>H-UBU's Service Orientation is closely related to OSGi Service Layer, and so you will recognize the same 'concepts'. Basically, service-orientations is composed by 4 entities:</p>
+<p>H-Ubu's Service Orientation is closely related to OSGi Service Layer, so you will recognize the same concepts.
+Basically, service orientation is composed by 4 entities:</p>
 
 <ul>
 <li><em>Service Specification</em> : the description of the service.</li>
-<li><em>Service Registry</em> : storing the currently available services.</li>
-<li><em>Service Publisher</em> : implementing and publishing a service specification.</li>
-<li><em>Service Consumer</em> : looking for services and using them</li>
+<li><em>Service Registry</em> : stores the currently available services.</li>
+<li><em>Service Publisher</em> : implements and publishes a service specification.</li>
+<li><em>Service Consumer</em> : looks for services and uses them.</li>
 </ul>
 
-<p>H-UBU service orientation implements those concepts using the following entities:</p>
+<p>H-Ubu service orientation implements these concepts using the following entities:</p>
 
-<p><em>Service Specification</em>
-Services are represented by <em>specification</em>. We actually used H-UBU's <em>Contract</em> as specification. Providers implements <em>contracts</em>, and consumers requires <em>contracts</em>.</p>
+<p><em>Service Specification</em><br/>
+Services are represented by <em>specifications</em>. We use H-Ubu's <em>contract</em> as a specification. Providers implement, and
+consumers require <em>contracts</em>.</p>
 
-<p><em>Service Properties</em>
-Each service providers can decide to add properties to a service. Those properties will be published with the service and be used for service selection.</p>
+<p><em>Service Properties</em><br/>
+Each service provider can add properties to a service. These properties will be published with the service and
+then used for service selection.</p>
 
-<p><em>Service Registration</em>
-When a component publishes a service inside the service registry it receives a service registration object. This object
-is required to unregisters the service or to modify the service properties.</p>
+<p><em>Service Registration</em><br/>
+When a component publishes a service to the service registry, it receives a service registration object. This object
+is required to unregister the service or to modify the service properties.</p>
 
-<p><em>Service Reference</em>
-When a component requires a service, it first performs a lookup within the service registry. The results of this lookup is a list of service reference. Each returned service reference contains the service properties (published by the
-provider). It enables service filtering and selection.</p>
+<p><em>Service Reference</em><br/>
+When a component requires a service, it first performs a lookup within the service registry. The result of this lookup
+is a list of service references. Each returned service reference contains the service properties published by the
+provider. These enable service filtering and selection.</p>
 
-<p><em>Service Binding</em>
-Once a component has selected the 'ideal' service reference it can get the service object by asking the registry to
+<p><em>Service Binding</em><br/>
+Once a component has selected the 'ideal' service reference, it can get the service object by asking the registry to
 get the service object from a specific reference.</p>
 
-<p><em>Service Events</em>
-Services are dynamic by nature, so can be published, modified and unpublished at anytime. Consumers can <em>listen</em> such event by registering a service listener. The listener will be notified when an event occurs.</p>
+<p><em>Service Events</em><br/>
+Services are dynamic in nature, so can be published, modified and unpublished at any time. Consumers can <em>listen</em> for
+these events by registering a service listener. The listener will be notified when an event occurs.</p>
 
-<p><em>Service Selection and Filtering</em>
-Service lookups and service listeners can select services either based on the <em>contract</em> (service specification) or
+<p><em>Service Selection and Filtering</em><br/>
+Service lookups and service listeners can select services based on either the <em>contract</em> (service specification) or
 service properties.</p>
 
 <h2>Accessing the Service Registry</h2>
 
-<p>Each <code>hub</code> has it's own service registry. So, <code>hub.getServiceRegistry()</code> gives you access to the service registry. However, the <code>hub</code> object is extended to give access to more high level functions avoiding a direct access to the registry:</p>
+<p>Each <code>hub</code> has its own service registry. So, <code>hub.getServiceRegistry()</code> gives you access to the service registry.
+However, the <code>hub</code> object is extended to give access to more high level functions, avoiding the need for direct access
+to the registry:</p>
 
 <ul>
-<li><code>hub.registerService(component, contract, {properties})</code>: registers a service and returns the service registration</li>
-<li><code>hub.unregisterService(registration)</code>: unregisters the service</li>
-<li><code>hub.getServiceReferences(contract, filter)</code> : searches for service references implementing the given contract and matching the given filter (function receiving a service reference as parameter). Both arguments are optional. Passing no arguments,
-returns all services. If no service match an empty list is returned.</li>
-<li><code>hub.getServiceReference(contract, filter)</code> : similar to the previous method, but returned only one candidate, <code>null</code>
-if no service matches.</li>
-<li><code>hub.getService(component, reference)</code> : gets the service objects for the given reference. <code>null</code> if the reference is not valid anymore.</li>
+<li><code>hub.registerService(component, contract, {properties})</code> : registers a service and returns the service registration</li>
+<li><code>hub.unregisterService(registration)</code> : unregisters the service</li>
+<li><code>hub.getServiceReferences(contract, filter)</code> : searches for service references implementing the given contract and
+matching the given filter (function receiving a service reference as parameter). Both arguments are optional.
+Passing no arguments results in all services being returned. If no service matches the filter, an empty list is returned.</li>
+<li><code>hub.getServiceReference(contract, filter)</code> : similar to the previous method, but returns only one candidate, <code>null</code>,
+if no service is matched.</li>
+<li><code>hub.getService(component, reference)</code> : gets the service objects for the given reference. <code>null</code> if the reference is no longer valid.</li>
 <li><code>hub.registerServiceListener(configuration)</code> : registers a service listener. The <code>configuration</code> object contains the
-required <code>contract</code> (optional), the <code>filter</code> method (optional), and the function called when a service event matches
-(<code>listener</code>). This method receives a <code>Service Event</code> as parameter.</li>
+required <code>contract</code> (optional), the <code>filter</code> method (optional), and <code>listener</code>, the function called when a service
+event matches. This method receives a <code>Service Event</code> as parameter.</li>
 <li><code>hub.unregisterServiceListener(configuration)</code> : unregisters the service listener.</li>
 </ul>
 
 <h2>Service Publication</h2>
 
-<p>Publishing a service is quite simple from a component using the <code>registerService</code> function. Let's imagine the following contract:</p>
+<p>Publishing a service is quite simple using the <code>registerService</code> function. Let's imagine the following contract:</p>
 
 <pre><code>var contract = {
     doSomething : function() {}
 }
 </code></pre>
 
-<p>Registering this service in the <code>start</code> method of a component would be:</p>
+<p>Registering this service in the <code>start</code> method of a component is done as follows:</p>
 
 <pre><code>start: function() {
     this.reg = hub.registerService(this, contract);
 }
 </code></pre>
 
-<p>Note that we store the registration object. This registration object allows unregistering or modifying the service.</p>
+<p>Note that we store the registration object. This registration object allow us to modify or unregister the service.</p>
 
-<p>All services are automatically unregistered when the component stops. However, you can unregister the at anytime with:</p>
+<p>All services are automatically unregistered when the component stops. However, you can unregister a service at any time with:</p>
 
 <pre><code>hub.unregisterService(this.reg);
 this.reg = null;
 </code></pre>
 
-<p>Services can be published with properties. Those properties allows consumers to select the right service provider.
+<p>Services can be published with properties. These properties allow consumers to select the right service provider.
 All services are published with:</p>
 
 <ul>
 <li><em>service.contract</em> : the service contract</li>
 <li><em>service.provider</em> : the component providing the service</li>
-<li><em>service.id</em> : an integer uniquely identifying the service. Notice that this number is not kept across registrations.</li>
+<li><em>service.id</em> : an integer uniquely identifying the service. Note that this number is not retained over registrations.</li>
 </ul>
 
-<p>Providers can add any properties by giving the property map (<code>string -&gt; object</code>) to the <em>registerService</em> method:</p>
+<p>Providers can add any property by passing a property map (<code>string -&gt; object</code>) to the <em>registerService</em> method:</p>
 
 <pre><code>start: function() {
     this.reg = hub.registerService(this, contract, {"myprop": "myvalue", "myprop2" : 1});
 }
 </code></pre>
 
-<h2>Looking for a Service and using it</h2>
+<h2>Looking for a service and using it</h2>
 
-<p>In addition to publish services, components can also consume them. To use a service, the component must 1) look for the service, 2) get the service and use it, 3) release the service.</p>
+<p>In addition to publishing services, components can also consume them. To use a service, the component must:</p>
 
-<p><em>1) Service Lookup</em>
-Service lookup can be done by contract and / or by properties (using a filter):</p>
+<ol>
+<li>Look for the service</li>
+<li>Get the service and use it</li>
+<li>Release the service.</li>
+</ol>
+
+<p><em>1) Service Lookup</em><br/>
+Service lookup can be done by contract and/or properties (using a filter):</p>
 
 <pre><code>// Look for all services implementing the given contract
 var refs[] = hub.getServiceReferences(contract);
@@ -269,7 +283,7 @@ refs[] = hub.getServiceReferences(contract, function(ref) {
     return ref.getProperty("myprop") === "myvalue"
 ));
 
-// Only by property
+// By property only
 refs[] = hub.getServiceReferences(null, function(ref) {
     return ref.getProperty("myprop") === "myvalue"
 ));
@@ -279,7 +293,7 @@ refs[] = hub.getServiceReferences();
 </code></pre>
 
 <p>You need to expect to get an empty array if no services match the request. The filter is a function receiving the
-<code>ServiceReference</code> to check. It must returns <code>true</code> if the service match (and so will be selected), <code>false</code> otherwise.</p>
+<code>ServiceReference</code> to check. It must return <code>true</code> if the service matches (and will therefore be selected), <code>false</code> otherwise.</p>
 
 <p>The previous methods return an array, however if you want only one provider, you can use:</p>
 
@@ -287,14 +301,14 @@ refs[] = hub.getServiceReferences();
 var ref = hub.getServiceReference(contract);
 
 // Look for a service implementing the given contract, with 'myprop' = 'myvalue'
-ref = hub.getServiceReferences(contract, function(ref) {
+ref = hub.getServiceReference(contract, function(ref) {
     return ref.getProperty("myprop") === "myvalue"
 ));
 </code></pre>
 
 <p>In that case, you have to check if the result is <code>null</code> (no matching provider).</p>
 
-<p><em>2) Service Binding</em>
+<p><em>2) Service Binding</em><br/>
 Once you get the reference you want to use, you need to retrieve the service object. You achieve this using the <code>getService</code> method:</p>
 
 <pre><code>var ref = ...;
@@ -308,9 +322,8 @@ if (svc != null) {
 <code>null</code> because the service provider may have unregistered the service in between. If the service object is not <code>null</code>,
 you can use the service object.</p>
 
-<p><em>3) Releasing services</em></p>
-
-<p>Once your components does not need a service anymore, it <em>must</em> release it using the <code>ungetService</code> method:</p>
+<p><em>3) Releasing services</em><br/>
+Once your component does not need a service anymore, it <em>must</em> release it using the <code>ungetService</code> method:</p>
 
 <pre><code>var ref = ...
 // ... some code using the reference
@@ -331,7 +344,7 @@ hub.ungetService(ref);
          this.reg = this.hub.registerService(this, contract);
      },
      stop: function() {
-         // Even if hubu will manage it, I will unregister my service myself
+         // Even though H-Ubu will manage it, I will unregister my service myself
          this.hub.unregisterService(this.reg);
      },
      getComponentName: function() { return "provider"; },
@@ -374,18 +387,21 @@ hub.ungetService(ref);
 
 <h2>Listening Service Events</h2>
 
-<p>Services are dynamic by nature. So, they can be published, modified and unpublished at anytime. Be aware, that depending on your application, this dynamism may be limited but may still exist.</p>
+<p>Services are dynamic by nature. So, they can be published, modified and unpublished at any time. Be aware that,
+depending on your application, this dynamism may be limited but may still exist.</p>
 
-<p>So, to track service dynamism, H-UBU's components can implement service listeners. Those listeners are notified when a (matching) service  arrives, leaves or is modified. As for service lookup, registering a service listener can 
-select the matching services by contract and/or by properties. To be notified, you need to register a <code>Service Listener</code> object on the hub. This object contains:</p>
+<p>So, to track service dynamism, H-Ubu's components can implement service listeners. These listeners are notified when a
+(matching) service arrives, leaves or is modified. As for service lookup, registering a service listener can
+select the matching services by contract and/or by properties. To be notified, you need to register a <code>Service Listener</code>
+object on the hub. This object contains:</p>
 
 <ul>
-<li><code>contract</code> : the required contract, can be <code>null</code></li>
-<li><code>filter</code> : a filter, i.e. a function checking a given <code>Service Reference</code>, can be <code>null</code></li>
+<li><code>contract</code> : the contract required (may be <code>null</code>)</li>
+<li><code>filter</code> : a filter, i.e. a function checking the properties of a given <code>Service Reference</code> (may be <code>null</code>)</li>
 <li><code>listener</code> : a function receiving a <code>Service Event</code> object. This attribute is mandatory.</li>
 </ul>
 
-<p>So, a valid listener hunting providers implementing the <code>MyContract</code> service would be: </p>
+<p>So, a valid listener interested in providers implementing the <code>MyContract</code> service could be:</p>
 
 <pre><code>var listenAllMyContractService = {
         contract : myContract,
@@ -400,7 +416,7 @@ select the matching services by contract and/or by properties. To be notified, y
     }
 </code></pre>
 
-<p>We can also have a contract and a filter such as in :</p>
+<p>We can also have a contract and a filter, such as:</p>
 
 <p>var listenAllFrenchContractService = {
             contract : myContract,
@@ -416,32 +432,34 @@ select the matching services by contract and/or by properties. To be notified, y
             }
         }</p>
 
-<p>Once your listeners are defined, you can registers it using the <code>registerServiceListener</code> function:</p>
+<p>Once your listeners are defined, you can register them using the <code>registerServiceListener</code> function:</p>
 
 <pre><code>    hub.registerServiceListener(listenAllMyContractService);
     hub.registerServiceListener(listenAllFrenchContractService);
 </code></pre>
 
-<p>Don't forget to unregister service listeners when you are not interested by the events anymore. As the service listeners are not attached to components, they are not unregistered automatically.</p>
+<p>Don't forget to unregister service listeners when you are not interested in those events anymore. As service listeners
+are not attached to components, they are not unregistered automatically.</p>
 
 <pre><code>    hub.unregisterServiceListener(listenAllMyContractService);
     hub.unregisterServiceListener(listenAllFrenchContractService);
 </code></pre>
 
-<p>Service listener's filters should be stateless and rely on the given service reference only.</p>
+<p>Service listener filters should be stateless and rely on the given service reference only.</p>
 
 <h2>Service Modification</h2>
 
-<p>The previous section has shown how you can handle service arrival and departure, but there is another type of event : the service modification. A modification happens when the service provider changes the service properties. </p>
+<p>The previous section has shown how you can handle service arrival and departure, but there is another type of event:
+service modification. A modification happens when the service provider changes the service properties.</p>
 
-<p>Service Listener with a filter receives two type of events when a service is modified:</p>
+<p>A service listener with a filter receives two type of events when a service is modified:</p>
 
 <ul>
-<li><code>SOC.ServiceEvent.MODIFIED</code> when the service is modified, still matches or matches for the first time the filter</li>
-<li><code>SOC.ServiceEvent.MODIFIED_ENDMATCH</code> when the service is modified but does not match the filter <em>anymore</em></li>
+<li><code>SOC.ServiceEvent.MODIFIED</code> when the service is modified, and still matches the filter or matches the filter for the first time</li>
+<li><code>SOC.ServiceEvent.MODIFIED_ENDMATCH</code> when the service is modified but <em>no longer</em> matches the filter</li>
 </ul>
 
-<p>So, be careful that the <em>MODIFIED</em> event can be considered as a service arrival if the filter matches against the reference for the first time.</p>
+<p>So, be careful in that the <em>MODIFIED</em> event can be considered as a service arrival if the filter matches against the reference for the first time.</p>
 
 <h2>Creating your own service registry</h2>
 
@@ -450,7 +468,7 @@ select the matching services by contract and/or by properties. To be notified, y
 <pre><code>var registry = new SOC.ServiceRegistry(hub);
 </code></pre>
 
-<p>Be careful that this means that the hub has 2 service registries.</p>
+<p>Be careful, this means that the hub now has two service registries.</p>
 
                   </div>
             </div>

@@ -156,20 +156,20 @@
                                   
             <h1>Service Dependencies</h1>
 
-<p>Required services are modelized as service dependencies. Each service dependencies target a specific <em>contract</em> and can be:</p>
+<p>Required services are modeled as service dependencies. Each service dependency targets a specific <em>contract</em> and can be:</p>
 
 <ul>
-<li>mandatory / optional : mandatory dependencies impacts the published services</li>
-<li>scalar / aggregate : aggregate dependencies are bound to all matching providers. Scalar ones are bound to only one.</li>
+<li>mandatory / optional : mandatory dependencies impact the published services; optional ones do not.</li>
+<li>scalar / aggregate : aggregate dependencies are bound to all matching providers; scalar ones are bound to only one.</li>
 <li>filtered : filtered dependencies select the providers.</li>
 </ul>
 
-<p>Service Dependencies are injected either within fields or using <em>bind</em> / <em>unbind</em> methods. </p>
+<p>Service dependencies are injected either within fields or using <em>bind</em> / <em>unbind</em> methods.</p>
 
 <h1>Requiring Services</h1>
 
-<p>To require a service and to receive the service object automatically, you need to describe a service dependency
-specifying the required contract, the service filter, how the service object(s) is/are injected and so on.</p>
+<p>To require a service and receive the service object automatically, you need to describe a service dependency
+specifying the required contract, the service filter, how the service object/s is/are injected and so on.</p>
 
 <pre><code>hub.requireService({
     component: cmp,
@@ -181,7 +181,7 @@ specifying the required contract, the service filter, how the service object(s) 
 });
 </code></pre>
 
-<p>This instructs h-ubu to inject the service <code>contract</code> with the property <code>lg</code> set to <code>fr</code> into the field <code>mysvc</code> of
+<p>This instructs H-Ubu to inject the service <code>contract</code> with the property <code>lg</code> set to <code>fr</code> into the field <code>mysvc</code> of
 the component (<code>cmp</code>). This dependency is (by default) mandatory and scalar (only one service injected).</p>
 
 <p>A component can directly declare the same dependency in its <code>configure</code> method:</p>
@@ -202,12 +202,16 @@ the component (<code>cmp</code>). This dependency is (by default) mandatory and 
 
 <ul>
 <li><em>scalar</em> or <em>aggregate</em> : Aggregate dependencies are bound to all matching services.</li>
-<li><em>mandatory</em> or <em>optional</em>: Once unresolved, mandatory dependencies instructs h-ubu to unregister all the published services provided by the same instance until the dependency is resolved again.</li>
+<li><em>mandatory</em> or <em>optional</em>: Once unresolved, mandatory dependencies instruct H-Ubu to unregister all the published 
+services provided by the same instance until the dependency is resolved again.</li>
 </ul>
 
 <h1>Field Injection</h1>
 
-<p>Services are automatically injected by h-ubu. It can be injected within field and bind/unbind method. Field injection is really easy to use. It just requires the service dependencies to tell in which field the service will be injection:</p>
+<p>Services are automatically injected by H-Ubu. They can be injected within field and bind/unbind methods.</p>
+
+<p>Field injection is really easy to use. It just requires the service dependency to specify the field into which the
+service should be injected:</p>
 
 <pre><code>var component = {
     svc : null,  // The injected service.
@@ -240,11 +244,12 @@ the component (<code>cmp</code>). This dependency is (by default) mandatory and 
 };
 </code></pre>
 
-<p>The array is atumatically populated.    </p>
+<p>The array is automatically populated.</p>
 
 <h1>Bind / Unbind Injection</h1>
 
-<p>The second injection mechanism use a couple of method : a method injecting the new service (<em>bind</em>), a method notifying the departure (<em>_unbind</em>). This injection mechanism is used when you want to deal with the dynamism yourself.</p>
+<p>The second injection mechanism uses two methods: a method to inject the new service (<em>bind</em>) and a method for handling
+the departure of the service (<em>_unbind</em>). This injection mechanism is used when you want to deal with the dynamism yourself.</p>
 
 <pre><code>var component = {
     svc : null,
@@ -268,15 +273,17 @@ the component (<code>cmp</code>). This dependency is (by default) mandatory and 
 };
 </code></pre>
 
-<p>The callbacks receives the service object as first parameter, and the service reference as second parameters. The service reference let you check the service properties with the <code>getProperty</code> method.</p>
+<p>The callbacks receive the service object as the first parameter, and the service reference as the second parameter. The
+service reference lets you check the service properties with the <code>getProperty</code> method.</p>
 
-<p>For aggregate dependencies, the bind method will be call once per provider. </p>
+<p>For aggregate dependencies, the bind method will be called once per provider.</p>
 
 <h1>Using filters</h1>
 
-<p>Service depednencies can be filtered. The filter let you select the service you reallt want besed on the service properties.</p>
+<p>Service dependencies can be filtered. The filter lets you select the service you really want based on the service properties.</p>
 
-<p>To use filters, add a <code>filter</code> method to the service dependency. This method receives the service reference to check as parameter and should return <code>true</code> if the service matches, <code>false</code> otherwise:</p>
+<p>To use filters, add a <code>filter</code> method to the service dependency. This method receives the service reference to be
+checked as a parameter and should return <code>true</code> if the service matches, <code>false</code> otherwise:</p>
 
 <pre><code>configure : function(hub, conf) {
     hub.requireService({
@@ -292,9 +299,11 @@ the component (<code>cmp</code>). This dependency is (by default) mandatory and 
 
 <h1>Mandatory vs. Optional</h1>
 
-<p>Mandatory dependencies impacts the published services from the component. So, as soon as a service dependency is unresolved, the published services are unregistered. They will be registered again once all dependencies become resolved.</p>
+<p>Mandatory dependencies impact the services published by the component. So, as soon as a mandatory service dependency is
+unresolved, the published services are unregistered. They will be re-registered once all dependencies become resolved again.</p>
 
-<p>Optional dependencies does not impact the published services. However, you must be carefull when using an optional service as it may not contain a value:</p>
+<p>Optional dependencies do not impact the published services. However, you must be careful when using an optional service
+as it must not contain the following values:</p>
 
 <ul>
 <li><code>null</code> for scalar dependency</li>
