@@ -31,6 +31,11 @@
     </custom>
 
     <body>
+        <head>
+            <link rel="stylesheet" href="./css/site.css" type="text/css" />
+            <link rel="stylesheet" href="./css/font-awesome.css" type="text/css" />
+        </head>
+
         <menu name="H-UBU">
             <item name="Home" href="index.html"/>
             <item name="Motivations and Concepts" href="motivations.html"/>

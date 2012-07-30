@@ -1,48 +1,78 @@
-Change the way you're building JavaScript application
-======================================================
+<div class="row-fluid page-header">
+    <div class="title span12">
+        <h1 style="text-align: center;">h-ubu</h1>
+        <p style="text-align: center;" class="lead">JavaScript Componentization</p>
+        <p>
+            <span class="span4">&nbsp;</span>
+           <a href="https://github.com/downloads/nano-project/h-ubu/hubu-all.js" class="btn
+       btn-primary span2 btn-large"><i class="fa-icon-download"></i>&nbsp; hubu-all.js</a>
+            <a href="https://github.com/downloads/nano-project/h-ubu/hubu-all.js" class="btn btn-info
+       span2 btn-large"><i class="fa-icon-resize-small"></i>&nbsp; hubu-all-min
+            .js</a>
+        </p>
+    </div>
+</div>
 
-JavaScript code is hard to scale, even with good patterns. You can build modular JavaScript application with require
+<div class="row-fluid page-header">
+    <div class="span4">
+        <h1><i class="fa-icon-sitemap"></i>&nbsp; Modular</h1>
+        <p>Build modular application compozed by loose-coupled <em>components</em>. Components are independant and
+        communiquate using injected references or events.Components interaction is based on <em>contract</em> making them
+         subtituable.</p>
+    </div>
+
+    <div class="span4">
+        <h1><i class="fa-icon-cogs"></i>&nbsp; Dynamic</h1>
+        <p>Components provide and require <em>services</em>. Those services can arrive and leave at anytime letting you
+        building highly dynamic application and letting components react to those apparitions and disparitions.
+    </div>
+
+    <div class="span4">
+        <h1><i class="fa-icon-reorder"></i>&nbsp; Integrable</h1>
+        <p>You can use any library you like such as jquery, mootools or backbone. You can use h-ubu in your browser or on
+        the server on node.js or rhino. h-ubu is also compatible with AMD modules (require.js).
+    </div>
+</div>
+
+<div class="row-fluid page-header">
+    <div class="span6">
+       <h1><i class="fa-icon-th-large"></i>&nbsp; Stop hacking, Start compozing</h1>
+       <p>
+       JavaScript code is hard to scale, even with good patterns. You can build modular JavaScript application with require
 .js and other loaders, but communications between modules is static, always using function call (no events) and
-strongly-coupled (you require a specific module).
-
-JavaScript could be considered the poor-child of web app technologies. The toolset for JavaScript is very limited
+strongly-coupled (you require a specific module).</p>
+        <p>JavaScript could be considered the poor-child of web app technologies. The toolset for JavaScript is very limited
 compared to that of Java. Unit testing, static analysis and managed execution are new to JavaScript. However, the
 flexibility and the design of the language makes these tools a stringent requirement for code scalability -- especially
-in recent years, since JavaScript has become mainstream and is now used by many web app stacks.
-
-We faced big challenges when our JavaScript application's size grew up to 60K lines of code. So, we decided to reuse
+in recent years, since JavaScript has become mainstream and is now used by many web app stacks.</p>
+        <p>We faced big challenges when our JavaScript application's size grew up to 60K lines of code. So, we decided to reuse
 what we're used to doing in Java and other languages: loosely-coupled autonomous components. We implemented H-UBU as a
-component framework for JavaScript, created to address the above issues.
-
-With h-ubu, you compose your application with components. JavaScript componentization aims to modularize JavaScript
+component framework for JavaScript, created to address the above issues.</p>
+        <p>With h-ubu, you compose your application with components. JavaScript componentization aims to modularize JavaScript
 code in order to improve the testability, maintainability and scalability of JavaScript applications. Components are
-bound together automatically. You neve depends on a specific implementation, but on a _contract_.
-
-What's in the box ?
-===================
-
-* Component definition: the application is built with components. They can be package within AMD or CommonJS modules.
-* Service-orientation: h-ubu is based on services. Components provide and require services.
-* Contract-based interactions: components implement and use contracts (i.e. interfaces, service specifications)
-* Synchronous and asynchronous component communication: components can interact using method calls and events.
-* Architecture description: the application is composed by registering components. The runtime binds them.
-* Component configuration: components can be configured -- no #id in your code anymore.
-* Test: components are testable using Jasmine or QUnit.
-* Component separation: components are developed in separate files; the application code is much more scalable.
-* jQuery, CoffeeScript, MooTools, require.js, node.js: use any technology you want!
-
-Download, Fork and so on
-========================
-
-You can download the h-ubu library on the [download area](https://github.com/nano-project/h-ubu/downloads) or
-from here:
-
- * normal version : [hubu-all.js](https://github.com/downloads/nano-project/h-ubu/hubu-all.js)
- * minified version : [hubu-all-min.js](https://github.com/downloads/nano-project/h-ubu/hubu-all-min.js)
-
-The h-ubu is hosted on github: [https://github.com/nano-project/h-ubu](https://github.com/nano-project/h-ubu). Feel
-free to fork it and start contributing. You can also open [issues](https://github.com/nano-project/h-ubu/issues) and
- of course, submit pull requests.
+bound together automatically. You never depends on a specific implementation, but on a <strong>contract</strong>.</p>
+       </p>
+    </div>
+    <div class="span6">
+        <h1><i class="fa-icon-gift"></i>&nbsp; What's in the box ?</h1>
+        <ul class="feature-list">
+            <li><strong>Develop Components</strong>: the application is built with components. They can be package
+            within AMD or CommonJS modules.</li>
+            <li><strong>Use and Provide Services</strong>: h-ubu is based on services. Components provide and require
+            services.</li>
+            <li><strong>Contract-based interactions</strong>: services are specified using <em>contracts</em></li>
+            <li><strong>Synchronous &amp; Asynchronous communication</strong>: components can interact using method
+            calls and events.</li>
+            <li><strong>Architecture description</strong>: the application is composed by registering components. The runtime binds them.</li>
+            <li><strong>Component configuration</strong>: components can be configured -- no #id in your code anymore.</li>
+            <li><strong>Testability</strong>: components are testable using Jasmine or QUnit.</li>
+            <li><strong>Component separation</strong>: components are developed in separate files; the application
+            code is much more scalable. You can use any module framewrok such as node.js and require.js</li>
+            <li><strong>Any library, any environments</strong>: use h-ubu everywhere with everything :jQuery,
+            CoffeeScript, MooTools, require.js, node.js</li>
+        </ul>
+    </div>
+</div>
 
 
 License
