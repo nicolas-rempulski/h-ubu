@@ -6,7 +6,7 @@
             <span class="span4">&nbsp;</span>
            <a href="https://github.com/downloads/nano-project/h-ubu/hubu-all.js" class="btn
        btn-primary span2 btn-large"><i class="fa-icon-download"></i>&nbsp; hubu-all.js</a>
-            <a href="https://github.com/downloads/nano-project/h-ubu/hubu-all.js" class="btn btn-info
+            <a href="https://github.com/downloads/nano-project/h-ubu/hubu-all-min.js" class="btn btn-info
        span2 btn-large"><i class="fa-icon-resize-small"></i>&nbsp; hubu-all-min
             .js</a>
         </p>
