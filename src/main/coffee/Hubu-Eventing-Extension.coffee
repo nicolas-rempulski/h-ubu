@@ -106,8 +106,8 @@ HUBU.Eventing = class Eventing
     # @return true if the event was delivered to at least one component, false otherwise
     # @methodOf HUBU.hubu
     ###
-    @_hub.publish = (component, callback, event) ->
-      myExtension.publish(component, callback, event); return this
+    @_hub.publish = (component, topic, event) ->
+      myExtension.publish(component, topic, event); return this
 
   ### End of constructor  ###
 
