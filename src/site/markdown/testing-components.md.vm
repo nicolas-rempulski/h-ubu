@@ -29,6 +29,47 @@ Testing H-Ubu components with Jasmine is very straightforward:
 	     });
     });
 
+Achieving a _waitForService_ with Jasmine
+------------------------------------------
+
+You often needs to wait for a service publication before continuing the test. This can easily be achieved using the
+awesome _async_ support of Jasmine:
+
+    it("should get news from lemonde.fr", function() {
+
+        hub
+            .registerComponent(new SyndicationService.JFeed.FeedReaderImpl(), {
+                'feed.url' : "http://www.lemonde.fr/rss/une.xml",
+                'feed.useGoogleFeedAPI' : true,
+                'feed.async' : false,
+                'feed.name' : "le monde"
+            })
+            .start();
+
+        waitsFor(function() {
+            return hub.getServiceReference(SyndicationService.FeedReader) !== null;
+        }, "Syndication Service lookup never completed", 10000);
+
+        runs(function() {
+            var ref =   hub.getServiceReference(SyndicationService.FeedReader);
+            expect(ref).toBeTruthy();
+            var service = hub.getService(hub, ref);
+
+            expect(service.getEntries().length).toBeGreaterThan(0);
+            expect(service.getTitle() !== null).toBeTruthy();
+            expect(service.getUrl() !== null).toBeTruthy();
+            expect(service.getLastEntry() !== null).toBeTruthy();
+
+            var entry = service.getLastEntry();
+            expect(entry.getTitle()).toBeTruthy();
+        });
+
+
+    });
+
+The _waitsFor_ block waits until the nested method returns true, or until the timeout is reached. If the condition is
+ met, the _runs_ block is called and so, we know that the service is there.
+
 Testing with QUnit
 -----------------------
 
