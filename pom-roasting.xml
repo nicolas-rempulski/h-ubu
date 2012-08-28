@@ -54,8 +54,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>mootools</groupId>
-            <artifactId>mootools</artifactId>
+            <groupId>org.nano.libs</groupId>
+            <artifactId>mootools-core</artifactId>
             <version>1.4.5</version>
             <type>js</type>
             <scope>test</scope>
