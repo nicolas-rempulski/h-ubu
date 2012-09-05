@@ -22,6 +22,7 @@ HUBU.Hub = class Hub
 
   ###*
   Is the hub started.
+  @name HUBU.Hub#_started
   @private
   ###
   _started : false
@@ -29,25 +30,33 @@ HUBU.Hub = class Hub
   ###*
   The list of extensions plugged on this hub.
   The extensions are created on the first hub access (either `start` or `registerComponent`)
+  @name HUBU.Hub#_extensions
   @private
   ###
   _extensions : null
 
   ###*
   The parent hub, if set. The parent is given during the configure method.
+  @name HUBU.Hub#_parentHub
   @private
   ###
   _parentHub : null
 
   ###*
   The hub constructor.
-  @constructs HUBU.Hub
   ###
   constructor: ->
     @_components = []
     @_started = false
     @_extensions = null
 
+  ###*
+  Configures the hub. This method initializes all extensions if not already done.
+  @method
+  @name HUBU.Hub#configure
+  @param {Object} parent - the parent hub if exists. Sub-hubs have necessary one and only one parent hub.
+  @returns {Object} the hub
+  ###
   configure: (parent) ->
     if (parent?)
       @_parentHub = parent
@@ -62,19 +71,27 @@ HUBU.Hub = class Hub
       HUBU.logger.debug("Hub already initialized")
     return this
 
+  ###*
+  Gets the parent hub if set
+  @method
+  @name HUBU.Hub#getParentHub
+  @returns {boolean} the parent hub is set, `null` otherwise.
+  ###
   getParentHub : -> @_parentHub
 
 
   ###*
   Gets all plugged components.
   *Do not modified the result !*
-  @return the list of plugged components.
+  @method
+  @return the list of plugged components on the current hub.
   ###
   getComponents: -> return @_components
 
   ###*
   Looks for one specific component plugged to the hub.
   This lookup is based on the component 'getComponentName' method.
+  @method
   @param {String} name the component name
   @return the component with the matching name or `null` if the component is not plugged.
   ###
@@ -101,6 +118,7 @@ HUBU.Hub = class Hub
   This method allows to configure the component.Once successfully registered, the hub call the 'configure' method on
   the component passing a reference on the hub and the configuration to the component.
   If component is `null`, the method throws an exception.
+  @method
   @param {HUBU.AbstractComponent} component the component to register
   @param {Object} configuration the component configuration (optional).
   If the configuration contain the 'component_name' key, the component takes this name.
