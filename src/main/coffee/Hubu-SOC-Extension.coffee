@@ -3,14 +3,81 @@
 # Hubu Service-Orientation Extension
 ###
 
+###*
+ The Service Component class
+ @class HUBU.ServiceComponent
+ @classdesc This class represents _Service Components_. Service Components are one of the main concept of h-ubu. It
+represents the published and required services for a specific h-ubu's component.
+
+  The constructor.
+  Initializes the service component. By default, there are no service dependencies and no provided services.
+ @param {HUBU.AbstractComponent} component the underlying component.
+###
 HUBU.ServiceComponent = class ServiceComponent
+  ###*
+  _STOPPED_ state.
+  A stopped service component does not published any services, and required services are not tracked and injected.
+  It's also the initial state of service components.
+  @type {Number}
+  @memberOf HUBU.ServiceComponent
+  @name STOPPED
+  ###
   @STOPPED : 0
+  ###*
+  _INVALID_ state.
+  A service component is invalid if a mandatory service dependency is not resolved.
+  An invalid service component does not publish its services but required services are tracked.
+  Once started, service component are in this state.
+  @type {Number}
+  @memberOf HUBU.ServiceComponent
+  @name INVALID
+  ###
   @INVALID : 1
+  ###*
+  _VALID_ state.
+  A service component is valid if all mandatory service dependencies are resolved.
+  A valid service component publishes its services, required services are tracked and injected.
+  The service component stays in this state as long as all mandatory services dependencies are resolved.
+  @type {Number}
+  @memberOf HUBU.ServiceComponent
+  @name VALID
+  ###
   @VALID : 2
 
+  ###*
+  The underlying component.
+  @type {HUBU.AbstractComponent}
+  @memberOf HUBU.ServiceComponent
+  @name #_component
+  @private
+  ###
   _component : null
+
+  ###*
+  The provided services.
+  @type {HUBU.ProvidedService}
+  @memberOf HUBU.ServiceComponent
+  @name #_providedServices
+  @private
+  ###
   _providedServices : null
+
+  ###*
+  The required services.
+  @type {HUBU.ServiceDependency}
+  @memberOf HUBU.ServiceComponent
+  @name #_requiredServices
+  @private
+  ###
   _requiredServices : null
+
+  ###*
+  The current state of the service component.
+  @type {Number}
+  @memberOf HUBU.ServiceComponent
+  @name #_state
+  @private
+  ###
   _state : 0
 
   constructor : (component) ->
@@ -19,12 +86,34 @@ HUBU.ServiceComponent = class ServiceComponent
     @_requiredServices = []
     @_state = ServiceComponent.STOPPED
 
+  ###*
+  Gets the underlying components
+  @method
+  @memberOf HUBU.ServiceComponent
+  @name #getComponent
+  @returns {HUBU.AbstractComponent} the underlying component
+  ###
   getComponent : ->
     return @_component
 
+  ###*
+  Gets the current state
+  @method
+  @memberOf HUBU.ServiceComponent
+  @name #getState
+  @returns {Number} the current state
+  ###
   getState : ->
     return @_state
 
+  ###*
+  Adds a provided service.
+  Dependending on the current state the provided service is started, validated or invalidated
+  @method
+  @memberOf HUBU.ServiceComponent
+  @name #addProvidedService
+  @param {HUBU.ProvidedService} ps the provided service to add.
+  ###
   addProvidedService : (ps) ->
     if HUBU.UTILS.indexOf(@_providedServices, ps) is -1
       @_providedServices.push(ps)
@@ -33,24 +122,56 @@ HUBU.ServiceComponent = class ServiceComponent
       ps.onValidation() if @_state is ServiceComponent.VALID
       ps.onInvalidation() if @_state is ServiceComponent.INVALID
 
+  ###*
+  Removes a provided service. Does nothing if the provided service is not found. If found the provided service is stopped.
+  @method
+  @memberOf HUBU.ServiceComponent
+  @name #removeProvidedService
+  @param {HUBU.ProvidedService} ps the provided service to add.
+  ###
   removeProvidedService : (ps) ->
     if HUBU.UTILS.indexOf(@_providedServices, ps) isnt -1
       HUBU.UTILS.removeElementFromArray(@_providedServices, ps)
       ps.onStop()
 
+  ###*
+  Adds a required service.
+  Depending on the current state, the dependency is started.
+  @method
+  @memberOf HUBU.ServiceComponent
+  @name #addRequireService
+  @param {HUBU.ServiceDependency} req the service dependency to add
+  ###
   addRequiredService : (req) ->
     if HUBU.UTILS.indexOf(@_requiredServices, req) is -1
       @_requiredServices.push(req)
       req.setServiceComponent(this)
       if @_state > ServiceComponent.STOPPED  then req.onStart(); @computeState()
 
-  removeRequireService : (req) ->
+  ###*
+  Removes a service dependency.
+  The dependency is stopped, the current state is recomputed.
+  If the dependency is not found, this method does nothing.
+  @method
+  @memberOf HUBU.ServiceComponent
+  @name #removeRequiredService
+  @param {HUBU.ProvidedService} ps the provided service to add.
+  ###
+  removeRequiredService : (req) ->
     if (HUBU.UTILS.indexOf(@_requiredServices, req) > -1)
       HUBU.UTILS.removeElementFromArray(@_requiredServices, req)
       req.onStop()
       @computeState() if @_state > ServiceComponent.STOPPED
 
-
+  ###*
+  Computes the state of the current service component.
+  The state is valid if and only if all mandatory required services are fulfilled.
+  If there is a transition the _validate_ and _invalidate_ callbacks are called.
+  @method
+  @memberOf HUBU.ServiceComponent
+  @name #computeState
+  @returns {Number} the new state
+  ###
   computeState : ->
     isValid = true
     for req in @_requiredServices
@@ -63,22 +184,50 @@ HUBU.ServiceComponent = class ServiceComponent
       @_invalidate()
     return @_state
 
+  ###*
+  Validates the service component.
+  Invokes _onValidation_ on all provided service.
+  @method
+  @memberOf HUBU.ServiceComponent
+  @name #_validate
+  @private
+  ###
   _validate : ->
     HUBU.logger.debug("Validate instance " + @_component?.getComponentName())
     for prov in @_providedServices
       prov.onValidation()
 
+  ###*
+  Invalidates the service component.
+  Invokes _onInvalidation_ on all provided service.
+  @method
+  @memberOf HUBU.ServiceComponent
+  @name #_invalidate
+  @private
+  ###
   _invalidate : ->
     HUBU.logger.debug("Invalidate instance")
     for prov in @_providedServices
       prov.onInvalidation()
 
+  ###*
+  Starting callback.
+  @method
+  @memberOf HUBU.ServiceComponent
+  @name #onStart
+  ###
   onStart : ->
     # Start the dependencies first
     req.onStart() for req in @_requiredServices
     prov.onStart() for prov in @_providedServices
     @computeState()
 
+  ###*
+  Stopping callback.
+  @method
+  @memberOf HUBU.ServiceComponent
+  @name #onStop
+  ###
   onStop : ->
     prov.onStop() for prov in @_providedServices
     req.onStop() for req in @_requiredServices
@@ -98,6 +247,8 @@ HUBU.ServiceDependency = class ServiceDependency
   _field : null
   _bind : null
   _unbind : null
+  _name : null
+
 
   _hub : null
 
@@ -108,7 +259,7 @@ HUBU.ServiceDependency = class ServiceDependency
 
   _serviceComponent = null
 
-  constructor: (component, contract, filter, aggregate, optional, field, bind, unbind, hub) ->
+  constructor: (component, contract, filter, aggregate, optional, field, bind, unbind, name, hub) ->
     @_component = component
     @_contract = contract
     @_filter = filter
@@ -116,6 +267,8 @@ HUBU.ServiceDependency = class ServiceDependency
     @_optional = optional
 
     @_field = field
+
+    @_name = name ? @_contract
 
     if bind?
       @_bind = if HUBU.UTILS.isFunction(bind) then bind else @_component[bind]
@@ -171,6 +324,16 @@ HUBU.ServiceDependency = class ServiceDependency
     @_hub.unregisterServiceListener(@_listener)
 
   isValid : -> return @_state is HUBU.ServiceDependency.RESOLVED
+
+  getName : -> return @_name
+
+  getContract : -> return @_contract
+
+  getFilter : -> return @_filter
+
+  isAggregate : -> return @_aggregate
+
+  isOptional : -> return @_optional
 
   _computeDependencyState : ->
      oldState = @_state
@@ -242,7 +405,7 @@ HUBU.ServiceDependency = class ServiceDependency
       HUBU.UTILS.removeElementFromArray(@_component[@_field], entry.service)
     if @_field? and not @_aggregate then @_component[@_field] = null
 
-    # UnBind
+    # Unbind
     if @_unbind? then @_unbind.apply(@_component, [entry.service, entry.reference])
 
 
@@ -376,17 +539,23 @@ HUBU.ServiceOrientation = class ServiceOrientation
 
 
   requireService : (description) ->
-    {component, contract, filter, aggregate, optional, field, bind, unbind} = description
+    {component, contract, filter, aggregate, optional, field, bind, unbind, name} = description
     if not component? then throw new Exception("Cannot require a service without a valid component")
     aggregate = false unless aggregate?
     optional = false unless optional?
     contract = null unless contract?
     filter = null unless filter?
-    if not field? and not bind? then throw new Exception("Cannot require a service - field or bind must be set")
+    if not field? and not bind? and not name? then throw new Exception("Cannot require a service - field or bind must be set")
     field = null unless field?
     bind = null unless bind?
     unbind = null unless unbind?
-    req = new HUBU.ServiceDependency(component, contract, filter, aggregate, optional, field, bind, unbind, @_hub)
+
+    # Computes the requirement name
+    if name?
+      optional = true
+
+
+    req = new HUBU.ServiceDependency(component, contract, filter, aggregate, optional, field, bind, unbind, name, @_hub)
     @_addServiceDependencyToComponent(component, req)
 
   provideService : (description) ->
