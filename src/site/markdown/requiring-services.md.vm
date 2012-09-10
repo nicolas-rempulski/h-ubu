@@ -149,3 +149,39 @@ as it must not contain the following values:
 * `null` for scalar dependency
 * an empty array for aggregate dependency
 
+LocateService
+=============
+
+Service dependencies don't have to be injected, but actually can be _located_. You can even locate dependencies from
+others component if you have access to the reference on this other component.
+
+    configure : function(hub, conf) {
+        hub.requireService({
+            component: this,
+            contract : contract,
+            name : "my-dependency"
+        });
+    }
+
+    doSomething : function() {
+        var svc = hub.locateService(this, name);
+        if (svc !== null) {
+            svc.doSomething();
+        }
+    }
+
+There are two methods to locate services:
+
+* `locateService(component, name)` : returns the service object of the dependency named `name` on the component
+`component`. Returns `null` if there is no provider for this dependency. Throws an exception if `component` does not
+have a dependency named `name`
+* `locateServices(component, name)` : returns all service objects of the dependency named `name` on the component
+`component`. Returns `[]` if there is no provider for this dependency. Throws an exception if `component` does not
+have a dependency named `name`
+
+Notice that when using `locateServices` on a scalar (not aggregate) dependency you receive either an empty array (no
+provider) or an array of one element. When calling `locateService` on an aggregate dependency,
+you get only the first element (`null` if no provider).
+
+A dependency without field and bind method must have a name to be valid. Such dependencies are necessary optional.
+

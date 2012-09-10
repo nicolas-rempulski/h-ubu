@@ -567,6 +567,200 @@ describe("H-UBU Service Extension Tests - Service Dependencies", function () {
         expect(component.svc).toBe(null);
     });
 
+    it("should support locate service", function() {
+        var contract = {
+            doSomething : function() {}
+        };
+
+        var component = {
+            hub : null,
+            svc : null,
+            configure : function(hub) {
+                this.hub = hub
+                hub.requireService({
+                    component: component,
+                    contract: contract,
+                    name : "svc"
+                });
+            },
+            start : function() {},
+            stop : function() {},
+            check : function() {
+                return this.hub.locateService(this, "svc");
+            },
+            getComponentName : function() { return "my-component"}
+        };
+
+        var prov = {
+            configure : function(hub, configuration) {
+                this.hub = hub;
+                hub.provideService({
+                    component: this,
+                    contract : contract
+                })
+            },
+            start : function() {},
+            stop : function() {},
+            getComponentName : function() { return "my-provider"},
+            doSomething : function() { return "bonjour" }
+        };
+
+        hub.registerComponent(component).registerComponent(prov).start();
+
+        expect(component.check() != null).toBeTruthy();
+        expect(component.check().doSomething()).toBe("bonjour");
+
+        // The provider disappears
+        hub.unregisterComponent(prov);
+        expect(component.check()).toBeNull();
+
+        hub.registerComponent(prov);
+        // Direct locate
+        expect((hub.locateService(component, "svc")).doSomething()).toBe("bonjour");
+        // Wrong component
+        try {
+            hub.locateService(prov, "svc");
+            this.fail("The locate should have thrown an error");
+        } catch (e) {
+            // OK.
+        }
+
+        var cmp = {
+            configure: function() {},
+            start : function() {},
+            stop : function() {},
+            getComponentName : function() { return "stuff" }
+        };
+        hub.registerComponent(cmp);
+
+        expect(hub.locateService(cmp), "svc").toBeNull();
+    });
+
+    it("should support locate service from another component", function() {
+        var contract = {
+            doSomething : function() {}
+        };
+
+        var component = {
+            hub : null,
+            svc : null,
+            configure : function(hub) {
+                this.hub = hub;
+            },
+            start : function() {},
+            stop : function() {},
+            check : function() {
+                return this.hub.locateService(this.hub.getComponent("my-component-2"), "svc");
+            },
+            getComponentName : function() { return "my-component"}
+        };
+
+        var component2 = {
+            hub : null,
+            svc : null,
+            configure : function(hub) {
+                this.hub = hub
+                hub.requireService({
+                    component: this,
+                    contract: contract,
+                    name : "svc"
+                });
+            },
+            start : function() {},
+            stop : function() {},
+            check : function() {
+                return this.hub.locateService(this, "svc");
+            },
+            getComponentName : function() { return "my-component-2"}
+        };
+
+        var prov = {
+            configure : function(hub, configuration) {
+                this.hub = hub;
+                hub.provideService({
+                    component: this,
+                    contract : contract
+                })
+            },
+            start : function() {},
+            stop : function() {},
+            getComponentName : function() { return "my-provider"},
+            doSomething : function() { return "bonjour" }
+        };
+
+        hub.registerComponent(component).registerComponent(component2).registerComponent(prov).start();
+
+        expect(component.check() != null).toBeTruthy();
+        expect(component.check().doSomething()).toBe("bonjour");
+    });
+
+    it("should support locate service for aggregate dependencies", function() {
+        var contract = {
+            doSomething : function() {}
+        };
+
+        var component = {
+            hub : null,
+            svc : null,
+            configure : function(hub) {
+                this.hub = hub
+                hub.requireService({
+                    component: this,
+                    contract: contract,
+                    aggregate: true,
+                    name : "svc"
+                });
+            },
+            start : function() {},
+            stop : function() {},
+            check : function() {
+                return this.hub.locateService(this, "svc");
+            },
+            checkAll : function() {
+                return this.hub.locateServices(this, "svc");
+            },
+            getComponentName : function() { return "my-component"}
+        };
+
+        var prov = {
+            configure : function(hub, configuration) {
+                this.hub = hub;
+                hub.provideService({
+                    component: this,
+                    contract : contract
+                })
+            },
+            start : function() {},
+            stop : function() {},
+            getComponentName : function() { return "my-provider"},
+            doSomething : function() { return "bonjour" }
+        };
+
+        var prov2 = {
+            configure : function(hub, configuration) {
+                this.hub = hub;
+                hub.provideService({
+                    component: this,
+                    contract : contract
+                })
+            },
+            start : function() {},
+            stop : function() {},
+            getComponentName : function() { return "my-provider-2"},
+            doSomething : function() { return "bonjour" }
+        };
+
+        hub.registerComponent(component).registerComponent(prov).registerComponent(prov2).start();
+
+        expect(component.check() != null).toBeTruthy();
+        expect(component.check().doSomething()).toBe("bonjour");
+        expect(component.checkAll().length).toBe(2);
+
+        // The provider disappears
+        hub.unregisterComponent(prov);
+        //expect(component.checkAll().length).toBe(1);
+    });
+
 
 
 });

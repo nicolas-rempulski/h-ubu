@@ -233,6 +233,17 @@ HUBU.ServiceComponent = class ServiceComponent
     req.onStop() for req in @_requiredServices
     @_state = ServiceComponent.STOPPED
 
+  ###*
+  Gets a service dependency by name
+  @method
+  @memberOf HUBU.ServiceComponent
+  @name #getServiceDependencyByName
+  @param {String} name the dependency
+  @return {HUBU.ServiceDependency} the service dependency, `null` if no service dependencies match the name
+  ###
+  getServiceDependencyByName : (name) ->
+    return dep for dep in @_requiredServices when dep.getName() is name
+
 
 HUBU.ServiceDependency = class ServiceDependency
   @UNRESOLVED = 0
@@ -408,6 +419,21 @@ HUBU.ServiceDependency = class ServiceDependency
     # Unbind
     if @_unbind? then @_unbind.apply(@_component, [entry.service, entry.reference])
 
+  ###*
+  Gets the current service object(s).
+  This method returns an array of service objects.
+  @method
+  @memberOf HUBU.ServiceComponent
+  @name #locateServices
+  @returns {Array} The array of service objects. Contains only one element for scalar dependencies.
+  ###
+  locateServices : ->
+    svc = []
+    refs = @_hub.getServiceReferences(@_contract, @_filter)
+    for ref in refs
+      svc.push(@_hub.getService(@_component, ref))
+    return svc
+
 
 HUBU.ProvidedService = class ProvidedService
   @UNREGISTERED : 0
@@ -517,10 +543,29 @@ HUBU.ServiceOrientation = class ServiceOrientation
     # Service-oriented component model methods
     @_hub.requireService = (description) ->
       self.requireService(description);
-      return this;
+      return this
+
     @_hub.provideService = (description) ->
       self.provideService(description);
-      return this;
+      return this
+
+    @_hub.locateService = (component, name) ->
+      cmpEntry = entry for entry in self._components when entry.component is component
+      if ! cmpEntry? then return null
+      dep = cmpEntry.serviceComponent.getServiceDependencyByName(name)
+      if ! dep? then throw new Exception("No dependency " + name + " on component " + cmpEntry.component.getComponentName());
+      svc = dep.locateServices()
+      if svc == null  || svc.length == 0 then return null
+      return svc[0]
+
+    @_hub.locateServices = (component, name) ->
+      cmpEntry = entry for entry in self._components when entry.component is component
+      if ! cmpEntry? then return null
+      dep = cmpEntry.serviceComponent.getServiceDependencyByName(name)
+      if ! dep? then throw new Exception("No dependency " + name + " on component " + cmpEntry.component.getComponentName());
+      svc = dep.locateServices()
+      if svc == null  || svc.length == 0 then return []
+      return svc
 
   ### End of constructor  ###
 
@@ -531,7 +576,8 @@ HUBU.ServiceOrientation = class ServiceOrientation
     # We must start by the service components, as they may unregister the service themselves
     # and do some cleanup.
     # Stops all service components
-    for entry in @_components when entry.component is cmp
+    #TODO Why do we have to check for null here... Looks suspicious
+    for entry in @_components when entry? && entry.component is cmp
       entry.serviceComponent.onStop()
       HUBU.UTILS.removeElementFromArray(@_components, entry)
     # Basics management
@@ -549,10 +595,9 @@ HUBU.ServiceOrientation = class ServiceOrientation
     field = null unless field?
     bind = null unless bind?
     unbind = null unless unbind?
+    name = contract unless name?
 
-    # Computes the requirement name
-    if name?
-      optional = true
+    if not field? and not bind? then optional = true
 
 
     req = new HUBU.ServiceDependency(component, contract, filter, aggregate, optional, field, bind, unbind, name, @_hub)
