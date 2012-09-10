@@ -63,7 +63,7 @@ getGlobal().Logger = class Logger
 
   error : (message) ->
     if @_level <= Logger.ERROR
-      log("ERROR - " + message)
+      @log("ERROR - " + message)
 
   setLevel : (level) -> @_level = level
 
@@ -102,7 +102,7 @@ getGlobal().Exception = class Exception
 ###
 utils.typeOf = (obj) ->
   if not obj?
-    return String obj
+    return new String obj
   classToType = new Object
   for name in "Boolean Number String Function Array Date RegExp".split(" ")
     classToType["[object " + name + "]"] = name.toLowerCase()
