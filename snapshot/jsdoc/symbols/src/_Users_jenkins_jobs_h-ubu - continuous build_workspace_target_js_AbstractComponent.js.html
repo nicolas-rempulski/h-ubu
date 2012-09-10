@@ -9,62 +9,68 @@
 <span class='line'>  2</span>   </span><span class="COMM">/*
 <span class='line'>  3</span>   # Abstract Component class
 <span class='line'>  4</span>   */</span><span class="WHIT">
-<span class='line'>  5</span>   </span><span class="COMM">/*
-<span class='line'>  6</span>   # Abstract Component class.
-<span class='line'>  7</span>   # This used is not intended to be used directly, and is just here for documentation purpose.
-<span class='line'>  8</span>   # Indeed, the returned object contains the four required methods that &lt;bold>all&lt;/bold> component must
-<span class='line'>  9</span>   # have. Any Javascript object with those 4 methods can be cosidered as a valid component.
-<span class='line'> 10</span>   # The four required methods are:
-<span class='line'> 11</span>   #
-<span class='line'> 12</span>   # * `getComponentName()` : return the default component name
-<span class='line'> 13</span>   # * `configurate(hub, [configuration])` : configures the component
-<span class='line'> 14</span>   # * `start()` / `stop()` : called when the component is started / stopped
-<span class='line'> 15</span>   # 
-<span class='line'> 16</span>   # Returned objects do not intend to be used, they are just mock / empty instances.
-<span class='line'> 17</span>   */</span><span class="WHIT">
-<span class='line'> 18</span>   </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">AbstractComponent</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 19</span>   </span><span class="NAME">HUBU.AbstractComponent</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">AbstractComponent</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 20</span>     </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">AbstractComponent</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 21</span>     </span><span class="COMM">/*
-<span class='line'> 22</span>       # Configures the component.
-<span class='line'> 23</span>       # This method is called by the hub when the component starts or
-<span class='line'> 24</span>       # when the component is plugged when the hub is already started.
-<span class='line'> 25</span>       # @param hub the hub
-<span class='line'> 26</span>       # @param configuration optional parameter used to pass the component configuration. The configuration object is
-<span class='line'> 27</span>       # a simple key/value map.
-<span class='line'> 28</span>       # @public
-<span class='line'> 29</span>       */</span><span class="WHIT">
-<span class='line'> 30</span>     </span><span class="NAME">AbstractComponent.prototype.configure</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">hub</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">configuration</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 31</span>       </span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="STRN">"AbstractComponent is an abstract class"</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 32</span>       </span><span class="COMM">/*
-<span class='line'> 33</span>         # Starts the component.
-<span class='line'> 34</span>         # This method is called by the hub when the hub starts or when the component is plugged when the hub is already started.
-<span class='line'> 35</span>         # This methods is always called after the `configure` method.
-<span class='line'> 36</span>         # Once called the component can send events and used bound components.
-<span class='line'> 37</span>         */</span><span class="WHIT">
-<span class='line'> 38</span>     </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 39</span>     </span><span class="NAME">AbstractComponent.prototype.start</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 40</span>       </span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="STRN">"AbstractComponent is an abstract class"</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 41</span>       </span><span class="COMM">/*
-<span class='line'> 42</span>         # Stops the component.
-<span class='line'> 43</span>         # This method is called by the hub when the hub is stopped or when the component is unplugged.
-<span class='line'> 44</span>         # This methods is always called after the `start` method.
-<span class='line'> 45</span>         # Once called, the component must not send events or access bound components.
-<span class='line'> 46</span>         */</span><span class="WHIT">
-<span class='line'> 47</span>     </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 48</span>     </span><span class="NAME">AbstractComponent.prototype.stop</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 49</span>       </span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="STRN">"AbstractComponent is an abstract class"</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 50</span>       </span><span class="COMM">/*
-<span class='line'> 51</span>         # Gets the component name.
-<span class='line'> 52</span>         # If an 'id' is given in the hub configuration, this method is replaced.
-<span class='line'> 53</span>         # @return the component name
-<span class='line'> 54</span>         # @public
-<span class='line'> 55</span>         */</span><span class="WHIT">
-<span class='line'> 56</span>     </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 57</span>     </span><span class="NAME">AbstractComponent.prototype.getComponentName</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 58</span>       </span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="STRN">"AbstractComponent is an abstract class"</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 59</span>     </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 60</span>     </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">AbstractComponent</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 61</span>   </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 62</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">call</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 63</span> </span></pre></body></html>
+<span class='line'>  5</span>   </span><span class="COMM">/**
+<span class='line'>  6</span>   Abstract Component class.
+<span class='line'>  7</span>   This used is not intended to be used directly, and is just here for documentation purpose. Indeed, the returned object
+<span class='line'>  8</span>   contains the four required methods that **all** component must have. Any Javascript object with those 4 methods can be
+<span class='line'>  9</span>   considered as a valid component.
+<span class='line'> 10</span>   
+<span class='line'> 11</span>   The 4 required methods are:
+<span class='line'> 12</span>   
+<span class='line'> 13</span>   - `getComponentName()` : return the default component name
+<span class='line'> 14</span>   - `configurate(hub, [configuration])` : configures the component
+<span class='line'> 15</span>   - `start()` / `stop()` : called when the component is started / stopped
+<span class='line'> 16</span>   
+<span class='line'> 17</span>   Returned objects do not intend to be used, they are just mock / empty instances.
+<span class='line'> 18</span>   @class AbstractComponent
+<span class='line'> 19</span>   */</span><span class="WHIT">
+<span class='line'> 20</span>   </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">AbstractComponent</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 21</span>   </span><span class="NAME">HUBU.AbstractComponent</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">AbstractComponent</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 22</span>     </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">AbstractComponent</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 23</span>     </span><span class="COMM">/**
+<span class='line'> 24</span>     Configures the component.
+<span class='line'> 25</span>     This method is called by the hub when the component starts or when the component is plugged when the hub is already started.
+<span class='line'> 26</span>     @param hub the hub
+<span class='line'> 27</span>     @param configuration optional parameter used to pass the component configuration. The configuration object is a simple
+<span class='line'> 28</span>      key/value map.
+<span class='line'> 29</span>     @public
+<span class='line'> 30</span>     @memberOf AbstractComponent
+<span class='line'> 31</span>     */</span><span class="WHIT">
+<span class='line'> 32</span>     </span><span class="NAME">AbstractComponent.prototype.configure</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">hub</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">configuration</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 33</span>       </span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="STRN">"AbstractComponent is an abstract class"</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 34</span>       </span><span class="COMM">/**
+<span class='line'> 35</span>       Starts the component.
+<span class='line'> 36</span>       This method is called by the hub when the hub starts or when the component is plugged when the hub is already started.
+<span class='line'> 37</span>       This methods is always called after the `configure` method. Once called the component can send events and used bound
+<span class='line'> 38</span>       components.
+<span class='line'> 39</span>       @public
+<span class='line'> 40</span>       @memberOf AbstractComponent
+<span class='line'> 41</span>       */</span><span class="WHIT">
+<span class='line'> 42</span>     </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 43</span>     </span><span class="NAME">AbstractComponent.prototype.start</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 44</span>       </span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="STRN">"AbstractComponent is an abstract class"</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 45</span>       </span><span class="COMM">/**
+<span class='line'> 46</span>       Stops the component.
+<span class='line'> 47</span>       This method is called by the hub when the hub is stopped or when the component is unplugged.
+<span class='line'> 48</span>       This methods is always called after the `start` method. Once called, the component must not send events or access bound components.
+<span class='line'> 49</span>       @public
+<span class='line'> 50</span>       @memberOf AbstractComponent
+<span class='line'> 51</span>       */</span><span class="WHIT">
+<span class='line'> 52</span>     </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 53</span>     </span><span class="NAME">AbstractComponent.prototype.stop</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 54</span>       </span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="STRN">"AbstractComponent is an abstract class"</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 55</span>       </span><span class="COMM">/**
+<span class='line'> 56</span>       Gets the component name.
+<span class='line'> 57</span>       If an 'id' is given in the hub configuration, this method is replaced.
+<span class='line'> 58</span>       @return the component name
+<span class='line'> 59</span>       @public
+<span class='line'> 60</span>       @memberOf AbstractComponent
+<span class='line'> 61</span>       */</span><span class="WHIT">
+<span class='line'> 62</span>     </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 63</span>     </span><span class="NAME">AbstractComponent.prototype.getComponentName</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 64</span>       </span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="STRN">"AbstractComponent is an abstract class"</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 65</span>     </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 66</span>     </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">AbstractComponent</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 67</span>   </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 68</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">call</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 69</span> </span></pre></body></html>
