@@ -273,7 +273,7 @@ describe("H-UBU Service Extension Tests - Basics", function () {
             stop : function() {},
             configure : function() {},
             getComponentName : function() { return "component-3" }
-        }
+        };
 
         var listenAllContractService = {
             bindCount: 0,
@@ -287,7 +287,7 @@ describe("H-UBU Service Extension Tests - Basics", function () {
                     listenAllContractService.unbindCount = listenAllContractService.unbindCount +1;
                 }
             }
-        }
+        };
 
         var listenFrContractService = {
             bindCount: 0,
@@ -303,7 +303,7 @@ describe("H-UBU Service Extension Tests - Basics", function () {
                     listenFrContractService.unbindCount = listenFrContractService.unbindCount +1;
                 }
             }
-        }
+        };
 
         hub
             .registerComponent(component1)
