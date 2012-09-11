@@ -508,14 +508,35 @@ HUBU.ProvidedService = class ProvidedService
 
   onInvalidation : -> @_unregister()
 
-
+###*
+@class
+@classdesc The service oriented extension. This extension handles service components, so manage provided and required services.
+@param {HUBU.Hub} the hub
+###
 HUBU.ServiceOrientation = class ServiceOrientation
+
+  ###*
+  The hub
+  @private
+  @name HUBU.ServiceOrientation#_hub
+  @type {HUBU.Hub}
+  ###
   _hub : null
+
+  ###*
+  The service registry
+  @private
+  @name HUBU.ServiceOrientation#_registry
+  @type SOC.ServiceRegistry
+  ###
   _registry : null
 
-  ###
-  # An array of { component -> service component }.
-  # To keep things simple, a component can have only one service component
+  ###*
+  An array of { component -> service component }.
+  To keep things simple, a component can have only one service component
+  @type {Array}
+  @private
+  @name HUBU.ServiceOrientation#_components
   ###
   _components : []
 
@@ -527,28 +548,166 @@ HUBU.ServiceOrientation = class ServiceOrientation
     self = this
 
     # Populate the hub object
+
+    ###*
+    Gets the service registry of the hub.
+    @method
+    @name HUBU.Hub#getServiceRegistry
+    @return {SOC.ServiceRegistry} the service registry
+    ###
     @_hub.getServiceRegistry = -> return registry
+
+    ###*
+    Registers a service in the hub's service registry.
+    @method
+    @name HUBU.Hub#registerService
+    @param {HUBU.AbstractComponent} component the component registering the service
+    @param {Object} contract the published contract
+    @param {Object} properties the service properties (optional)
+    @param {Object} svcObject either the service object, or the contruction method
+    @return {SOC.ServiceRegistration} the service registration
+    ###
     @_hub.registerService = (component, contract, properties, svcObject) -> return registry.registerService(component, contract, properties, svcObject)
+
+    ###*
+    Unregisters a service.
+    @method
+    @name HUBU.Hub#unregisterService
+    @param {SOC.ServiceRegistration} registration the service registration of the service to unpublish.
+    ###
     @_hub.unregisterService = (registration) -> return registry.unregisterService(registration)
+
+    ###*
+    Looks for service references
+    @method
+    @name HUBU.Hub#getServiceReferences
+    @param {Object} contract the service contract
+    @param {Function} filter the filter method that the provider must match
+    @return {Array} an array of all matching service references, empty if no services match
+    ###
     @_hub.getServiceReferences = (contract, filter) -> return registry.getServiceReferences(contract, filter)
+
+    ###*
+    Looks for a service reference
+    @method
+    @name HUBU.Hub#getServiceReference
+    @param {Object} contract the service contract
+    @param {Function} filter the filter method that the provider must match
+    @return {SOC.ServiceReference} a matching service reference or `null` if no services match
+    ###
     @_hub.getServiceReference = (contract, filter) ->
       refs = registry.getServiceReferences(contract, filter)
       if refs.length isnt 0 then return refs[0]
       return null
+
+    ###*
+    Gets the service object of the given service reference.
+    @method
+    @name HUBU.Hub#getService
+    @param {HUBU.AbstractComponent} component the component getting the service
+    @param {SOC.ServiceReference} reference the service reference
+    @return {Object} the service object
+    ###
     @_hub.getService = (component, reference) -> return registry.getService(component, reference)
+
+    ###*
+    Releases an used service.
+    @method
+    @name HUBU.Hub#ungetService
+    @param {HUBU.AbstractComponent} component the component that got the service
+    @param {SOC.ServiceReference} reference the service reference
+    ###
     @_hub.ungetService = (component, reference) -> return registry.ungetService(component, reference)
+
+    ###*
+    Registers a service listener on the service registry of the hub.
+    The parameter specifies the _listener_. This parameter must contain a key `listener`  with a function as value.
+    This function receives a `SOC.ServiceEvent`. The listener is called everytime a matching service event is fired.
+    the parameter must also contain the `contract` specifying the targeted service contract and/or a `filter`, i.e. a
+    method validating a service reference (given as parameter). For example, the following snippet illustrates a valid
+    service listener registrations:
+
+      var listenAllContractService = {
+            bindCount: 0,
+            unbindCount : 0,
+            contract : contract,
+            // no filter
+            listener : function(event) {
+                if (event.getType() === SOC.ServiceEvent.REGISTERED) {
+                    listenAllContractService.bindCount = listenAllContractService.bindCount +1;
+                } else if (event.getType() === SOC.ServiceEvent.UNREGISTERING) {
+                    listenAllContractService.unbindCount = listenAllContractService.unbindCount +1;
+                }
+            }
+        };
+
+        var listenFrContractService = {
+            bindCount: 0,
+            unbindCount : 0,
+            contract : contract,
+            filter : function(ref) {
+                return ref.getProperty("lg") === "fr";
+            },
+            listener : function(event) {
+                if (event.getType() === SOC.ServiceEvent.REGISTERED) {
+                    listenFrContractService.bindCount = listenFrContractService.bindCount +1;
+                } else if (event.getType() === SOC.ServiceEvent.UNREGISTERING) {
+                    listenFrContractService.unbindCount = listenFrContractService.unbindCount +1;
+                }
+            }
+        };
+
+        hub.registerServiceListener(listenAllContractService);
+        hub.registerServiceListener(listenFrContractService);
+
+    @method
+    @name HUBU.Hub#registerServiceListener
+    @param {Object} listenerConfiguration the listener configuration.
+
+    ###
     @_hub.registerServiceListener = (listenerConfiguration) -> return registry.registerServiceListener(listenerConfiguration)
+
+    ###*
+    Unregisters a service listener.
+    @method
+    @name HUBU.Hub#unregisterServiceListener
+    @param {Object} listenerConfiguration The service listener to unregister.
+    ###
     @_hub.unregisterServiceListener = (listenerConfiguration) -> return registry.unregisterServiceListener(listenerConfiguration)
 
     # Service-oriented component model methods
+
+    ###*
+    Defines a service dependency. This method is used to declare a service dependency injected automatically within the
+    component. Please refer to the documentation.
+    @method
+    @name HUBU.Hub#requireService
+    @param {Object} the service dependency description.
+    @return {HUBU.Hub} the current hub
+    ###
     @_hub.requireService = (description) ->
       self.requireService(description);
       return this
 
+    ###*
+    Defines a provided service. The service is managed by h-ubu. Please refer to the documentation
+    @method
+    @name HUBU.Hub#provideService
+    @param {Object} the provided service description.
+    @return {HUBU.Hub} the current hub
+    ###
     @_hub.provideService = (description) ->
       self.provideService(description);
       return this
 
+    ###*
+    Locates a service dependency. This method returns only the first service object on aggregate dependencies.
+    @method
+    @name HUBU.Hub#locateService
+    @param {HUBU.AbstractComponent} component the component holding the dependency.
+    @param {String} name the dependency name, or the contract is the name was omitted in the service dependency.
+    @return {Object} the service object, `null` if there are no service provider.
+    ###
     @_hub.locateService = (component, name) ->
       cmpEntry = entry for entry in self._components when entry.component is component
       if ! cmpEntry? then return null
@@ -558,6 +717,16 @@ HUBU.ServiceOrientation = class ServiceOrientation
       if svc == null  || svc.length == 0 then return null
       return svc[0]
 
+    ###*
+    Locates a service dependency. This method returns all service object on aggregate dependencies, but an array of one
+    element on scalar dependencies.
+    @method
+    @name HUBU.Hub#locateServices
+    @param {HUBU.AbstractComponent} component the component holding the dependency.
+    @param {String} name the dependency name, or the contract is the name was omitted in the service dependency.
+    @return {Array} the service objects, empty if there are no service provider, with only one element on fulfilled scalar
+    service dependencies.
+    ###
     @_hub.locateServices = (component, name) ->
       cmpEntry = entry for entry in self._components when entry.component is component
       if ! cmpEntry? then return null

@@ -54,8 +54,8 @@ HUBU.Hub = class Hub
   Configures the hub. This method initializes all extensions if not already done.
   @method
   @name HUBU.Hub#configure
-  @param {Object} parent - the parent hub if exists. Sub-hubs have necessary one and only one parent hub.
-  @returns {Object} the hub
+  @param {HUBU.Hub} parent the parent hub if exists. Sub-hubs have necessary one and only one parent hub.
+  @returns {HUBU.Hub} the hub
   ###
   configure: (parent) ->
     if (parent?)
@@ -84,7 +84,8 @@ HUBU.Hub = class Hub
   Gets all plugged components.
   *Do not modified the result !*
   @method
-  @return the list of plugged components on the current hub.
+  @name HUBU.Hub#getComponents
+  @return {Array} the list of plugged components on the current hub.
   ###
   getComponents: -> return @_components
 
@@ -92,8 +93,9 @@ HUBU.Hub = class Hub
   Looks for one specific component plugged to the hub.
   This lookup is based on the component 'getComponentName' method.
   @method
+  @name HUBU.Hub#getComponent
   @param {String} name the component name
-  @return the component with the matching name or `null` if the component is not plugged.
+  @return {HUBU.AbstractComponent} the component with the matching name or `null` if the component is not plugged.
   ###
   getComponent : (name) ->
     # If name is null, return null
@@ -119,10 +121,11 @@ HUBU.Hub = class Hub
   the component passing a reference on the hub and the configuration to the component.
   If component is `null`, the method throws an exception.
   @method
+  @name HUBU.Hub#registerComponent
   @param {HUBU.AbstractComponent} component the component to register
   @param {Object} configuration the component configuration (optional).
-  If the configuration contain the 'component_name' key, the component takes this name.
-  @return the current hub
+  If the configuration contain the `component_name` key, the component takes this name.
+  @return {HUBU.Hub} the current hub
   ###
   registerComponent : (component, configuration) ->
     ### Validation ###
@@ -136,7 +139,6 @@ HUBU.Hub = class Hub
       else
         throw new Exception(component + " is not a valid component")
     ### End of Validation ###
-
 
     # Initialize the hub if not done already
     @configure() unless @_extensions isnt null
@@ -185,11 +187,12 @@ HUBU.Hub = class Hub
   ###*
   Unregisters the given component.
   If the component is not plugged to the hub, this method does nothing.
+  @name HUBU.Hub#unregisterComponent
+  @method
   @param {Object} component either the component object ({HUBU.AbstractComponent}) or the component name {String}
-  @return the current hub.
+  @return {HUBU.Hub} the current hub.
   ###
   unregisterComponent : (component) ->
-    #### Validation ###
     # If component is null, return immediately
     if not component?
       return @;
@@ -225,7 +228,9 @@ HUBU.Hub = class Hub
   Starts the hub.
   This method calls start on all plugged components.
   This method does nothing is the hub is already started.
-  @return the hub
+  @method
+  @name HUBU.Hub#start
+  @return {HUBU.Hub} the hub
   ###
   start : ->
     if @_started then return @
@@ -247,7 +252,9 @@ HUBU.Hub = class Hub
   Stops the hub.
   This method calls stop on all plugged components.
   If the hub is not started, this methods does nothing.
-  @return the hub
+  @method
+  @name HUBU.Hub#stop
+  @return {HUBU.Hub} the hub
   ###
   stop : ->
     if not @_started then return @
@@ -264,13 +271,19 @@ HUBU.Hub = class Hub
     return @
 
   ###*
-  Checks whether the hub is started
+  Checks whether the hub is started.
+  @method
+  @name HUBU.Hub#isStarted
+  @return {boolean} `true` is the hub is started, `false` otherwise
   ###
   isStarted : -> return @_started
 
   ###*
   Resets the hub.
-  This method is generally used for testing as it reinitialize the hub state.
+  This method is generally used for testing as it reinitializes the hub state.
+  @method
+  @name HUBU.Hub#reset
+  @return {HUBU.Hub} the current hub
   ###
   reset: ->
     @.stop()
@@ -285,11 +298,17 @@ HUBU.Hub = class Hub
 
     return @
 
+  ###*
+  Gets the hub name.
+  @name HUBU.Hub#getComponentName
+  @method
+  @return {String} the hub's name
+  ###
   getComponentName : -> return "Hub"
 
 ### End of th Hub Class ###
 
-###
+###*
 Create the main Global hub, and the `hub` alias
 @desc The main global hub.
 @global
