@@ -19,7 +19,7 @@
     <artifactId>h-ubu</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>H-Ubu</name>
-    <packaging>pom</packaging>
+    <packaging>js</packaging>
     <description>H-Ubu is a simple component model for Javascript</description>
 
     <parent>
@@ -52,149 +52,59 @@
         </license>
     </licenses>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.nano.libs</groupId>
+            <artifactId>mootools-core</artifactId>
+            <version>1.4.5</version>
+            <type>js</type>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>${repo.releases.id}</id>
+            <name>${repo.releases.name}</name>
+            <url>${repo.releases.url}</url>
+            <uniqueVersion>false</uniqueVersion>
+        </repository>
+        
+        <snapshotRepository>
+            <id>${repo.snapshots.id}</id>
+            <name>${repo.snapshots.name}</name>
+            <url>${repo.snapshots.url}</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
+    
     <build>
 
         <plugins>
-            <plugin>
-                <groupId>com.voltvoodoo</groupId>
-                <artifactId>brew</artifactId>
-                <version>0.2.10</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                        <phase>compile</phase>
-                        <id>compile-coffeescript</id>
-                        <configuration>
-                            <coffeeSourceDir>${basedir}/src/main/coffee</coffeeSourceDir>
-                            <coffeeOutputDir>${js.target}</coffeeOutputDir>
-                            <hamlSourceDir>${basedir}/src/main/coffee</hamlSourceDir>
-                            <hamlOutputDir>${js.target}</hamlOutputDir>
-                            <!-- Set this to do auto-compilation when a file is changed <watch>true</watch> -->
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                        <phase>test-compile</phase>
-                        <id>compile-test-coffeescript</id>
-                        <configuration>
-                            <coffeeSourceDir>${basedir}/src/test/coffee</coffeeSourceDir>
-                            <coffeeOutputDir>${js.target.test}</coffeeOutputDir>
-                            <hamlSourceDir>${basedir}/src/main/coffee</hamlSourceDir>
-                            <hamlOutputDir>${js.target}</hamlOutputDir>
-                            <!-- Set this to do auto-compilation when a file is changed <watch>true</watch> -->
-                        </configuration>
-                    </execution>
-                </executions>
-
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.5</version>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${js.target}</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>src/main/js</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>com.github.searls</groupId>
-                <artifactId>jasmine-maven-plugin</artifactId>
-                <version>1.1.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <phase>integration-test</phase>
-                        <id>test aggregated version</id>
-                        <configuration>
-                            <jsSrcDir>${project.build.directory}</jsSrcDir>
-                            <jsTestSrcDir>${basedir}</jsTestSrcDir>
-                            <sourceIncludes>
-                                <include>**/hubu-all.js</include>
-                            </sourceIncludes>
-                            <specIncludes>
-                                <include>src/test/js**/*.js</include>
-                                <include>target/test-js/MyComponents.js</include>
-                            </specIncludes>
-                            <junitXmlReportFileName>TEST-jasmine-aggregated.xml</junitXmlReportFileName>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <phase>integration-test</phase>
-                        <id>test minified version</id>
-                        <configuration>
-                            <jsSrcDir>${project.build.directory}/classes</jsSrcDir>
-                            <jsTestSrcDir>${basedir}</jsTestSrcDir>
-                            <sourceIncludes>
-                                <include>**/hubu-all-min.js</include>
-                            </sourceIncludes>
-                            <specIncludes>
-                                <include>src/test/js**/*.js</include>
-                                <include>target/test-js/MyComponents.js</include>
-                            </specIncludes>
-                            <junitXmlReportFileName>TEST-jasmine-minified.xml</junitXmlReportFileName>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <!-- Default configuration used by jasmine:bdd  -->
-                    <jsSrcDir>src/main</jsSrcDir>
-                    <jsTestSrcDir>src/test</jsTestSrcDir>
-
-                    <sourceIncludes>
-                        <include>**/Hubu-Root.coffee</include>
-                        <include>**/AbstractComponent.coffee</include>
-                        <include>**/Utils.coffee</include>
-
-                        <include>**/Hubu-Eventing-Extension.coffee</include>
-                        <include>**/Hubu-Binding-Extension.coffee</include>
-                        <include>**/Hubu-SOC-Mechanism.coffee</include>
-                        <include>**/Hubu-SOC-Extension.coffee</include>
-
-                        <include>**/Hub.coffee</include>
-                    </sourceIncludes>
-
-                    <specIncludes>
-                        <include>**/*.js</include>
-                        <include>**/MyComponents.coffee</include>
-                    </specIncludes>
-
-                    <!-- Common test configuration, shared by all executions -->
-                    <preloadSources>
-                        <preloadSource>
-                            ${basedir}/src/test/resources/mootools-core-1.4.5-full-nocompat.js
-                        </preloadSource>
-                    </preloadSources>
-                </configuration>
-
-            </plugin>
-
-
+			<plugin>
+				<groupId>org.nano.coffee-roasting</groupId>
+				<artifactId>coffee-roasting-maven-plugin</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+				<extensions>true</extensions>
+				<configuration>
+					<javascriptAggregation>
+							<file>Hubu-Root.js</file>
+                            <file>AbstractComponent.js</file>
+                            <file>Utils.js</file>
+                            <file>Hubu-Eventing-Extension.js</file>
+                            <file>Hubu-Binding-Extension.js</file>
+                            <file>Hubu-SOC-Mechanism.js</file>
+                            <file>Hubu-SOC-Extension.js</file>
+                            <file>Hub.js</file>
+					</javascriptAggregation>
+					<minifier>GOOGLE_CLOSURE</minifier>
+					<runJasmineTestOnAggregatedVersion>true</runJasmineTestOnAggregatedVersion>
+					<runJasmineTestOnMinifiedVersion>true</runJasmineTestOnMinifiedVersion>					
+					<javaScriptIntegrationTestDir>src/test/js</javaScriptIntegrationTestDir>
+				</configuration>
+				<!-- TODO Enable integration-test -> Running the test on the minifies version  -->
+			</plugin>
+			
             <plugin>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.0-beta-9</version>
@@ -202,57 +112,6 @@
                     <useReleaseProfile>true</useReleaseProfile>
                     <goals>deploy deploy-site</goals>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>net.alchim31.maven</groupId>
-                <artifactId>yuicompressor-maven-plugin</artifactId>
-                <version>1.3.0</version>
-                <executions>
-                    <execution>
-                        <id>aggregate</id>
-                        <goals>
-                            <goal>compress</goal>
-                        </goals>
-                        <phase>compile</phase>
-                        <configuration>
-                            <aggregations>
-                                <aggregation>
-                                    <insertNewLine>true</insertNewLine>
-                                    <output>${project.build.directory}/hubu-all.js</output>
-
-                                    <includes>
-                                        <include>${js.target}/Hubu-Root.js</include>
-                                        <include>${js.target}/AbstractComponent.js</include>
-                                        <include>${js.target}/Utils.js</include>
-
-                                        <include>${js.target}/hubu-Eventing-Extension.js</include>
-                                        <include>${js.target}/Hubu-Binding-Extension.js</include>
-                                        <include>${js.target}/Hubu-SOC-Mechanism.js</include>
-                                        <include>${js.target}/Hubu-SOC-Extension.js</include>
-
-                                        <include>${js.target}/Hub.js</include>
-                                    </includes>
-                                </aggregation>
-                            </aggregations>
-                            <nocompress>true</nocompress>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>compress</id>
-                        <goals>
-                            <goal>compress</goal>
-                        </goals>
-                        <phase>compile</phase>
-                        <configuration>
-                            <sourceDirectory>${project.build.directory}</sourceDirectory>
-                            <includes>
-                                <include>hubu-all.js</include>
-                            </includes>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
 
             <plugin>
@@ -271,61 +130,27 @@
                             </configuration>
                         </plugin>
                         <plugin>
-                            <groupId>gr.abiss.mvn.plugins</groupId>
-                            <artifactId>maven-jstools-plugin</artifactId>
-                            <version>0.7</version>
+                            <groupId>org.nano.coffee-roasting</groupId>
+                            <artifactId>coffee-roasting-maven-plugin</artifactId>
+                            <version>1.0.0-SNAPSHOT</version>
                             <configuration>
-                                <jsDir>${js.target}</jsDir>
-                                <includePrivate>true</includePrivate>
-                                <includeUndocumented>true</includeUndocumented>
-                                <reportJslintErrorsOnly>false</reportJslintErrorsOnly>
+                                <jsdocIncludePrivate>true</jsdocIncludePrivate>
                             </configuration>
-                            <reportSets>
-                                <reportSet>
-                                    <reports>
-                                        <report>jslint</report>
-                                        <report>jsdoc</report>
-                                    </reports>
-                                </reportSet>
-                            </reportSets>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-surefire-report-plugin</artifactId>
+                            <version>2.5</version>
                         </plugin>
                     </reportPlugins>
                 </configuration>
                 <dependencies>
                     <dependency>
-                        <groupId>org.kohsuke</groupId>
+                        <groupId>org.apache.maven.doxia</groupId>
                         <artifactId>doxia-module-markdown</artifactId>
-                        <version>1.0</version>
+                        <version>1.3</version>
                     </dependency>
                 </dependencies>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.7</version>
-                <executions>
-                    <execution>
-                        <id>attach-artifacts</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>attach-artifact</goal>
-                        </goals>
-                        <configuration>
-                            <artifacts>
-                                <artifact>
-                                    <file>${project.build.directory}/hubu-all.js</file>
-                                    <type>js</type>
-                                </artifact>
-                                <artifact>
-                                    <file>${project.build.directory}/classes/hubu-all-min.js</file>
-                                    <type>js</type>
-                                    <classifier>min</classifier>
-                                </artifact>
-                            </artifacts>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
 
             <plugin>
