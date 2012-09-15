@@ -53,6 +53,7 @@
             <item name="Home" href="index.html"/>
             <item name="Motivations and Concepts" href="motivations.html"/>
             <item name="Quickstart" href="quickstart.html"/>
+            <item name="Resources" href="external-resources.html"/>
         </menu>
 
 		<menu name="User Guide">
