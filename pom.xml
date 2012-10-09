@@ -82,8 +82,8 @@
 
         <plugins>
 			<plugin>
-				<groupId>org.nano.coffee-roasting</groupId>
-				<artifactId>coffee-roasting-maven-plugin</artifactId>
+				<groupId>org.nano.coffee-mill</groupId>
+				<artifactId>coffee-mill-maven-plugin</artifactId>
 				<version>1.0.0-SNAPSHOT</version>
 				<extensions>true</extensions>
 				<configuration>
