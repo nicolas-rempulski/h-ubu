@@ -100,8 +100,8 @@
                           <a href="quickstart.html" title="Quickstart">Quickstart</a>
             </li>
                   <li class="none">
-                          <a href="external-resources.html" title="Resources">Resources</a>
-            </li>
+            <strong>Resources</strong>
+          </li>
           </ul>
                         <h3>User Guide</h3>
                   <ul>
@@ -127,8 +127,8 @@
                         <h3>Advanced Topics</h3>
                   <ul>
                   <li class="none">
-            <strong>Using require.js</strong>
-          </li>
+                          <a href="using-requirejs.html" title="Using require.js">Using require.js</a>
+            </li>
                   <li class="none">
                           <a href="using-nodejs.html" title="Using h-ubu in node.js">Using h-ubu in node.js</a>
             </li>
@@ -181,84 +181,10 @@
         
         <div id="bodyColumn"  class="span10" >
                                   
-            <h1>Using h-ubu and require.js</h1><p>h-ubu and <a class="externalLink" href="http://requirejs.org/">Require.js</a> can be combined. With such combination, each h-ubus component is encapsulated inside a require.jss module.</p><p>This page shows how the <a href="quickstart.html">quickstart demo</a> can be re-implemented using require.js. The new application is available <a href="requirejs/requirejs-demo.html">here</a></p><div class="section"><h2>The main html page<a name="The_main_html_page"></a></h2><p>The main HTML page just laods jquery, hubu and require.js. The require.js script element also defines the main script . Notice that this main script is specified as the path to the script <b>without</b> the .js extension.</p>
-<div class="source"><pre class="prettyprint">&lt;html&gt;
-&lt;head&gt;
-    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
-    &lt;title&gt;
-        H-Ubu Demo using require.js
-    &lt;/title&gt;
-    &lt;script src=&quot;scripts/jquery-1.4.2.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
-    &lt;script type=&quot;text/javascript&quot; src=&quot;scripts/hubu-all.js&quot;&gt;&lt;/script&gt;
-    &lt;script data-main=&quot;scripts/main&quot; src=&quot;scripts/require.js&quot;&gt;&lt;/script&gt;
-
-&lt;/head&gt;
-...
-&lt;/html&gt;
-</pre></div></div><div class="section"><h2>The main script<a name="The_main_script"></a></h2><p>The main script is the require.js module loaded first.</p>
-<div class="source"><pre class="prettyprint">require([
-&quot;components/backendComponent&quot;,
-&quot;components/frontendComponent&quot;], function(backend, frontend) {
-
-    $(document).ready(function(){
-        // Component registration
-        hub
-            .registerComponent(backend)
-            .registerComponent(frontend, {
-                loginId : '#login',
-                logoutId : '#logout',
-                statusId : '#status'
-            })
-            .start();
-    });
-});
-</pre></div><p>First, its a require.js module defined using the require function. It requires 2 modules / components : the backend and frontend components. Notice that the dependencies are specified as path relative to the current script without the <i>.js</i> extension.</p><p>The contract used for the interation between the backend / frontend is not declared as a depednency here but as a dependency of each component.</p></div><div class="section"><h2>The components<a name="The_components"></a></h2><p>Components are wrapped within require.js modules. For the backend component is would be done like in:</p>
-<div class="source"><pre class="prettyprint">define([&quot;./UserServiceContract&quot;], function (contract) {
-    return {
-        hub:null,
-        isUserLoggedIn:false,
-        user:null,
-
-        // The component code....
-    }
-});
-</pre></div><p>We declare a dependency on the <i>UserServiceContract</i> which will also be loaded by the frontend components. So the contract is also a require.js module:</p>
-<div class="source"><pre class="prettyprint">/**
- * User Service Contract definition.
- * The implementations are empty
- * like a Java interface
- */
-
-define(function () {
-    return {
-        /**
-         * Checks if the user is logged in.
-         */
-        isLoggedIn : function () {},
-
-        /**
-         * Get the logged user.
-         */
-        getUser : function () {},
-
-        /**
-         * Ask to log in.
-         * This method simulates a async call.
-         * And so returns immediately.
-         * @param {String} name
-         */
-        login: function (name) {},
-
-        /**
-         * Ask to logout in.
-         * This method simulates a async call.
-         * And so returns immediately.
-         */
-        logout: function () {}
-    };
-    }
-);
-</pre></div></div>
+            <h1>Resources</h1><div class="section"><h2>Talks<a name="Talks"></a></h2>
+<ul>
+  <li><a class="externalLink" href="http://www.slideshare.net/clement.escoffier/hubu-cdi-in-javascript">Jug Summer Camp 2012 - h-ubu - CDI in JavaScript</a></li>
+</ul></div>
                   </div>
             </div>
       

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: AbstractComponent</title>
+    
+    <script src="http://shjs.sourceforge.net/sh_main.min.js"> </script>
+    <script src="http://shjs.sourceforge.net/lang/sh_javascript.min.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/node-dark.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Class: AbstractComponent</h1>
+    
+    
+
+
+
+<section>
+    
+<header>
+    <h2>
+    AbstractComponent
+    </h2>
+    
+</header>  
+
+<article>
+    <div class="container-overview">
+    
+    
+    
+        
+<dt>
+    <h4 class="name" id="AbstractComponent"><span class="type-signature"></span>new AbstractComponent</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Abstract Component class.<br />This used is not intended to be used directly, and is just here for documentation purpose. Indeed, the returned object<br />contains the four required methods that <strong>all</strong> component must have. Any Javascript object with those 4 methods can be<br />considered as a valid component.</p>
+
+<p>The 4 required methods are:</p>
+
+<ul>
+<li><code>getComponentName()</code> : return the default component name</li>
+<li><code>configurate(hub, [configuration])</code> : configures the component</li>
+<li><code>start()</code> / <code>stop()</code> : called when the component is started / stopped</li>
+</ul>
+
+<p>Returned objects do not intend to be used, they are just mock / empty instances.</p>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>h-ubu-0.0.1-SNAPSHOT.js, line 81</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="configure"><span class="type-signature"></span>configure</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Configures the component.<br />    This method is called by the hub when the component starts or when the component is plugged when the hub is already started.</p>
+    </div>
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>hub</code></td>
+            
+            
+            <td class="type">
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>the hub</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>configuration</code></td>
+            
+            
+            <td class="type">
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>optional parameter used to pass the component configuration. The configuration object is a simple<br />     key/value map.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>h-ubu-0.0.1-SNAPSHOT.js, line 118</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getComponentName"><span class="type-signature"></span>getComponentName</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Gets the component name.<br />    If an 'id' is given in the hub configuration, this method is replaced.</p>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>h-ubu-0.0.1-SNAPSHOT.js, line 158</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>the component name</p>
+</div>
+
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="start"><span class="type-signature"></span>start</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Starts the component.<br />    This method is called by the hub when the hub starts or when the component is plugged when the hub is already started.<br />    This methods is always called after the <code>configure</code> method. Once called the component can send events and used bound<br />    components.</p>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>h-ubu-0.0.1-SNAPSHOT.js, line 132</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="stop"><span class="type-signature"></span>stop</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Stops the component.<br />    This method is called by the hub when the hub is stopped or when the component is unplugged.<br />    This methods is always called after the <code>start</code> method. Once called, the component must not send events or access bound components.</p>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>h-ubu-0.0.1-SNAPSHOT.js, line 145</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+</article>
+
+</section>  
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="AbstractComponent.html">AbstractComponent</a></li><li><a href="HUBU.Hub.html">Hub</a></li><li><a href="HUBU.ServiceComponent.html">ServiceComponent</a></li><li><a href="HUBU.ServiceOrientation.html">ServiceOrientation</a></li></ul><h3>Namespaces</h3><ul><li><a href="HUBU.html">HUBU</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getGlobal">getGlobal</a></li><li><a href="global.html#getHubuExtensions">getHubuExtensions</a></li><li><a href="global.html#hubu">hubu</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/micmath/jsdoc">JSDoc 3</a> on Tue Oct 23 2012 17:52:27 GMT+0200 (CEST)
+</footer>
+
+<script> sh_highlightDocument(); </script>
+</body>
+</html>
