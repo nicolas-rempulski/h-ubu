@@ -290,8 +290,8 @@ utils.indexOf = (array, obj) ->
     return array.indexOf(obj)
   else
     # Else, we do a simple lookup
-    for v of array
-      return v if array.v is obj
+    for v, i in array
+      return i if v is obj
     return -1
 
 ###
