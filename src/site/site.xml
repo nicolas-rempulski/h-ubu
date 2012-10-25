@@ -46,6 +46,13 @@
                 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
                 })();
             </script>
+
+            <script type="text/javascript">
+                $(document).ready(function () {
+                $("pre code").parent().addClass("prettyprint");
+                prettyPrint();
+                });
+            </script>
             <link rel="shortcut icon"  href="favicon.png" />
         </head>
 
