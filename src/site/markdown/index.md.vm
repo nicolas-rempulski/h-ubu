@@ -4,9 +4,9 @@
         <p style="text-align: center;" class="lead">JavaScript Componentization</p>
         <p>
             <span class="span4">&nbsp;</span>
-           <a href="https://github.com/downloads/nano-project/h-ubu/h-ubu-0.0.1-SNAPSHOT.js" class="btn
+           <a href="https://github.com/downloads/nano-project/h-ubu/h-ubu-${project.version}.js" class="btn
        btn-primary span2 btn-large"><i class="fa-icon-download"></i>&nbsp; hubu-all.js</a>
-            <a href="https://github.com/downloads/nano-project/h-ubu/h-ubu-0.0.1-SNAPSHOT-min.js" class="btn btn-info
+            <a href="https://github.com/downloads/nano-project/h-ubu/h-ubu-${project.version}-min.js" class="btn btn-info
        span2 btn-large"><i class="fa-icon-resize-small"></i>&nbsp; hubu-all-min.js</a>
         </p>
     </div>
@@ -74,6 +74,6 @@ bound together automatically. You never depends on a specific implementation, bu
 
 
 <h1>License</h1>
-h-ubu is licensed under the Apache License 2.0. The project was initially founded by <a href="http:
-//www.akquinet.de/en">akquinet A.G.</a>, but is now founded by <a href="http://arrow-group.eu">Arrow Group</a>.
+h-ubu is licensed under the Apache License 2.0. The project was initially founded by
+<a href="http://www.akquinet.de/en">akquinet A.G.</a>, but is now founded by <a href="http://arrow-group.eu">Arrow Group</a>.
 
