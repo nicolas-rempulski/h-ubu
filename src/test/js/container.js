@@ -184,12 +184,6 @@ describe("Container test suite", function() {
         // Add hub2 to hub1
         hub1.registerComponent(hub2);
 
-        // Now import the service from cmp2 (hub2) to hub1
-        hub1.provideService({
-            component: hub2,
-            contract: contract
-        });
-
         hub1.stop();
         hub2.stop();
 

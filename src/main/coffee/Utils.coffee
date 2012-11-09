@@ -88,7 +88,7 @@ getGlobal().Exception = class Exception
 # Contract and Reflection related methods
 ###
 
-###
+###*
 # This function is returning the `type` of an object. It is different from the JavaScript `typeof`, and relies on
 # the Object `toString` method.
 # Here are the different results :
@@ -111,7 +111,7 @@ utils.typeOf = (obj) ->
     return classToType[myClass]
   return "object"
 
-###
+###*
 # Checks that the given object is conform to the given contract
 # The contract is a javascript object.
 # The conformity is computed as follow:
@@ -141,7 +141,7 @@ utils.isObjectConformToContract = (object, contract) ->
   # We're done !
   return true
 
-###
+###*
 # Utility method to check if the given object is a function.
 # @param {Object} obj the object to check
 # @returns `true` if the given object is a function, `false` otherwise
@@ -150,7 +150,7 @@ utils.isFunction = (ref) ->
   # We need to specify the exact function because toString can be overridden by browser.
   return @typeOf(ref) is "function";
 
-###
+###*
 # Utility method to check if the given object is an object.
 # @param {Object} obj the object to check
 # @returns `true` if the given object is an object, `false` otherwise
@@ -159,7 +159,7 @@ utils.isObject = (ref) ->
   # We need to specify the exact function because toString can be overridden by browser.
   return @typeOf(ref) is "object";
 
-###
+###*
 # Invokes the method `method` on the object `target` with the arguments `args` (Array).
 # @param obj the instance
 # @param method the method name to call
@@ -171,7 +171,7 @@ utils.invoke = (target, method, args) ->
     return target[method].apply(target, args)
   return false;
 
-###
+###*
 # Extends the given object `obj` with the given function `func`. Basically, if the `obj[name]` is not defined, then
 # this method extends `obj` with `obj[name]=func`
 # If the method is added, the method returns `true`, `false` otherwise.
@@ -186,7 +186,7 @@ utils.defineFunctionIfNotExist = (obj, name, func) ->
     return true
   return false
 
-###
+###*
 # Clone an object (deep copy).
 # @param obj {Object} the object to clone
 # @param excludes {Array} the property to exclude.
@@ -216,13 +216,29 @@ utils.clone = (obj, excludes) ->
 
   return newInstance
 
-
-utils.bind = (obj, method) ->
-  return ->
-    return method.apply(obj, Array.prototype.slice.call(arguments))
-
-
+###*
+# Creates a `bind` method. This method is calling the given `method` on the given `object`.
+# For example, `bind(foo, doSomething)` returns a method like:
+# `function() { return foo.doSomething(); }`
+# @param {Object} the object on which the method will be called
+# @param {Function} the function to call, is can be given as string too
+# @return {Function} the wrapper function.
 ###
+utils.bind = (obj, method) ->
+  if @typeOf(method) is "string"
+    if obj[method]?
+      method = obj[method]
+    else
+      throw('HUBU.bind: obj[' + method + "] is null")
+
+  if @typeOf(method) is "function"
+    return ->
+      return method.apply(obj, Array.prototype.slice.call(arguments))
+  else
+    throw('HUBU.bind: obj[' + method + "] is not a function")
+
+
+###*
 # Creates a proxy hiding the given object. The proxy implements the contract (and only the contract).
 # @param {Object} contract the contract
 # @param {Object} object the object to proxy
@@ -247,7 +263,7 @@ utils.createProxyForContract = (contract, object) ->
       proxy[props] = object[props];
   return proxy;
 
-###
+###*
 # Checks if the given component implements the 'component' protocol (i.e. interface).
 # @param {Object} component the component to check
 # @return `true` if this is a valid component, `false` otherwise.
@@ -258,7 +274,7 @@ utils.isComponent = (component) ->
     return false;
   return @isObjectConformToContract(component, new HUBU.AbstractComponent());
 
-###
+###*
 # Checks wheter the given component is plugged on the given hub.
 # The component can be given as string (component name) or as object (component object)
 # @param {Object} or {String} component the component to check
@@ -274,9 +290,7 @@ utils.isComponentPlugged = (component, hub) ->
 
   return false
 
-
-
-###
+###*
 # indexOf function.
 # This method delegates on `Array.indexOf` if it exists. If not (IE), it just implements its own indexOf with simple
 # lookup
@@ -294,7 +308,7 @@ utils.indexOf = (array, obj) ->
       return i if v is obj
     return -1
 
-###
+###*
 # Removes the object or value `obj` from the array `array`.
 # Even if the array is modified in place, this method returns the final array.
 # All occurence of `obj` are removed from the array
