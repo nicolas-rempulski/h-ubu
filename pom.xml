@@ -54,7 +54,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.nano.libs</groupId>
+            <groupId>org.nanoko.libs</groupId>
             <artifactId>mootools-core</artifactId>
             <version>1.4.5</version>
             <type>js</type>
@@ -82,7 +82,7 @@
 
         <plugins>
 			<plugin>
-				<groupId>org.nano.coffee-mill</groupId>
+				<groupId>org.nanoko.coffee-mill</groupId>
 				<artifactId>coffee-mill-maven-plugin</artifactId>
 				<version>1.0.0-SNAPSHOT</version>
 				<extensions>true</extensions>
@@ -130,8 +130,8 @@
                             </configuration>
                         </plugin>
                         <plugin>
-                            <groupId>org.nano.coffee-roasting</groupId>
-                            <artifactId>coffee-roasting-maven-plugin</artifactId>
+                            <groupId>org.nanoko.coffee-mill</groupId>
+                            <artifactId>coffee-mill-maven-plugin</artifactId>
                             <version>1.0.0-SNAPSHOT</version>
                             <configuration>
                                 <jsdocIncludePrivate>true</jsdocIncludePrivate>
