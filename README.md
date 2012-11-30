@@ -5,7 +5,7 @@ improve the testability, the maintainability and the scalability of javascript a
 
 Documentation
 =============
-The documentation is available on (http://nano-project.github.com/h-ubu/snapshot/).
+The documentation is available on (http://nanoko-project.github.com/h-ubu/snapshot/).
 
 h-ubu's main features
 =====================

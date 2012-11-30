@@ -28,7 +28,7 @@
         <version>5</version>
     </parent>
 
-    <url>https://github.com/nano-project/h-ubu</url>
+    <url>https://github.com/nanoko-project/h-ubu</url>
     <inceptionYear>2010</inceptionYear>
 
     <organization>
@@ -195,9 +195,9 @@
     </build>
 
     <scm>
-        <connection>scm:git:git@github.com:nano-project/h-ubu.git</connection>
-        <url>https://github.com/nano-project/h-ubu</url>
-        <developerConnection>scm:git:git@github.com:nano-project/h-ubu.git</developerConnection>
+        <connection>scm:git:git@github.com:nanoko-project/h-ubu.git</connection>
+        <url>https://github.com/nanoko-project/h-ubu</url>
+        <developerConnection>scm:git:git@github.com:nanoko-project/h-ubu.git</developerConnection>
     </scm>
 
     <profiles>
