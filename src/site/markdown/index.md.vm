@@ -4,9 +4,10 @@
         <p style="text-align: center;" class="lead">JavaScript Componentization</p>
         <p>
             <span class="span4">&nbsp;</span>
-           <a href="https://github.com/downloads/nano-project/h-ubu/h-ubu-${project.version}.js" class="btn
+           <a href="https://github.com/downloads/nanoko-project/h-ubu/h-ubu-${project.version}.js" class="btn
        btn-primary span2 btn-large"><i class="fa-icon-download"></i>&nbsp; regular version</a>
-            <a href="https://github.com/downloads/nano-project/h-ubu/h-ubu-${project.version}-min.js" class="btn btn-info
+            <a href="https://github.com/downloads/nanoko-project/h-ubu/h-ubu-${project.version}-min.js" class="btn
+            btn-info
        span2 btn-large"><i class="fa-icon-resize-small"></i>&nbsp; minified version</a>
         </p>
     </div>

@@ -19,11 +19,11 @@
             <sideBarEnabled>true</sideBarEnabled>
             <googlePlusOne />
 			<googleSearch>
-			        <sitesearch>http://nano-project.github.com/h-ubu</sitesearch>
+			        <sitesearch>http://nanoko-project.github.com/h-ubu</sitesearch>
             </googleSearch>
 
 			<gitHub>
-		        <projectId>nano-project/h-ubu</projectId>
+		        <projectId>nanoko-project/h-ubu</projectId>
 		        <ribbonOrientation>right</ribbonOrientation>
 		        <ribbonColor>black</ribbonColor>
             </gitHub>

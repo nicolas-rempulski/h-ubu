@@ -24,8 +24,7 @@ handler. Pages are components serving a content for a specific URL.
 
 ![Architecture](nodejs/node-hubu-demo.png "Architecture")
 
-The application is available from [Github](https://github
-.com/nano-project/h-ubu/tree/master/src/site/resources/nodejs).
+The application is available from [Github](https://github.com/nanoko-project/h-ubu/tree/master/src/site/resources/nodejs).
 
 Prerequisites
 ===============

@@ -41,7 +41,7 @@
         <js.target>${basedir}/target/js</js.target>
         <js.target.test>${basedir}/target/test-js</js.target.test>
         <!-- Site Title -->
-        <title>nano-project :: h-ubu</title>
+        <title>nanoko :: h-ubu</title>
     </properties>
 
     <licenses>
