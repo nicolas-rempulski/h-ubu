@@ -60,7 +60,7 @@ describe("Direct Binding Test Suite", function () {
             jasmine.log(e);
             this.fail("Unexpected error " + e);
         }
-    })
+    });
 
     it("should support binding with a method name", function() {
         var source = {
