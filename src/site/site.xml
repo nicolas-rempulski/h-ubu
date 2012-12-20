@@ -70,6 +70,7 @@
 			<item name="Direct Injection" href="direct-injection.html"/>
 			<item name="Receiving and Sending Events" href="receiving-and-sending-events.html"/>
 			<item name="Testing Components" href="testing-components.html"/>
+            <item name="FAQ" href="FAQ.html"/>
 		</menu>		
 		
 		<menu name="Advanced Topics">

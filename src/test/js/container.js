@@ -30,7 +30,7 @@ describe("Container test suite", function() {
             start: function() {},
             stop: function() {},
             configure: function() {}
-        }
+        };
 
         hub.registerComponent(cmp, {'component_name': 'good'});
         hub.start();
@@ -187,6 +187,27 @@ describe("Container test suite", function() {
         hub1.stop();
         hub2.stop();
 
+    });
+
+    it("must ensure the root hub have the `root` name", function() {
+        expect(hub.getComponentName()).toBe("root");
+        hub.reset();
+        expect(hub.getComponentName()).toBe("root");
+    });
+
+    it("must ensure the hub can have name", function() {
+        var hub0 = new HUBU.Hub().configure();
+        expect(hub0.getComponentName()).toBe("hub"); // No name set
+
+        var hub1 = new HUBU.Hub().start();
+        expect(hub1.getComponentName()).toBe("hub"); // No name set
+
+        var hub2 = new HUBU.Hub().configure(null, {component_name: "my hub is bigger than yours"}).start();
+        expect(hub2.getComponentName()).toBe("my hub is bigger than yours");
+
+        // We must survive reset
+        hub2.reset();
+        expect(hub2.getComponentName()).toBe("my hub is bigger than yours");
     });
 
 });

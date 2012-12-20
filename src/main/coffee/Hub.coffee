@@ -43,6 +43,13 @@ HUBU.Hub = class Hub
   _parentHub : null
 
   ###*
+  The hub name if set. `hub` by default. The root hub is named `root`.
+  @name HUBU.Hub#_name
+  @private
+  ###
+  _name : null
+
+  ###*
   The hub constructor.
   ###
   constructor: ->
@@ -55,11 +62,16 @@ HUBU.Hub = class Hub
   @method
   @name HUBU.Hub#configure
   @param {HUBU.Hub} parent the parent hub if exists. Sub-hubs have necessary one and only one parent hub.
-  @returns {HUBU.Hub} the hub
+  @param configuration optional parameter used to pass the component configuration. The configuration object is a simple
+   key/value map.  @returns {HUBU.Hub} the hub
   ###
-  configure: (parent) ->
+  configure: (parent, configuration) ->
+
     if (parent?)
       @_parentHub = parent
+
+    if not @_name?
+      @_name = if (configuration?.component_name?) then configuration.component_name else "hub"
 
     # Do not reinitialized if already initialized
     if not @_extensions?
@@ -286,7 +298,10 @@ HUBU.Hub = class Hub
   @return {HUBU.Hub} the current hub
   ###
   reset: ->
-    @.stop()
+    @stop()
+
+    # Store the name
+    name = @_name
 
     @configure() unless @_extensions isnt null
 
@@ -295,6 +310,8 @@ HUBU.Hub = class Hub
 
     @_components = []
     @_extensions = null
+    # Restore the name
+    @_name = name
 
     return @
 
@@ -304,7 +321,7 @@ HUBU.Hub = class Hub
   @method
   @return {String} the hub's name
   ###
-  getComponentName : -> return "Hub"
+  getComponentName : -> return @_name;
 
 ### End of th Hub Class ###
 
@@ -314,4 +331,4 @@ Create the main Global hub, and the `hub` alias
 @global
 @readonly
 ###
-getGlobal().hub = new HUBU.Hub()
+getGlobal().hub = new HUBU.Hub().configure(null, { component_name : "root" })

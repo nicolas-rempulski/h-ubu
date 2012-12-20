@@ -1,0 +1,41 @@
+# FAQ
+
+<div class="alert alert-info">
+  A trick is missing ? Just open an <a href="https://github.com/nanoko-project/h-ubu/issues/">issue</a>, and even better
+  fork the <a href="https://github.com/nanoko-project/h-ubu">project</a>, improve the documentation and send a pull request.
+</div>
+
+<div id="toc" class="well">
+</div>
+
+<a class="entry" name="naming_hub"></a>
+Creating hubs and naming them
+-----------------------------
+
+Using the `root` _global_ hub is just a sugar. You can create your own hub:
+
+    var myHub = new HUBU.Hub();
+
+Moreover you can name this hub:
+
+    var myHub = new HUBU.Hub()
+        .configure(null, {component_name: "my hub is bigger than yours"}).start();
+
+If you wonder about the first argument of the `configure` method, it's used to pass a parent hub to create
+hirearchical composition. This feature is coming soon.
+
+All created hubs have their own services and events. So they cannot be shared between hubs. A component can be
+registered only on one hub.
+
+
+<!-- SCRIPT generating the TOC -->
+<script>
+    var toc = $("#toc");
+    var list = $(toc).append($("<ol>"));
+    $("a.entry").each(function(index, elem) {
+        var anchor = elem.name;
+        var title = $(elem).parent().next("h2").html();
+        var item = $("<li><a href=\"#" + anchor + "\">" + title + "</a></li>");
+        list.append(item);
+    });
+</script>
