@@ -161,7 +161,7 @@ describe("Event Mechanism Test Suite", function () {
             jasmine.log(e);
             this.fail("Unexpected exception " + e);
         }
-    })
+    });
 
     it("should send events even if there are not receivers", function() {
         var sender = {
@@ -229,6 +229,92 @@ describe("Event Mechanism Test Suite", function () {
             jasmine.log(e);
             this.fail("Unexpected exception");
         }
-    })
+    });
+
+    it("should support cloned and not cloned events", function() {
+        var sender = {
+            hub : null,
+            received : null,
+            sent : null,
+            getComponentName : function() {
+                return 'sender';
+            },
+            start : function() {
+                hub.registerListener(this, this.match, this.receive);
+                this.sent = {
+                    game : "ping" // Cloned by default
+                };
+                hub.sendEvent(this, this.sent);
+            },
+            stop : function() {
+            },
+            configure : function(hub) {
+                this.hub = hub;
+            },
+            match : function(ev) {
+                return ev.game;
+            },
+            receive : function(ev) {
+                jasmine.log("Sender received " + ev.game);
+                this.received = ev;
+            }
+
+        };
+
+        var receiver = {
+            hub : null,
+            received : null,
+            sent : null,
+            getComponentName : function() {
+                return 'receiver';
+            },
+            start : function() {
+            },
+            stop : function() {
+            },
+            configure : function(hub) {
+                this.hub = hub;
+                hub.registerListener(this, this.match, this.receive);
+            },
+            match : function(ev) {
+                return ev.game;
+            },
+            receive : function(ev) {
+                jasmine.log("Receiver received " + ev.game);
+                this.received = ev;
+                this.sent = {
+                    game : "pong",
+                    clone : false // Not cloned
+                };
+                hub.sendEvent(this, this.sent);
+            }
+        };
+
+        try {
+            // Must register the receiver first.
+            hub.registerComponent(receiver);
+            hub.registerComponent(sender);
+            var cmps = hub.getComponents();
+
+            hub.start();
+            // Event are then sent.
+
+            var event = receiver.received;
+            expect(event).toBeDefined();
+            expect(event.source.getComponentName()).toBe('sender');
+            expect(event.game).toBe('ping');
+            expect(event).not.toBe(sender.sent); // Cloned
+
+            event = sender.received;
+            expect(event).toBeDefined();
+            expect(event.source.getComponentName()).toBe('receiver');
+            expect(event.game).toBe('pong');
+            expect(event).toBe(receiver.sent); // Not cloned.
+
+        } catch (e) {
+            jasmine.log(e);
+            this.fail("Unexpected exception " + e);
+        }
+    });
 
 });

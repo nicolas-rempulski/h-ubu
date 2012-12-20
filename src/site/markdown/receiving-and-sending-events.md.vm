@@ -105,11 +105,24 @@ Event Cloning
 ----------------
 To prevent listeners from modifying events, the match and callback methods receive a clone of the event.
 
+However you can disable this behavior by setting `event.clone` to `false`. This can be useful on big events,
+or to avoid loops during the cloning.
+
+    hub.sendEvent(this, {
+        game : "ping" // Cloned by default
+    });
+    hub.sendEvent(this, {
+        game : "pong",
+        clone : false // Not cloned
+    });
+
+Receivers can check the same property to know if the event was cloned or not.
+
 Summary
 -----------
 
  * components register a listener on the hub and pass the match and callback methods
  * components send events to the hub
- * H-Ubu calls the match methods
- * For all match methods accepting the event, H-Ubu calls the associated callback method
+ * h-ubu calls the match methods
+ * For all match methods accepting the event, h-ubu calls the associated callback method
 

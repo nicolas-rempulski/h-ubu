@@ -126,11 +126,18 @@ HUBU.Eventing = class Eventing
 
     sent = false
 
+
+
     # We exclude from the list the the given listener.
     for listener in @_listeners when listener.component isnt component
-      # Create a clone of the event, and set the source
-      ev = HUBU.UTILS.clone(event)
+      # Check whether the event has to be clone.
+      # By default all events are cloned except if the event has the property `event.clone` set to false.
+      # Receivers chan check this property to know if the event was cloned or not.
+      ev = if (not event.clone? || event.clone) then HUBU.UTILS.clone(event) else event
+
+      # Set event source.
       ev.source = component
+
       # We don't have to check the existence of the match function, it's done during registration
       if listener.match.apply(listener.component, [ev])
         listener.callback.apply(listener.component, [ev])
