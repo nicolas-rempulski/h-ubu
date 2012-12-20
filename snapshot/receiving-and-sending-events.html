@@ -301,13 +301,27 @@ events sent by itself.</p>
 
 <p>To prevent listeners from modifying events, the match and callback methods receive a clone of the event.</p>
 
+<p>However you can disable this behavior by setting <code>event.clone</code> to <code>false</code>. This can be useful on big events,
+or to avoid loops during the cloning.</p>
+
+<pre><code>hub.sendEvent(this, {
+    game : "ping" // Cloned by default
+});
+hub.sendEvent(this, {
+    game : "pong",
+    clone : false // Not cloned
+});
+</code></pre>
+
+<p>Receivers can check the same property to know if the event was cloned or not.</p>
+
 <h2>Summary</h2>
 
 <ul>
 <li>components register a listener on the hub and pass the match and callback methods</li>
 <li>components send events to the hub</li>
-<li>H-Ubu calls the match methods</li>
-<li>For all match methods accepting the event, H-Ubu calls the associated callback method</li>
+<li>h-ubu calls the match methods</li>
+<li>For all match methods accepting the event, h-ubu calls the associated callback method</li>
 </ul>
 
                   </div>
