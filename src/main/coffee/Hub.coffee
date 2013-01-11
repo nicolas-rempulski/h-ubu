@@ -197,6 +197,30 @@ HUBU.Hub = class Hub
     return @
 
   ###*
+  Creates an instance of the given factory.
+  This methods delegates most of the work on the _registerComponent_ method but create the component out of the given
+  factory. The return of the factory must be a valid component.
+  @name HUBU.Hub#createInstance
+  @method
+  @param {Function} factory the method used to create the instance. The return of this method must be a valid component,
+  so be conform to the {HUBU.AbstractComponent} contract.
+  @param {Object} configuration the component configuration (optional).
+  If the configuration contain the `component_name` key, the component takes this name.
+  @return {HUBU.Hub} the current hub
+  ###
+  createInstance : (factory, configuration) ->
+    ### Validation ###
+    if not factory?
+      throw new Exception("Cannot create instance - the given factory / constructor is null")
+
+    if not HUBU.UTILS.isFunction(factory) then throw new Exception("Cannot create instance - the given factory " +
+      "/ constructor is not a function")
+
+    ### End of validation ###
+    instance = new factory()
+    return @registerComponent(instance, configuration)
+
+  ###*
   Unregisters the given component.
   If the component is not plugged to the hub, this method does nothing.
   @name HUBU.Hub#unregisterComponent

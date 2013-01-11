@@ -403,6 +403,35 @@ describe("Component Mechanism Test Suite", function () {
             jasmine.log(e);
             this.fail("Unexpected component reject");
         }
-    })
+    });
+
+    it("should support creating instances", function() {
+       var MyClass = function() {
+           return {
+               call : 0,
+               name : "unamed",
+
+               getComponentName : function() {
+                   return this.name;
+               },
+               start : function() {
+               },
+               stop : function() {
+               },
+               configure : function(hub, configuration) {
+                   this.name = configuration.name
+                   this.call = this.call + 1;
+               }
+           }
+       }
+
+       hub
+           .createInstance(MyClass, {name: "1"})
+           .createInstance(MyClass, {name: "2"})
+           .createInstance(MyClass, {name: "3"})
+
+       expect(hub.getComponents().length).toBe(3)
+
+    });
 });
 

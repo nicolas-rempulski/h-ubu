@@ -57,3 +57,70 @@ The `configuration` parameter is optional. If specified, the configuration is in
 property is managed in a different way. When specified, the `getComponentName` method is replaced to return the given value.
 
 It is recommended to use the configuration to pass any external data to the component, such as HTML element selectors (ids, classes ...).
+
+Declaring instances
+======================
+
+The previous way to declare components is made for singleton. You can instruct the hub to create a new instance of a
+_function_. It's a popular way to mimic classes in JavaScript. However the return of the function must be a valid
+component:
+
+    var MyClass = function() {
+           return {
+               call : 0,
+               name : "unamed",
+
+               getComponentName : function() {
+                   return this.name;
+               },
+               start : function() {
+               },
+               stop : function() {
+               },
+               configure : function(hub, configuration) {
+                   this.name = configuration.name
+               }
+           }
+       }
+
+       hub
+           .createInstance(MyClass, {name: "1"})
+           .createInstance(MyClass, {name: "2"})
+           .createInstance(MyClass, {name: "3"})
+
+To dinstiguish with the regular component registration, we use the `createInstance` method on the hub. This method
+takes a **function** as first argument (mandatory) and the instance configuration as second (optional). You can
+reuse the same component code. The created instances act the same way as regular components.
+
+If you are using CoffeeScript, you can also use CoffeeScript classes directly:
+
+    app.BackendContract = {
+      doSomething : (a) ->
+    }
+
+    ###
+    # A simple class
+    ###
+    app.Backend = class Backend extends global.BackendContract
+      name : null
+      logger : null
+
+      constructor : (name) ->
+        @name = name
+        @logger = new global.Logger("Backend")
+
+      start : -> @logger.info("Backend starting...")
+
+      stop : -> @logger.info("Backend stoping...")
+
+      configure : (hub, config) ->
+        if (config?.name?) then @name = config.name
+
+      getComponentName: -> return @name
+
+      doSomething : (a) ->
+        @logger.info "Backend is going to do something"
+        return @name + "-" + a
+    [...]
+    hub.createInstance(app.Backend, {name : "backend"} // We create the instance here.
+

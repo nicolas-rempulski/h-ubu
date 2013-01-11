@@ -55,89 +55,27 @@ describe("CoffeeScript Component Support Test Suite", function () {
             jasmine.log(e);
             this.fail("Unexpected component reject");
         }
-    })
+    });
 
-
-
-    /*
-     it("should let Mootools components be bound", function() {
-     var Ted = new Class({
-
-     call : 0,
-     friend : null, // Injected
-
-     initialize: function() {
-
-     },
-
-     getComponentName : function() {
-     return 'Ted';
-     },
-
-     start : function() {
-     },
-
-     stop : function() {
-     },
-
-     configure : function(hub) {
-     this.call = this.call + 1;
-     },
-
-     getFriend: function(){
-     return this.friend;
-     }
-
-     });
-
-     var Marshall = new Class({
-
-     call : 0,
-
-     initialize: function() {
-
-     },
-
-     getComponentName : function() {
-     return 'Marshall';
-     },
-
-     start : function() {
-     },
-
-     stop : function() {
-     },
-
-     configure : function(hub) {
-     this.call = this.call + 1;
-     },
-
-     getName: function(){
-     return "Marshall";
-     }
-
-     });
-
-     var ted = new Ted();
-     var marshall = new Marshall();
-
-     try {
-     hub.registerComponent(ted)
-     .registerComponent(marshall)
-     .bind({
-     component: marshall,
-     to: ted,
-     into: "friend"
-     });
-
-     var cmps = hub.getComponents();
-     expect(cmps.length).toBe(2);
-     expect(hub.getComponent("Ted").getFriend().getName()).toBe("Marshall");
-     } catch (e) {
-     jasmine.log(e);
-     this.fail("Unexpected component reject");
-     }
-     })
-     */
+    it("should let coffeescript classes to be factories", function() {
+        try {
+            hub
+                .createInstance(Backend, {name : "backend"})
+                .createInstance(Frontend, {name : "frontend"})
+                .bind({
+                    component: "backend",
+                    to : "frontend",
+                    into : "backend",
+                    contract: BackendContract
+                });
+            var cmps = hub.getComponents();
+            expect(cmps.length).toBe(2);
+            expect(hub.getComponent('backend').doSomething("test")).toBe("backend-test");
+            expect(hub.getComponent('frontend').doSomething()).toBe("backend-frontend");
+        } catch (e) {
+            jasmine.log(e);
+            this.fail("Unexpected component reject");
+        }
+    });
 
 });

@@ -20,7 +20,8 @@ global.Backend = class Backend extends global.BackendContract
 
   stop : -> @logger.info("Backend stoping...")
 
-  configure : -> # Do nothing
+  configure : (hub, config) ->
+    if (config?.name?) then @name = config.name
 
   getComponentName: -> return @name
 
@@ -45,7 +46,8 @@ global.Frontend = class Frontend extends HUBU.AbstractComponent
 
   stop : -> @logger.info("Backend stoping...")
 
-  configure : -> # Do nothing
+  configure : (hub, config) ->
+    if (config?.name?) then @name = config.name
 
   doSomething :  ->
     @backend.doSomething(@name)
