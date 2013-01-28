@@ -339,9 +339,9 @@ SOC.ServiceRegistry = class ServiceRegistry
     if not listener? then throw new Exception("Can't unregister the service listener, the listener is not set")
       .add("listenerConfig", listenerConfig)
 
-    for list in @_listeners
-      if list.contract is contract and list.listener is listener
-        HUBU.UTILS.removeElementFromArray(@_listeners, list)
+    for list in @_listeners.slice() when list.contract is contract and list.listener is listener
+        #As we're removing the element within the loop, we create a copy of the array, that's why we `slice` it.
+        HUBU.UTILS.removeElementFromArray(@_listeners, list) # We modify the original array.
 
   ###
   # This method should be used by the extension only.

@@ -761,6 +761,54 @@ describe("H-UBU Service Extension Tests - Service Dependencies", function () {
         //expect(component.checkAll().length).toBe(1);
     });
 
+    it("should support the unregistration of listeners - https://github.com/nanoko-project/h-ubu/issues/7", function() {
+        var contract = {
+            doSomething : function() {}
+        };
+
+        var prov = {
+            configure : function(hub, configuration) {
+                this.hub = hub;
+                hub.provideService({
+                    component: this,
+                    contract : contract
+                })
+            },
+            start : function() {},
+            stop : function() {},
+            getComponentName : function() { return "my-provider"},
+            doSomething : function() { return "guten tag" }
+        };
+
+        var consFactory = function() {
+            return {
+                svc : null,
+                getComponentName : function () { return this.name },
+                start : function() {},
+                stop : function() {},
+                configure : function(hub, conf) {
+                    this.name = conf.name;
+                    hub.requireService({
+                        component: this,
+                        contract: contract,
+                        name : "svc"
+                    });
+                }
+            }
+        }
+
+        hub
+            .registerComponent(prov)
+            .createInstance(consFactory, {name: "A"})
+            .createInstance(consFactory, {name: "B"})
+            .createInstance(consFactory, {name: "C"})
+            .start();
+
+        hub.unregisterComponent("B");
+        hub.unregisterComponent("C");
+        hub.unregisterComponent("A");
+    });
+
 
 
 });
