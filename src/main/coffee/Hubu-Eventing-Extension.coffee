@@ -126,10 +126,10 @@ HUBU.Eventing = class Eventing
 
     sent = false
 
-
-
     # We exclude from the list the the given listener.
-    for listener in @_listeners when listener.component isnt component
+    # To avoid concurrent modification exception we create a copy of the list but check that the listener is still in the
+    # original list
+    for listener in @_listeners.slice() when listener.component isnt component and HUBU.UTILS.indexOf(@_listeners, listener) isnt -1
       # Check whether the event has to be clone.
       # By default all events are cloned except if the event has the property `event.clone` set to false.
       # Receivers chan check this property to know if the event was cloned or not.
