@@ -415,7 +415,6 @@ describe("Event Mechanism Test Suite", function () {
                     hub.subscribe(this, "foo/(.)*?", this.receive);
                 },
                 receive: function(event) {
-                    console.log(event)
                     if (this.unreg) {
                         hub.unregisterComponent("A");
                         hub.unregisterComponent("C");
