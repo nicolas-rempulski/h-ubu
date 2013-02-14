@@ -23,5 +23,5 @@ h-ubu is a really simple component framework for javascript. It supports:
 License
 =======
 H-Ubu is licensed under the Apache License 2.0. The project was initially founded by [akquinet A.G.](http://www
-.akquinet.de/en), but is now founded by [Arrow-Group](http://arrow-group.eu).
+.akquinet.de/en), but is now part of the OW2 Nanoko initiative.
 

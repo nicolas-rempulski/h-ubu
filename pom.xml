@@ -1,16 +1,16 @@
 <!--
- Copyright 2010 akquinet
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
-   http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
+  ~ Copyright 2013 OW2 Nanoko Project
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~   http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -18,22 +18,22 @@
     <groupId>org.nanoko</groupId>
     <artifactId>h-ubu</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>h-ubu</name>
+    <name>OW2 Nanoko ~ h-ubu</name>
     <packaging>js</packaging>
     <description>H-Ubu is a simple component model for Javascript</description>
 
     <parent>
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
-        <version>5</version>
+        <version>7</version>
     </parent>
 
     <url>https://github.com/nanoko-project/h-ubu</url>
     <inceptionYear>2010</inceptionYear>
 
     <organization>
-        <name>Arrow-Group</name>
-        <url>http://www.arrow-group.eu/</url>
+        <name>OW2</name>
+        <url>http://ow2.org</url>
     </organization>
 
     <properties>
@@ -102,7 +102,6 @@
 					<runJasmineTestOnMinifiedVersion>true</runJasmineTestOnMinifiedVersion>					
 					<javaScriptIntegrationTestDir>src/test/js</javaScriptIntegrationTestDir>
 				</configuration>
-				<!-- TODO Enable integration-test -> Running the test on the minifies version  -->
 			</plugin>
 			
             <plugin>
@@ -132,7 +131,7 @@
                         <plugin>
                             <groupId>org.nanoko.coffee-mill</groupId>
                             <artifactId>coffee-mill-maven-plugin</artifactId>
-                            <version>1.0.0-SNAPSHOT</version>
+                            <version>1.0.0</version>
                             <configuration>
                                 <jsdocIncludePrivate>true</jsdocIncludePrivate>
                             </configuration>
