@@ -16,7 +16,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.nanoko</groupId>
     <artifactId>h-ubu</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>OW2 Nanoko ~ h-ubu</name>
     <packaging>js</packaging>
     <description>H-Ubu is a simple component model for Javascript</description>
