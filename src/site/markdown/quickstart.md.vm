@@ -55,10 +55,10 @@ The first thing to do, is to compose the application:
                 // Component registrations
                 <!-- (4) -->
                 hub
-                    .registerComponent(backendComponent(), {
+                    .registerComponent(backendComponent, {
                         component_name: 'user'
                     })
-                    .registerComponent(frontendComponent(), {
+                    .registerComponent(frontendComponent, {
                         loginId : '#login',
                         logoutId : '#logout',
                         statusId : '#status',
