@@ -251,10 +251,10 @@ bigger application with a fancy UI! It would become totally uncontrollable.</p>
             // Component registrations
             &lt;!-- (4) --&gt;
             hub
-                .registerComponent(backendComponent(), {
+                .registerComponent(backendComponent, {
                     component_name: 'user'
                 })
-                .registerComponent(frontendComponent(), {
+                .registerComponent(frontendComponent, {
                     loginId : '#login',
                     logoutId : '#logout',
                     statusId : '#status',
