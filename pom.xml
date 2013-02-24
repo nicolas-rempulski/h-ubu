@@ -186,7 +186,10 @@
                 <configuration>
                     <description>${project.version} version of ${project.name}</description>
                     <override>true</override>
-                    <includeAttached>true</includeAttached>
+                    <includeAttached>false</includeAttached>
+                    <includes>
+                        <include>${project.artifatId}*.js</include>
+                    </includes>    
                 </configuration>
             </plugin>
         </plugins>
