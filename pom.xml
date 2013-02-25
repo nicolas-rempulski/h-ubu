@@ -188,7 +188,7 @@
                     <override>true</override>
                     <includeAttached>false</includeAttached>
                     <includes>
-                        <include>${project.artifatId}*.js</include>
+                        <include>${project.artifactId}*.js</include>
                     </includes>    
                 </configuration>
             </plugin>
