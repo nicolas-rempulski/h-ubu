@@ -265,18 +265,24 @@ utils.createProxyForContract = (contract, object) ->
 
   # We inject the proxied object
   proxy.__proxy__ = object;
-
   for props of contract
     if @isFunction contract[props]
-      # To call the correct method, we create a new anonymous function
-      # applying the arguments on the function itself
-      # We use apply to pass all arguments, and set the target
-      # The resulting method is stored using the method name in the
-      # proxy object
-      proxy[props] = @bind(object, object[props]);
+      model = contract[props]()
+      bindedFunc = @bind(object, object[props])
+      if not model?
+        # To call the correct method, we create a new anonymous function
+        # applying the arguments on the function itself
+        # We use apply to pass all arguments, and set the target
+        # The resulting method is stored using the method name in the
+        # proxy object
+        proxy[props] = bindedFunc
+      else
+        proxy[props] = utils.bindWithArguments(@, utils.paramChecker, model, bindedFunc)
     else
       # Everything else is just referenced.
-      proxy[props] = object[props];
+      #TODO We could check component attributes types ...
+      proxy[props] = object[props]
+
   return proxy;
 
 ###*
@@ -340,3 +346,107 @@ utils.removeElementFromArray = (array, obj) ->
 ###
 # End of the contract and reflection related methods
 ###
+
+###*
+# Ensure that <b>inParam</b> is conform to <b>model</b> and call <b>oldFunc</b> if it's the case.
+# @param [object] model object describing inParam allowed structure
+# @param [function] {oldFunc} function to call in case inParam is conform to model.
+# @param [object] inParam object to check against the model
+# @return null
+###
+utils.paramChecker = (model, oldFunc, inParam)->
+  #We assume old is already binded to its component from proxyfication
+  if not model?
+    throw "HUBU.checker: NO MODEL no model provided"
+
+  #model provided but no input param => NOPE
+  if not inParam?
+    throw "HUBU.checker: NULL contract enforce inParam not to be null (#{inParam} found) and follow model #{model}"
+
+  for field of model
+    #One of the field in model is not present in input param => NOPE
+    if not inParam[field]?
+      throw "HUBU.checker: #{field} of inParam is not conform to model #{model}"
+    #Object : Model define a recursion
+    #Array : array of allowed types for this param
+    switch utils.typeOf model[field]
+      when "object"
+        #Model define the field as object but inParam.field is not an object => NOPE
+        if not utils.isObject(inParam[field])
+          throw "HUBU.checker: BAD OBJECT #{field} of inParam is not conform to model #{model[field]}"
+        #Recursion but oldFunc to null => only root check can launch oldFunc after completion
+        utils.paramChecker model[field], null, inParam[field]
+      when "array"
+        #inParam[field] is not one of provided types => NOPE
+        if not utils.isObjectFromTypes(inParam[field], model[field])
+          throw "HUBU.checker: NOT TYPE #{field} of inParam is not conform to model #{model[field]}"
+
+  #Valid parameter, calling delegate
+  if oldFunc?
+    oldFunc(inParam)
+  return
+
+### utils ###
+
+###*
+# Test an object agains an array of types. Types can be string, for base types, or a function, for classes.<br/>
+# example : ["string", "array", scope.className]
+# @param [object] obj object to test
+# @param [array] types valid types array (string or function)
+# @return [boolean] result is obj valid according to types
+###
+utils.isObjectFromTypes = (obj, types)->
+  for type in types
+    switch utils.typeOf type
+      #simple types
+      #TODO Need to handle array of type with a semantic like "array[string]".
+      #TODO Si type contient "array" tenter une regexp array[(.*)] et valider le type récupéré sur les instances
+      when "string"
+        if utils.typeOf(obj) is type
+          return true
+      #classes
+      when "function"
+        if obj instanceof type
+          return true
+  return false
+
+###*
+# Similar to bind, but allow argument binding too
+# example : bindWithArguments this, this.function, a, b
+# a and b will always be passed to function with additianal parameters as 3rf, 4th .... parameters
+# @param {Object} the object on which the method will be called
+# @param {Function} the function to call, is can be given as string too
+# @return {Function} the wrapper function.
+###
+utils.bindWithArguments = (obj, method) ->
+  if not method?
+    method = obj
+    obj = null
+  obj = obj ? window
+  if utils.typeOf(method) is "string"
+    if obj[method]?
+      method = obj[method]
+    else
+      throw('HUBU.bindWithArguments: obj[' + method + "] is null")
+
+  if utils.isFunction method
+    args = utils.cloneArray(arguments, 2)
+
+    return ->
+      nargs = utils.cloneArray(arguments);
+      return method.apply(obj, args.concat(nargs));
+  else
+    throw('HUBU.bindWithArguments: obj[' + method + "] is not a function")
+
+###*
+# Duplicate an array (but not cloning its values)
+# @param [array] inArray array to duplicate
+# @param [int] {inOffset} index where to start the clonde. Default : 0
+# &param [array] {startWith] additional values to put in front of the cloned arrays
+# @return [array] clone array
+###
+utils.cloneArray = (inArray, inOffset = 0, inStartWith = []) ->
+  arr = inStartWith
+  for element, i in inArray when i >= inOffset ? 0
+    arr.push(element)
+  return arr
